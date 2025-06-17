@@ -1,104 +1,139 @@
-# About Me 👋
+# Aishwarya Jauhari Sharma
 
-Hi! I'm **Aishwarya Jauhari Sharma**, a passionate **Data Scientist** and **AI/ML Engineer** based in Magdeburg, Germany. I specialize in building production-grade AI systems that solve real-world problems.
+<div class="grid cards" markdown>
 
-## 🎯 **Professional Summary**
+-   :material-account-circle:{ .lg .middle } **Data Scientist & AI/ML Engineer**
 
-With over **6 years of experience** in data science, machine learning, and software engineering, I've worked across diverse industries from automotive to defense research. My expertise lies in:
+    ---
 
-- **Advanced AI/ML Systems**: Generative models, RAG pipelines, deep learning
-- **Production MLOps**: End-to-end ML pipelines, model deployment, monitoring
-- **Data Science**: Statistical analysis, A/B testing, predictive modeling
-- **Software Engineering**: Python, APIs, cloud deployment, CI/CD
+    **6+ years** building production-grade AI systems across automotive, defense research, and fintech industries.
 
-## 🚀 **What I Do**
+    **Location**: Magdeburg, Germany
+    **Focus**: MLOps, RAG Systems, Deep Learning
 
-### **Machine Learning & AI**
-- **Generative AI**: LLMs, RAG systems, document processing
-- **Deep Learning**: CNNs, Transformers, Autoencoders, U-Net architectures
-- **Classical ML**: Classification, regression, clustering, optimization
-- **Computer Vision**: Image segmentation, OCR, radar image classification
+-   :material-trending-up:{ .lg .middle } **Key Achievements**
 
-### **Data Science & Analytics**
-- **Statistical Analysis**: A/B testing, feature engineering, PCA
-- **Business Intelligence**: KPI dashboards, customer journey analysis
-- **Predictive Modeling**: Risk assessment, customer segmentation, retention
-- **Data Visualization**: Tableau, matplotlib, interactive dashboards
+    ---
 
-### **Engineering & Deployment**
-- **MLOps**: MLflow, model versioning, automated pipelines
-- **APIs & Services**: FastAPI, REST APIs, microservices
-- **Cloud & DevOps**: Docker, GitHub Actions, CI/CD pipelines
-- **Databases**: SQL, vector databases (Weaviate), data integration
+    - **6% reduction** in false positives (radar classification)
+    - **8% increase** in lead generation (A/B testing)
+    - **11% improvement** in risk prediction accuracy
+    - **10+ KPI dashboards** deployed in production
 
-## 💼 **Professional Journey**
+</div>
 
-### **Research Associate - ML** | Fraunhofer FHR (2022-2024)
-- Reduced false positives by **6%** in radar image classification
-- Built RAG engine for research paper querying
-- Automated ML pipelines with CI/CD integration
+## Core Expertise
 
-### **Product Analyst** | mobile.de (2020-2022)
-- Increased lead generation by **8%** through A/B testing
-- Developed **10+ KPI dashboards** in Tableau
-- Enhanced user experience through data-driven insights
+=== "AI & Machine Learning"
 
-### **Data Scientist** | Modelytics (2018)
-- Boosted risk prediction accuracy by **11%** for US mortgage client
-- Achieved **4% portfolio growth** through customer segmentation
+    | **Generative AI** | **Deep Learning** | **Classical ML** |
+    |-------------------|-------------------|------------------|
+    | LLMs & RAG Systems | CNNs, Transformers | Classification, Regression |
+    | Document Processing | Autoencoders, U-Net | Clustering, Optimization |
+    | OpenAI Integration | Medical Imaging | Risk Assessment |
 
-### **Software Engineer** | Accenture (2016-2018)
-- Automated manual processes with SAP-ABAP solutions
-- Improved system stability through root cause analysis
+=== "Data Science & Analytics"
 
-## 🎓 **Education**
+    | **Statistical Analysis** | **Business Intelligence** | **Visualization** |
+    |--------------------------|---------------------------|-------------------|
+    | A/B Testing | KPI Dashboards | Tableau |
+    | Feature Engineering | Customer Journey Analysis | matplotlib |
+    | Hypothesis Testing | Predictive Modeling | Interactive Dashboards |
 
-- **M.Sc. Digital Engineering** | Otto-von-Guericke University, Germany (2019-2022)
-- **B.E. Instrumentation Technology** | Visvesvaraya Technological University, India (2012-2016)
+=== "Engineering & Deployment"
 
-## 🏆 **Key Achievements**
+    | **MLOps** | **APIs & Services** | **Cloud & DevOps** |
+    |-----------|--------------------|--------------------|
+    | MLflow, Model Versioning | FastAPI, REST APIs | Docker, Kubernetes |
+    | Automated Pipelines | Microservices | GitHub Actions |
+    | Monitoring & Observability | Performance Optimization | CI/CD Pipelines |
 
-- **Outstanding Contributions** recognized at Accenture Solutions
-- **Innovation & Leadership** certified in strategic problem-solving
-- **Research Publications** in medical imaging and deep learning
-- **UDRC Summer School** attendee for Signal Processing & ML
+## Professional Experience
 
-## 🛠️ **Technical Skills**
+!!! success "Current Status"
+    **Available for new opportunities** - Actively seeking Data Science/AI-ML Engineering roles
 
-### **Programming & Frameworks**
-- **Python**: PyTorch, scikit-learn, pandas, numpy, matplotlib
-- **ML/AI**: LangChain, Transformers, OpenAI, Weaviate
-- **Web**: FastAPI, REST APIs, JSON processing
-- **Tools**: Git, Docker, Jupyter, MLflow
+<div class="grid cards" markdown>
 
-### **Data & Analytics**
-- **Databases**: SQL, vector databases, data integration
-- **BI Tools**: Tableau, Google Data Studio, Google Analytics
-- **Statistics**: A/B testing, statistical modeling, hypothesis testing
+-   :material-radar:{ .lg .middle } **Research Associate - ML**
 
-### **Cloud & DevOps**
-- **Containerization**: Docker, microservices
-- **CI/CD**: GitHub Actions, automated pipelines
-- **Monitoring**: OpenTelemetry, logging, observability
+    ---
 
-## 🌟 **What Drives Me**
+    **Fraunhofer FHR** | *2022-2024*
 
-I'm passionate about:
+    - **6% reduction** in radar classification false positives
+    - Built **RAG engine** for research paper querying
+    - Automated **ML pipelines** with CI/CD
 
-- **Building AI systems** that create real business value
-- **Bridging the gap** between research and production
-- **Continuous learning** in the rapidly evolving AI landscape
-- **Sharing knowledge** through technical writing and mentoring
+-   :material-chart-line:{ .lg .middle } **Product Analyst**
 
-## 📫 **Let's Connect**
+    ---
 
-I'm always interested in discussing AI/ML projects, sharing insights, and exploring collaboration opportunities.
+    **mobile.de** | *2020-2022*
 
-- 📧 **Email**: [aishwarya.jauhari@gmail.com](mailto:aishwarya.jauhari@gmail.com)
-- 💼 **LinkedIn**: [linkedin.com/in/aishwaryaj7](https://linkedin.com/in/aishwaryaj7)
-- 🐙 **GitHub**: [github.com/aishwaryaj7](https://github.com/aishwaryaj7)
-- 📍 **Location**: Magdeburg, Germany
+    - **8% increase** in lead generation via A/B testing
+    - Developed **10+ KPI dashboards** in Tableau
+    - Enhanced UX through data-driven insights
+
+-   :material-finance:{ .lg .middle } **Data Scientist**
+
+    ---
+
+    **Modelytics** | *2018*
+
+    - **11% improvement** in risk prediction accuracy
+    - **4% portfolio growth** through segmentation
+    - US mortgage client solutions
+
+-   :material-code-braces:{ .lg .middle } **Software Engineer**
+
+    ---
+
+    **Accenture** | *2016-2018*
+
+    - Automated processes with **SAP-ABAP**
+    - Improved system stability
+    - **Outstanding Contributions** award
+
+</div>
+
+## Education & Certifications
+
+| **Degree** | **Institution** | **Year** | **Focus** |
+|------------|-----------------|----------|-----------|
+| **M.Sc. Digital Engineering** | Otto-von-Guericke University, Germany | 2019-2022 | Deep Learning, Image Segmentation |
+| **B.E. Instrumentation Technology** | Visvesvaraya Technological University, India | 2012-2016 | Control Systems, Signal Processing |
+
+**Additional Training**: UDRC Summer School (Signal Processing & ML), Innovation & Leadership Certification
 
 ---
 
-*"The best way to predict the future is to build it with data and AI."*
+## Let's Connect
+
+<div class="grid cards" markdown>
+
+-   :material-email:{ .lg .middle } **Email**
+
+    ---
+
+    [aishwarya.jauhari@gmail.com](mailto:aishwarya.jauhari@gmail.com)
+
+-   :material-linkedin:{ .lg .middle } **LinkedIn**
+
+    ---
+
+    [linkedin.com/in/aishwaryaj7](https://linkedin.com/in/aishwaryaj7)
+
+-   :material-github:{ .lg .middle } **GitHub**
+
+    ---
+
+    [github.com/aishwaryaj7](https://github.com/aishwaryaj7)
+
+-   :material-map-marker:{ .lg .middle } **Location**
+
+    ---
+
+    Magdeburg, Germany
+
+</div>

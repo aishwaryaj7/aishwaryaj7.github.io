@@ -1,110 +1,122 @@
-# Contact Me 📬
+# Let's Connect
 
-I'm always excited to connect with fellow data scientists, AI enthusiasts, potential collaborators, and hiring managers. Whether you want to discuss a project, share insights, or explore opportunities, I'd love to hear from you!
+<div class="grid cards" markdown>
 
-## 📞 **Get In Touch**
+-   :material-email-fast:{ .lg .middle } **Ready to Hire?**
 
-### **Primary Contact**
-- 📧 **Email**: [aishwarya.jauhari@gmail.com](mailto:aishwarya.jauhari@gmail.com)
-- 📱 **Phone**: +49 15730249290
-- 📍 **Location**: Magdeburg, Germany
+    ---
 
-### **Professional Networks**
-- 💼 **LinkedIn**: [linkedin.com/in/aishwaryaj7](https://linkedin.com/in/aishwaryaj7)
-- 🐙 **GitHub**: [github.com/aishwaryaj7](https://github.com/aishwaryaj7)
-- 🌐 **Portfolio**: [aishwaryaj7.github.io](https://aishwaryaj7.github.io)
+    **Available immediately** for Data Science/AI-ML roles
 
-## 💬 **What I'd Love to Discuss**
+    [📧 **Email Me**](mailto:aishwarya.jauhari@gmail.com){ .md-button .md-button--primary }
 
-### **For Recruiters & Hiring Managers**
-- Full-time opportunities in **Data Science** or **AI/ML Engineering**
-- **Remote or hybrid** positions in Germany or Europe
-- **Consulting projects** in AI/ML implementation
-- **Contract work** for specific ML/AI initiatives
+    📱 +49 15730249290 | 📍 Magdeburg, Germany
 
-### **For Fellow Professionals**
-- **Technical discussions** about RAG systems, MLOps, or deep learning
-- **Collaboration opportunities** on open-source projects
-- **Knowledge sharing** about production ML systems
-- **Mentoring** junior data scientists or career guidance
+-   :material-linkedin:{ .lg .middle } **Professional Network**
 
-### **For Businesses & Startups**
-- **AI/ML consulting** for your business challenges
-- **Technical advisory** for AI strategy and implementation
-- **Proof-of-concept development** for ML applications
-- **Training and workshops** on modern AI/ML practices
+    ---
 
-## 🎯 **Areas of Expertise**
+    Connect for opportunities and discussions
 
-I'm particularly passionate about discussing:
+    [💼 **LinkedIn**](https://linkedin.com/in/aishwaryaj7){ .md-button }
 
-- **Generative AI & RAG Systems**
-- **Production MLOps & Model Deployment**
-- **Computer Vision & Medical Imaging**
-- **Statistical Analysis & A/B Testing**
-- **Business Intelligence & Analytics**
-- **Cloud AI/ML Solutions**
+    [🐙 **GitHub**](https://github.com/aishwaryaj7){ .md-button }
 
-## ⚡ **Quick Response**
+</div>
 
-- **Email**: I typically respond within **24 hours**
-- **LinkedIn**: Great for professional networking and quick questions
-- **GitHub**: Best for technical discussions and code reviews
+!!! tip "Quick Response Guarantee"
+    **Email**: 24-hour response for job opportunities
+    **LinkedIn**: Same-day response for quick questions
 
-## 🌍 **Availability**
+## What I Can Help With
 
-- **Time Zone**: Central European Time (CET/CEST)
-- **Preferred Meeting Times**: 9:00 AM - 6:00 PM CET
-- **Languages**: English (Fluent), German (Conversational), Hindi (Native)
+=== "🏢 For Recruiters & Companies"
 
-## 📋 **Before You Reach Out**
+    **Immediate Availability**
 
-To help me provide the most relevant response, please include:
+    - **Full-time roles**: Data Science, AI/ML Engineering
+    - **Location**: Remote, Hybrid, or Germany/Europe
+    - **Consulting**: AI/ML strategy and implementation
+    - **Contract work**: Specific ML/AI projects
 
-### **For Job Opportunities**
-- Brief description of the role and company
-- Location and remote work policy
-- Technology stack and team structure
-- Timeline for the hiring process
+=== "🤝 For Professionals"
 
-### **For Technical Discussions**
-- Specific topic or challenge you'd like to discuss
-- Your background and current role
-- What you're hoping to learn or achieve
+    **Collaboration & Knowledge Sharing**
 
-### **For Collaboration**
-- Project overview and objectives
-- Expected time commitment
-- Technical requirements or constraints
+    - Technical discussions (RAG, MLOps, Deep Learning)
+    - Open-source project collaboration
+    - Production ML system insights
+    - Mentoring and career guidance
 
-## 🤝 **Let's Connect!**
+=== "🚀 For Businesses"
 
-I believe in the power of community and knowledge sharing in the AI/ML space. Whether you're:
+    **AI/ML Solutions**
 
-- A **student** looking for guidance
-- A **professional** seeking collaboration
-- A **company** needing AI expertise
-- A **researcher** interested in discussion
+    - Business challenge consulting
+    - Technical advisory and strategy
+    - Proof-of-concept development
+    - Training and workshops
 
-I'm always open to meaningful conversations that can benefit both parties.
+## Areas of Expertise
 
----
+<div class="grid cards" markdown>
 
-## 📬 **Send Me a Message**
+-   :material-robot:{ .lg .middle } **Generative AI**
 
-Ready to connect? Here's my preferred contact method for different types of inquiries:
+    ---
 
-| **Purpose** | **Best Contact Method** | **Expected Response Time** |
-|-------------|------------------------|---------------------------|
-| Job Opportunities | Email or LinkedIn | 24-48 hours |
-| Technical Questions | Email or GitHub | 24 hours |
-| Collaboration | Email | 24-48 hours |
-| Quick Questions | LinkedIn | Same day |
-| Casual Networking | LinkedIn | 24 hours |
+    RAG Systems, LLMs, Document Processing
+
+-   :material-cog:{ .lg .middle } **MLOps**
+
+    ---
+
+    Production Deployment, Model Monitoring
+
+-   :material-eye:{ .lg .middle } **Computer Vision**
+
+    ---
+
+    Medical Imaging, Classification, Segmentation
+
+-   :material-chart-line:{ .lg .middle } **Analytics**
+
+    ---
+
+    A/B Testing, BI, Statistical Analysis
+
+</div>
+
+## Contact Preferences
+
+| **Purpose** | **Method** | **Response Time** |
+|-------------|------------|-------------------|
+| **Job Opportunities** | 📧 Email | 24 hours |
+| **Quick Questions** | 💼 LinkedIn | Same day |
+| **Technical Discussions** | 🐙 GitHub | 24 hours |
+| **Collaboration** | 📧 Email | 24-48 hours |
+
+**Availability**: CET/CEST, 9:00 AM - 6:00 PM
+**Languages**: English (Fluent), German (Conversational), Hindi (Native)
 
 ---
 
-*Looking forward to connecting with you!* 🚀
+<div class="grid cards" markdown>
 
-**Aishwarya Jauhari Sharma**  
-*Data Scientist & AI/ML Engineer*
+-   :material-email:{ .lg .middle } **Primary Contact**
+
+    ---
+
+    [aishwarya.jauhari@gmail.com](mailto:aishwarya.jauhari@gmail.com)
+
+    Best for job opportunities and detailed discussions
+
+-   :material-phone:{ .lg .middle } **Phone**
+
+    ---
+
+    +49 15730249290
+
+    Available for scheduled calls
+
+</div>

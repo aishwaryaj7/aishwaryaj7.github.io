@@ -1,134 +1,168 @@
-# Resume 📄
+# Resume
 
-**Aishwarya Jauhari Sharma**  
-*Data Scientist & AI/ML Engineer*
+<div class="grid cards" markdown>
 
-📍 Magdeburg, Germany  
-📧 [aishwarya.jauhari@gmail.com](mailto:aishwarya.jauhari@gmail.com)  
-📱 +49 15730249290  
-💼 [LinkedIn](https://linkedin.com/in/aishwaryaj7) | 🐙 [GitHub](https://github.com/aishwaryaj7)
+-   :material-account:{ .lg .middle } **Aishwarya Jauhari Sharma**
 
----
+    ---
 
-## 🎯 **Professional Summary**
+    **Data Scientist & AI/ML Engineer**
 
-Experienced Data Scientist and AI/ML Engineer with **6+ years** of expertise in building production-grade machine learning systems, statistical analysis, and data-driven solutions. Proven track record of delivering measurable business impact through advanced analytics, A/B testing, and ML model deployment across automotive, defense research, and fintech industries.
+    📍 Magdeburg, Germany | 📱 +49 15730249290
+    📧 [aishwarya.jauhari@gmail.com](mailto:aishwarya.jauhari@gmail.com)
+    💼 [LinkedIn](https://linkedin.com/in/aishwaryaj7) | 🐙 [GitHub](https://github.com/aishwaryaj7)
 
----
+-   :material-download:{ .lg .middle } **Download Resume**
 
-## 🛠️ **Technical Skills**
+    ---
 
-### **Data Science & Analytics**
-- **Statistical Analysis**: A/B Testing, Feature Engineering (PCA, Multicollinearity), Hypothesis Testing
-- **Predictive Modeling**: Classification, Regression, Clustering, Risk Assessment
-- **Data Visualization**: Tableau, matplotlib, Google Data Studio, Interactive Dashboards
+    [📥 **PDF Version**](assets/Aishwarya-Jauhari-Sharma-FlowCV-Resume-20250605.pdf){ .md-button .md-button--primary }
 
-### **Machine Learning & AI**
-- **Generative Models**: LLMs, RAG Systems, GANs, Document Processing
-- **Deep Learning**: CNNs, Transformers, Autoencoders, U-Net Architectures
-- **Computer Vision**: Image Segmentation, OCR, Medical Imaging
-- **MLOps**: Model Training, Debugging, Deployment, Monitoring
+    *Complete resume with detailed project descriptions*
 
-### **Programming & Tools**
-- **Python**: PyTorch, scikit-learn, numpy, pandas, matplotlib, LangChain
-- **Databases**: SQL, Vector Databases (Weaviate), Data Integration
-- **Development**: Git, Docker, GitHub Actions, REST APIs, JSON Processing
-- **ML Tools**: MLflow, Jupyter, Model Versioning, Experiment Tracking
+</div>
 
-### **Business Intelligence & Project Management**
-- **BI Tools**: Tableau, Google Analytics, KPI Dashboard Development
-- **Project Management**: Confluence, Jira, Agile Methodologies
-- **Collaboration**: Cross-functional Team Leadership, Stakeholder Management
+!!! abstract "Professional Summary"
+    **6+ years** of expertise in building production-grade ML systems, statistical analysis, and data-driven solutions. Proven track record delivering **measurable business impact** through advanced analytics, A/B testing, and ML deployment across automotive, defense research, and fintech industries.
 
----
+## Technical Skills
 
-## 💼 **Professional Experience**
+=== "Core Technologies"
 
-### **Career Break** | *Sep 2024 – Present*
-📍 *Magdeburg, Germany*
+    | **Category** | **Technologies** | **Proficiency** |
+    |--------------|------------------|-----------------|
+    | **Programming** | Python, SQL, R | ⭐⭐⭐⭐⭐ |
+    | **ML/AI Frameworks** | PyTorch, scikit-learn, LangChain | ⭐⭐⭐⭐⭐ |
+    | **Data Processing** | pandas, numpy, matplotlib | ⭐⭐⭐⭐⭐ |
+    | **Cloud & DevOps** | Docker, GitHub Actions, MLflow | ⭐⭐⭐⭐ |
 
-Currently upskilling with cloud certifications and GenAI projects while taking time for health and personal reasons.
+=== "Specialized Skills"
 
-### **Research Associate - Machine Learning** | *Fraunhofer FHR*
-📅 *Aug 2022 – Aug 2024* | 📍 *Wachtberg, Germany*
+    | **Domain** | **Skills** |
+    |------------|------------|
+    | **Generative AI** | LLMs, RAG Systems, OpenAI Integration, Document Processing |
+    | **Deep Learning** | CNNs, Transformers, Autoencoders, U-Net, Medical Imaging |
+    | **Data Science** | A/B Testing, Statistical Analysis, Feature Engineering, PCA |
+    | **MLOps** | Model Deployment, Monitoring, Versioning, Automated Pipelines |
+    | **Business Intelligence** | Tableau, KPI Dashboards, Customer Analytics, Visualization |
 
-- **Reduced false positives by 6%** in radar image classification through novel ML model development and optimization
-- **Enhanced dataset quality** using OCR to extract and preprocess text from radar images for downstream tasks
-- **Built RAG engine** with document parsing capabilities to enable efficient knowledge retrieval from research papers
-- **Automated ML pipelines** by integrating data processing, model training, and deployment with CI/CD workflows
+=== "Tools & Platforms"
 
-### **Product Analyst** | *mobile.de*
-📅 *Nov 2020 – Jun 2022* | 📍 *Berlin, Germany*
+    **Development**: Git, Docker, Jupyter, VS Code
+    **ML Tools**: MLflow, Weaviate, FastAPI, REST APIs
+    **BI Tools**: Tableau, Google Analytics, Google Data Studio
+    **Databases**: SQL, Vector Databases, Data Integration
+    **Project Management**: Jira, Confluence, Agile Methodologies
 
-- **Increased lead generation by 8%** through strategic A/B testing, optimizing webpage engagement and user experience
-- **Developed 10+ KPI dashboards** in Tableau and built predictive models for customer journey analysis and retention
-- **Enabled real-time marketing analysis** by collaborating with product and engineering teams to integrate data sources
-- **Drove data-driven decision making** across product teams through comprehensive analytics and insights
+## Professional Experience
 
-### **Data Scientist** | *Modelytics*
-📅 *Apr 2018 – Dec 2018* | 📍 *Bangalore, India*
+!!! tip "Career Status"
+    **Available for immediate hire** - Seeking Data Science/AI-ML Engineering opportunities
 
-- **Boosted risk prediction accuracy by 11%** using advanced ML models for financial risk assessment for US-based mortgage client
-- **Achieved 4% portfolio growth** by delivering customer segmentation models for mortgage client's marketing team
-- **Implemented end-to-end ML pipelines** from data preprocessing to model deployment and monitoring
+<div class="grid cards" markdown>
 
-### **Software Engineer** | *Accenture*
-📅 *Nov 2016 – Mar 2018* | 📍 *Bangalore, India*
+-   :material-radar:{ .lg .middle } **Research Associate - ML**
 
-- **Enhanced operational efficiency** by automating manual processes with end-to-end SAP-ABAP solutions
-- **Improved system stability** by resolving critical failures through systematic root cause analysis and cross-team collaboration
-- **Delivered client solutions** that streamlined business processes and reduced operational overhead
+    ---
 
----
+    **Fraunhofer FHR** | *Aug 2022 – Aug 2024* | Wachtberg, Germany
 
-## 🎓 **Education**
+    ✅ **6% reduction** in radar classification false positives
+    ✅ Built **RAG engine** for research paper querying
+    ✅ **Automated ML pipelines** with CI/CD integration
+    ✅ Enhanced dataset quality using OCR preprocessing
 
-### **M.Sc. Digital Engineering** | *Otto-von-Guericke University*
-📅 *Apr 2019 – Oct 2022* | 📍 *Magdeburg, Germany*
+-   :material-chart-line:{ .lg .middle } **Product Analyst**
+
+    ---
+
+    **mobile.de** | *Nov 2020 – Jun 2022* | Berlin, Germany
+
+    ✅ **8% increase** in lead generation via A/B testing
+    ✅ Developed **10+ KPI dashboards** in Tableau
+    ✅ Built predictive models for customer journey analysis
+    ✅ Enabled real-time marketing analysis
+
+-   :material-finance:{ .lg .middle } **Data Scientist**
+
+    ---
+
+    **Modelytics** | *Apr 2018 – Dec 2018* | Bangalore, India
+
+    ✅ **11% improvement** in risk prediction accuracy
+    ✅ **4% portfolio growth** through customer segmentation
+    ✅ End-to-end ML pipelines for US mortgage client
+    ✅ Financial risk assessment models
+
+-   :material-code-braces:{ .lg .middle } **Software Engineer**
+
+    ---
+
+    **Accenture** | *Nov 2016 – Mar 2018* | Bangalore, India
+
+    ✅ Automated processes with **SAP-ABAP** solutions
+    ✅ Improved system stability through root cause analysis
+    ✅ **Outstanding Contributions** award recipient
+    ✅ Streamlined business processes
+
+</div>
+
+## Education
+
+| **Degree** | **Institution** | **Period** | **Specialization** |
+|------------|-----------------|------------|-------------------|
+| **M.Sc. Digital Engineering** | Otto-von-Guericke University, Germany | 2019-2022 | Deep Learning, Image Segmentation |
+| **B.E. Instrumentation Technology** | Visvesvaraya Technological University, India | 2012-2016 | Control Systems, Signal Processing |
 
 **Thesis**: "Deep Learning for Image Segmentation: U-Net with Residual Learning and Attention Mechanisms"
 
-### **B.E. Instrumentation Technology** | *Visvesvaraya Technological University*
-📅 *Sep 2012 – Aug 2016* | 📍 *Bangalore, India*
+## Key Projects & Publications
 
----
+=== "Featured Projects"
 
-## 🚀 **Projects & Publications**
+    | **Project** | **Technologies** | **Impact** |
+    |-------------|------------------|------------|
+    | **MLOps Auto-Retraining Pipeline** | MLflow, FastAPI, Docker | Production-grade churn prediction |
+    | **Multi-Modal RAG Chatbot** | pyMuPDF, Weaviate, LangChain | Advanced document processing |
+    | **End-to-End PDF Extraction** | LLMs, Vector Stores | JSON/Markdown conversion |
+    | **Doctract** | Llama2, RAG Architecture | Document extraction & querying |
 
-### **Featured Projects**
-- **[End-to-End PDF Extraction App](https://github.com/aishwaryaj7)**: JSON/Markdown conversion with LLM-powered table querying
-- **[Doctract](https://github.com/aishwaryaj7)**: Document extraction and query tool leveraging Llama2, Vector Stores, and RAG architecture
-- **MLOps Auto-Retraining Pipeline**: Production-grade churn prediction with automated retraining and deployment
-- **Multi-Modal RAG Chatbot**: Advanced document processing with pyMuPDF and Weaviate integration
+=== "Research Publications"
 
-### **Publications**
-- **"Comparison of Deep Learning Algorithms for Semantic Segmentation in Medical Imaging"** - Research publication
-- **"Unsupervised Anomaly Detection in Brain MRIs using Compact Context-Encoding Variational Autoencoder"** - Research publication
+    - **"Comparison of Deep Learning Algorithms for Semantic Segmentation in Medical Imaging"**
+    - **"Unsupervised Anomaly Detection in Brain MRIs using Compact Context-Encoding Variational Autoencoder"**
 
----
+## Achievements & Recognition
 
-## 🏆 **Achievements & Recognition**
+<div class="grid cards" markdown>
 
-- **Outstanding Contributions** recognized for exceptional client business outcomes at Accenture Solutions Pvt Ltd
-- **Innovation & Leadership Certified** in multiple programs focused on strategic problem-solving and design thinking
-- **UDRC Summer School** attendee for Signal Processing and Machine Learning at University Defence Research Collaboration
-- **Research Excellence** with multiple publications in deep learning and medical imaging
+-   :material-trophy:{ .lg .middle } **Awards**
 
----
+    ---
 
-## 🌟 **Key Strengths**
+    - **Outstanding Contributions** at Accenture
+    - **Innovation & Leadership** Certified
+    - **Research Excellence** in Deep Learning
 
-- **Business Impact Focus**: Consistently delivered measurable results (6-11% improvements in key metrics)
-- **End-to-End Expertise**: From research and development to production deployment and monitoring
-- **Cross-Industry Experience**: Successfully applied ML/AI across automotive, defense, fintech, and research domains
-- **Technical Leadership**: Led complex projects involving multiple stakeholders and cutting-edge technologies
-- **Continuous Learning**: Actively upskilling in cloud technologies and generative AI
+-   :material-school:{ .lg .middle } **Training**
 
----
+    ---
 
-## 📄 **Download Resume**
+    - **UDRC Summer School** (Signal Processing & ML)
+    - **Strategic Problem-Solving** Certification
+    - **Design Thinking** Programs
 
-[📥 Download PDF Resume](assets/Aishwarya-Jauhari-Sharma-FlowCV-Resume-20250605.pdf)
+</div>
+
+## Key Strengths
+
+!!! success "What Sets Me Apart"
+
+    ✅ **Business Impact Focus**: 6-11% improvements in key metrics
+    ✅ **End-to-End Expertise**: Research → Development → Production
+    ✅ **Cross-Industry Experience**: Automotive, Defense, Fintech
+    ✅ **Technical Leadership**: Complex projects with cutting-edge tech
+    ✅ **Continuous Learning**: Cloud technologies & Generative AI
 
 ---
 

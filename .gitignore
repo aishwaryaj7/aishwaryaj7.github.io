@@ -162,4 +162,12 @@ cython_debug/
 #.idea/
 artifacts/
 data/
+
+# MLflow
+mlruns/
+
+# Data directories
+data/datasets/uploads/
+data/datasets/processed/
+data/datasets/cache/
 .idea/
