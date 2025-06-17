@@ -1,0 +1,111 @@
+site_name: "Aishwarya's AI/ML Portfolio"
+site_description: "Production-grade AI/ML projects showcasing MLOps, RAG systems, and modern development practices"
+site_author: "Aishwarya"
+site_url: "https://aishwaryaj7.github.io"
+
+# Repository
+repo_name: "aishwaryaj7/aishwaryaj7.github.io"
+repo_url: "https://github.com/aishwaryaj7/aishwaryaj7.github.io"
+
+# Configuration
+theme:
+  name: material
+  palette:
+    # Palette toggle for light mode
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - navigation.instant
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+
+# Extensions
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - admonition
+  - pymdownx.details
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+# Plugins
+plugins:
+  - search
+  - mermaid2
+
+# Navigation
+nav:
+  - Home: index.md
+  - About Me: about.md
+  - Projects:
+    - Overview: projects/index.md
+    - MLOps Auto-Retraining: projects/mlops-auto-retrain-gcp/index.md
+    - RAG Chatbot Multi-Modal: projects/rag-chatbot-multimodal/index.md
+  - Blog:
+    - Latest Posts: blog/index.md
+    - MLOps Series:
+      - "MLflow for Experiment Tracking and Model Registry": blog/mlops-mlflow-tracking.md
+      - "CI/CD for ML: Auto-Retraining Pipeline with GCP": blog/mlops-cicd-pipeline.md
+      - "Serving ML Models with FastAPI and Docker": blog/mlops-fastapi-deployment.md
+    - RAG Series:
+      - "Building Production-Ready RAG with pyMuPDF and Weaviate": blog/rag-pymupdf-weaviate.md
+      - "Multi-Modal Document Processing for RAG Systems": blog/rag-multimodal-processing.md
+      - "Monitoring and Observability in RAG Applications": blog/rag-monitoring-observability.md
+  - Resume: resume.md
+  - Contact: contact.md
+
+# Extra
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/aishwaryaj7
+    - icon: fontawesome/brands/linkedin
+      link: https://linkedin.com/in/aishwaryaj7
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/aishwaryaj7
+  analytics:
+    provider: google
+    property: G-XXXXXXXXXX  # Replace with actual GA4 property ID
+
+# Copyright
+copyright: Copyright &copy; 2024 Aishwarya - AI/ML Portfolio
+
+# Custom CSS
+extra_css:
+  - stylesheets/extra.css

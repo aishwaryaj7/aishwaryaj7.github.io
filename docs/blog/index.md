@@ -18,7 +18,7 @@ My writing focuses on:
 
 ### **MLOps Series** 🚀
 
-#### 1. [From CSV to Model Registry: A Churn Prediction Pipeline with MLflow](mlflow_churn_blog.md)
+#### 1. [From CSV to Model Registry: A Churn Prediction Pipeline with MLflow](mlops-mlflow-tracking.md)
 *Building a complete MLOps pipeline with automated training, evaluation, and deployment*
 
 **Key Topics**: MLflow, scikit-learn, Model Registry, Experiment Tracking  
@@ -89,7 +89,7 @@ Discover how to implement robust monitoring and observability for RAG systems to
 ## 🔥 **Featured Content**
 
 ### **Most Popular Post**
-**[From CSV to Model Registry: A Churn Prediction Pipeline with MLflow](mlflow_churn_blog.md)**
+**[From CSV to Model Registry: A Churn Prediction Pipeline with MLflow](mlops-mlflow-tracking.md)**
 
 This comprehensive guide walks through building a complete MLOps pipeline, from data preprocessing to model deployment. It's become a go-to resource for practitioners looking to implement production-grade ML workflows.
 
@@ -173,7 +173,7 @@ I love engaging with readers! Feel free to:
 ## 📖 **Reading Guide**
 
 ### **New to MLOps?**
-Start with: [From CSV to Model Registry](mlflow_churn_blog.md) → [CI/CD for ML](mlops-cicd-pipeline.md) → [FastAPI Deployment](mlops-fastapi-deployment.md)
+Start with: [From CSV to Model Registry](mlops-mlflow-tracking.md) → [CI/CD for ML](mlops-cicd-pipeline.md) → [FastAPI Deployment](mlops-fastapi-deployment.md)
 
 ### **Interested in RAG Systems?**
 Begin with: [RAG with pyMuPDF](rag-pymupdf-weaviate.md) → [Multi-Modal Processing](rag-multimodal-processing.md) → [Monitoring RAG](rag-monitoring-observability.md)
