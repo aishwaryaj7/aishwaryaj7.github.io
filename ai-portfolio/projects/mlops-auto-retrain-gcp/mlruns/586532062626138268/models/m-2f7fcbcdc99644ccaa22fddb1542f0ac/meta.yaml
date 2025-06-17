@@ -1,0 +1,10 @@
+artifact_location: file:///Users/ajsharma/PycharmProjects/aishwaryaj7.github.io/ai-portfolio/projects/mlops-auto-retrain-gcp/mlruns/586532062626138268/models/m-2f7fcbcdc99644ccaa22fddb1542f0ac/artifacts
+creation_timestamp: 1750163314617
+experiment_id: '586532062626138268'
+last_updated_timestamp: 1750163316476
+model_id: m-2f7fcbcdc99644ccaa22fddb1542f0ac
+model_type: null
+name: model
+source_run_id: a7cbc08832da40b6823689f5835111a8
+status: 2
+status_message: null
