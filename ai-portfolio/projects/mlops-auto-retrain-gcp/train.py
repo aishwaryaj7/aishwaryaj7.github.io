@@ -16,7 +16,7 @@ from mlflow.exceptions import RestException
 from typing import Dict, Any
 
 
-DATA_PATH = "data/churn.csv"
+DATA_PATH = "../../../data/datasets/churn.csv"
 df = pd.read_csv(DATA_PATH)
 
 

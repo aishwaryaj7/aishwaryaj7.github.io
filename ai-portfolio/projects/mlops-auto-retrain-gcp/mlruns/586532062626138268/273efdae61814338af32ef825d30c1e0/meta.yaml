@@ -1,0 +1,14 @@
+artifact_uri: file:///Users/ajsharma/PycharmProjects/aishwaryaj7.github.io/ai-portfolio/projects/mlops-auto-retrain-gcp/mlruns/586532062626138268/273efdae61814338af32ef825d30c1e0/artifacts
+end_time: 1750164930004
+entry_point_name: ''
+experiment_id: '586532062626138268'
+lifecycle_stage: active
+run_id: 273efdae61814338af32ef825d30c1e0
+run_name: grad_boost
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1750164927885
+status: 3
+tags: []
+user_id: ajsharma

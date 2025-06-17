@@ -40,11 +40,11 @@ class Settings(BaseSettings):
     chunk_overlap: int = 200
     max_file_size_mb: int = 50
     
-    # Data Directories
-    data_dir: Path = Path("data")
-    upload_dir: Path = Path("data/uploads")
-    processed_dir: Path = Path("data/processed")
-    cache_dir: Path = Path("data/cache")
+    # Data Directories (centralized)
+    data_dir: Path = Path("../../../data/datasets")
+    upload_dir: Path = Path("../../../data/datasets/uploads")
+    processed_dir: Path = Path("../../../data/datasets/processed")
+    cache_dir: Path = Path("../../../data/datasets/cache")
     
     # Logging
     log_level: str = "INFO"

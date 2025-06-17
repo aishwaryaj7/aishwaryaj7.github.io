@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 
 # Configuration
-DATA_PATH = "data/churn.csv"
+DATA_PATH = "../../../data/datasets/churn.csv"
 MODEL_NAME = "churn_classifier"
 
 def load_latest_model():
