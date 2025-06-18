@@ -74,6 +74,10 @@ plugins:
   - search
   - mermaid2
 
+# Custom CSS for personal pages
+extra_css:
+  - stylesheets/extra.css
+
 # Navigation
 nav:
   - Home: index.md
