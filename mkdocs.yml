@@ -1,5 +1,6 @@
-site_name: "Aishwarya's AI/ML Portfolio"
-site_description: "Production-grade AI/ML projects showcasing MLOps, RAG systems, and modern development practices"
+site_name: "Aishwarya Jauhari Sharma"
+site_description: "Production-grade AI/ML projects showcasing MLOps, GenAI, and 
+modern development practices"
 site_author: "Aishwarya"
 site_url: "https://aishwaryaj7.github.io"
 
@@ -76,7 +77,7 @@ plugins:
 # Navigation
 nav:
   - Home: index.md
-  - About Me: about.md
+  - About Me: resume.md
   - Projects:
     - Overview: projects/index.md
     - MLOps Auto-Retraining: projects/mlops-auto-retrain-gcp/index.md
@@ -91,7 +92,6 @@ nav:
       - "Building Production-Ready RAG with pyMuPDF and Weaviate": blog/rag-pymupdf-weaviate.md
       - "Multi-Modal Document Processing for RAG Systems": blog/rag-multimodal-processing.md
       - "Monitoring and Observability in RAG Applications": blog/rag-monitoring-observability.md
-  - Resume: resume.md
   - Contact: contact.md
 
 # Extra
@@ -110,6 +110,4 @@ extra:
 # Copyright
 copyright: Copyright &copy; 2024 Aishwarya - AI/ML Portfolio
 
-# Custom CSS
-extra_css:
-  - stylesheets/extra.css
+

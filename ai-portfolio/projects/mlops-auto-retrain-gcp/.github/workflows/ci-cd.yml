@@ -1,0 +1,157 @@
+name: MLOps CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:  # Allow manual trigger
+  schedule:
+    # Run weekly for model retraining
+    - cron: '0 2 * * 1'  # Every Monday at 2 AM UTC
+
+env:
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  SERVICE_NAME: churn-prediction-api
+  REGION: us-central1
+  REGISTRY: gcr.io
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Cache dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest pytest-asyncio httpx
+    
+    - name: Run tests
+      run: |
+        pytest tests/ -v --tb=short
+    
+    - name: Test model training
+      run: |
+        python train.py
+    
+    - name: Test API startup
+      run: |
+        timeout 30s uvicorn serve:app --host 0.0.0.0 --port 8000 &
+        sleep 10
+        curl -f http://localhost:8000/health || exit 1
+
+  build-and-deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v1
+      with:
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        export_default_credentials: true
+    
+    - name: Configure Docker for GCR
+      run: |
+        gcloud auth configure-docker
+    
+    - name: Build Docker image
+      run: |
+        docker build -t $REGISTRY/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA .
+        docker build -t $REGISTRY/$PROJECT_ID/$SERVICE_NAME:latest .
+    
+    - name: Push Docker image
+      run: |
+        docker push $REGISTRY/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA
+        docker push $REGISTRY/$PROJECT_ID/$SERVICE_NAME:latest
+    
+    - name: Deploy to Cloud Run
+      run: |
+        gcloud run deploy $SERVICE_NAME \
+          --image $REGISTRY/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA \
+          --platform managed \
+          --region $REGION \
+          --allow-unauthenticated \
+          --memory 2Gi \
+          --cpu 1 \
+          --max-instances 10 \
+          --set-env-vars="MLFLOW_TRACKING_URI=${{ secrets.MLFLOW_TRACKING_URI }}" \
+          --set-env-vars="GOOGLE_APPLICATION_CREDENTIALS=/tmp/gcp-key.json"
+    
+    - name: Get service URL
+      run: |
+        SERVICE_URL=$(gcloud run services describe $SERVICE_NAME --region=$REGION --format='value(status.url)')
+        echo "Service deployed at: $SERVICE_URL"
+        echo "SERVICE_URL=$SERVICE_URL" >> $GITHUB_ENV
+    
+    - name: Test deployed service
+      run: |
+        sleep 30  # Wait for service to be ready
+        curl -f $SERVICE_URL/health || exit 1
+        echo "✅ Service is healthy and responding"
+
+  model-retraining:
+    runs-on: ubuntu-latest
+    if: github.event.schedule == '0 2 * * 1'  # Only run on scheduled trigger
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v1
+      with:
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        export_default_credentials: true
+    
+    - name: Download latest data
+      run: |
+        # Add logic to download fresh data from your data source
+        echo "Downloading latest data..."
+        # gsutil cp gs://your-bucket/latest-data.csv data/churn.csv
+    
+    - name: Retrain model
+      run: |
+        python train.py
+    
+    - name: Evaluate model
+      run: |
+        python evaluate.py
+    
+    - name: Deploy if model improved
+      run: |
+        # Add logic to compare model performance and deploy if improved
+        echo "Checking model performance..."
+        # If performance improved, trigger deployment
+        # This could call the deploy job or use the same deployment logic

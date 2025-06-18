@@ -165,9 +165,53 @@ data/
 
 # MLflow
 mlruns/
+.mlflow/
 
 # Data directories
 data/datasets/uploads/
 data/datasets/processed/
 data/datasets/cache/
+
+# MLOps specific
+*.pkl
+*.joblib
+*.model
+models/
+artifacts/
+experiments/
+
+# Temporary files
+*.tmp
+*.temp
+.DS_Store
+
+# IDE
 .idea/
+.vscode/
+*.swp
+*.swo
+
+# Docker
+.dockerignore
+
+# Environment files
+.env.local
+.env.production
+.env.development
+
+# Logs
+*.log
+logs/
+
+# Coverage reports
+htmlcov/
+.coverage
+coverage.xml
+
+# Streamlit
+.streamlit/
+
+# Local development
+local_test.py
+scratch.py
+debug.py
