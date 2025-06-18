@@ -49,6 +49,42 @@ graph TB
 
 ---
 
+## 🌐 **Live Demo**
+
+**🚀 Production API**: [Live on Google Cloud Run](https://churn-prediction-api-xxx-uc.a.run.app)
+
+**📚 Interactive API Docs**: [Swagger UI Documentation](https://churn-prediction-api-xxx-uc.a.run.app/docs)
+
+### **Try It Live:**
+
+**Health Check:**
+```bash
+curl https://churn-prediction-api-xxx-uc.a.run.app/health
+```
+
+**Sample Prediction:**
+```bash
+curl -X POST "https://churn-prediction-api-xxx-uc.a.run.app/predict" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "SeniorCitizen": 0,
+    "tenure": 12,
+    "MonthlyCharges": 65.5,
+    "TotalCharges": "786.0",
+    "InternetService": "Fiber optic",
+    "OnlineSecurity": "No",
+    "TechSupport": "Yes",
+    "StreamingTV": "No",
+    "Contract": "Month-to-month",
+    "PaymentMethod": "Electronic check",
+    "PaperlessBilling": "Yes"
+  }'
+```
+
+**✅ Status**: Successfully deployed on Google Cloud Run with auto-scaling
+
+---
+
 ## 🚀 **Quick Start**
 
 ### **Prerequisites**
