@@ -215,3 +215,11 @@ coverage.xml
 local_test.py
 scratch.py
 debug.py
+
+# Personal reference files (not for public repo)
+ai-portfolio/projects/mlops-auto-retrain-gcp/DEPLOYMENT_GUIDE.md
+ai-portfolio/projects/mlops-auto-retrain-gcp/PROJECT_WALKTHROUGH.md
+
+# MkDocs portfolio files (don't push yet)
+docs/
+mkdocs.yml
