@@ -220,6 +220,14 @@ debug.py
 ai-portfolio/projects/mlops-auto-retrain-gcp/DEPLOYMENT_GUIDE.md
 ai-portfolio/projects/mlops-auto-retrain-gcp/PROJECT_WALKTHROUGH.md
 
+# Energy Price Forecasting project specific
+ai-portfolio/projects/energy_price_forecasting/gcp-service-account-key.json
+ai-portfolio/projects/energy_price_forecasting/.env*
+ai-portfolio/projects/energy_price_forecasting/deployment_urls.txt
+ai-portfolio/projects/energy_price_forecasting/energy_forecasting.log
+ai-portfolio/projects/energy_price_forecasting/mlflow.db
+ai-portfolio/projects/energy_price_forecasting/lifecycle.json
+
 # MkDocs portfolio files (don't push yet)
 docs/
 mkdocs.yml
