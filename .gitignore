@@ -218,7 +218,7 @@ debug.py
 
 # Personal reference files (not for public repo)
 ai-portfolio/projects/mlops-auto-retrain-gcp/DEPLOYMENT_GUIDE.md
-ai-portfolio/projects/mlops-auto-retrain-gcp/PROJECT_WALKTHROUGH.md
+artifacts/Mlops-project-walkthrough.md
 
 # Energy Price Forecasting project specific
 ai-portfolio/projects/energy_price_forecasting/gcp-service-account-key.json
