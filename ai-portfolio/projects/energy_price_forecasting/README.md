@@ -15,6 +15,12 @@ This project implements a comprehensive machine learning pipeline for forecastin
 - **Cloud-native**: Deployed on Google Cloud Platform with CI/CD
 - **MLOps Pipeline**: Model versioning, experiment tracking with MLflow
 
+## 🎬 Demo
+
+[![Energy Price Forecasting Demo](https://img.youtube.com/vi/ZK0IV5H3RXo/hqdefault.jpg)](https://youtu.be/ZK0IV5H3RXo)
+
+**Watch the full demo**: [Energy Price Forecasting System in Action](https://youtu.be/ZK0IV5H3RXo)
+
 ## 🏗️ Architecture
 
 ```
@@ -32,59 +38,6 @@ OpenWeather   Transformation  Tracking   FastAPI    Dashboard
 - Docker
 - Google Cloud SDK
 - Git
-
-### Local Development
-
-1. **Clone and setup**:
-   ```bash
-   cd ai-portfolio/projects/energy_price_forecasting
-   pip install -r requirements.txt
-   ```
-
-2. **Set up GCP resources**:
-   ```bash
-   ./scripts/setup_gcp.sh
-   ```
-
-3. **Configure environment**:
-   ```bash
-   cp .env.gcp .env
-   # Update API keys in .env file
-   ```
-
-4. **Run training pipeline**:
-   ```bash
-   python train.py
-   ```
-
-5. **Start API service**:
-   ```bash
-   uvicorn api.main:app --reload
-   ```
-
-6. **Launch dashboard**:
-   ```bash
-   streamlit run streamlit_app.py
-   ```
-
-### Docker Deployment
-
-```bash
-# Build and run API
-docker build --target production-api -t energy-api .
-docker run -p 8000:8000 energy-api
-
-# Build and run dashboard
-docker build --target production-streamlit -t energy-dashboard .
-docker run -p 8501:8501 energy-dashboard
-```
-
-### Cloud Deployment
-
-```bash
-# Deploy to Google Cloud Run
-./scripts/deploy.sh
-```
 
 ## 📊 Data Sources
 
@@ -110,35 +63,12 @@ docker run -p 8501:8501 energy-dashboard
 - Weather variables
 - Load and renewable generation
 
-## 🔧 API Endpoints
-
-- `GET /health` - Health check
-- `GET /models/info` - Available models information
-- `POST /predict` - Generate price forecasts
-- `GET /models/{model}/performance` - Model performance metrics
-- `POST /retrain` - Trigger model retraining
-
 ## 📈 Dashboard Features
 
 - **Real-time Forecasting**: Interactive price predictions
 - **Market Analytics**: Price patterns and comparisons
 - **Arbitrage Detection**: Cross-border trading opportunities
 - **Model Performance**: Evaluation metrics and feature importance
-
-## 🧪 Testing
-
-```bash
-# Run all tests
-pytest tests/ -v
-
-# Run specific test modules
-pytest tests/test_data.py -v
-pytest tests/test_models.py -v
-pytest tests/test_api.py -v
-
-# Run with coverage
-pytest tests/ --cov=src --cov-report=html
-```
 
 ## 🔄 CI/CD Pipeline
 
@@ -178,13 +108,9 @@ energy_price_forecasting/
 - **MLOps**: MLflow, Docker, GitHub Actions
 - **Data Sources**: ENTSO-E API, OpenWeatherMap API
 
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ## 👤 Author
 
-**Aishwarya Jauhari**
+**Aishwarya Jauhari Sharma**
 - Email: aishwarya.jauhari@icloud.com
 - LinkedIn: [linkedin.com/in/aishwarya-jauhari](https://linkedin.com/in/aishwarya-jauhari/)
 - GitHub: [github.com/aishwaryaj7](https://github.com/aishwaryaj7)
