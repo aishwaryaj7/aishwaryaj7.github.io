@@ -1,0 +1,20 @@
+[project]
+name = "doctract"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.11"
+dependencies = [
+    "asyncpg>=0.30.0",
+    "greenlet>=3.1.1",
+    "hf-xet>=1.0.0",
+    "llama-index-embeddings-huggingface>=0.5.2",
+    "llama-index-llms-llama-cpp>=0.4.0",
+    "llama-index-readers-file>=0.4.7",
+    "llama-index-vector-stores-postgres>=0.4.2",
+    "llama-index>=0.12.28",
+    "pgvector>=0.4.0",
+    "psycopg2-binary>=2.9.10",
+    "pymupdf>=1.25.5",
+    "sqlalchemy>=2.0.40",
+    "streamlit>=1.44.1",
+]
