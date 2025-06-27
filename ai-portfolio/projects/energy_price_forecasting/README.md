@@ -21,6 +21,9 @@ This project implements a comprehensive machine learning pipeline for forecastin
 
 **Watch the full demo**: [Energy Price Forecasting System in Action](https://youtu.be/ZK0IV5H3RXo)
 
+
+**📚 API Documentation**: [ https://energy-price-forecasting-kj657erbda-uc.a.run.app/docs](https://energy-price-forecasting-kj657erbda-uc.a.run.app/docs)
+
 ## 🏗️ Architecture
 
 ```
@@ -111,9 +114,6 @@ energy_price_forecasting/
 ## 👤 Author
 
 **Aishwarya Jauhari Sharma**
-- Email: aishwarya.jauhari@icloud.com
-- LinkedIn: [linkedin.com/in/aishwarya-jauhari](https://linkedin.com/in/aishwarya-jauhari/)
-- GitHub: [github.com/aishwaryaj7](https://github.com/aishwaryaj7)
 
 ---
 
