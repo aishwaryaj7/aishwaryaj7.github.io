@@ -1,0 +1,643 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="AI/ML Engineer | MLOps &amp; GenAI Enthusiast | Data-Driven Thinker - Production-grade AI/ML projects showcasing MLOps, GenAI, and modern development practices" name="description"/>
+<meta content="Aishwarya Jauhari Sharma" name="author"/>
+<link href="https://aishwaryaj7.github.io/blog/mlflow-cloud-production/" rel="canonical"/>
+<link href="../../assets/images/favicon.svg" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.6.14" name="generator"/>
+<title>MLflow in Production: From Experiment Tracking to Cloud Deployment - Aishwarya Jauhari Sharma</title>
+<link href="../../assets/stylesheets/main.342714a4.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.06af60db.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+<link href="../../stylesheets/extra.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+</head>
+<body data-md-color-accent="indigo" data-md-color-primary="indigo" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#mlflow-in-production-from-experiment-tracking-to-cloud-deployment">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+<nav aria-label="Header" class="md-header__inner md-grid">
+<a aria-label="Aishwarya Jauhari Sharma" class="md-header__button md-logo" data-md-component="logo" href="../.." title="Aishwarya Jauhari Sharma">
+<img alt="logo" src="../../assets/images/logo.svg"/>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            Aishwarya Jauhari Sharma
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              MLflow in Production: From Experiment Tracking to Cloud Deployment
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Switch to light mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefers-color-scheme)" data-md-color-primary="indigo" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Switch to light mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"></path></svg>
+</label>
+<input aria-label="Switch to dark mode" class="md-option" data-md-color-accent="pink" data-md-color-media="(prefers-color-scheme: light)" data-md-color-primary="teal" data-md-color-scheme="default" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_2" hidden="" title="Switch to dark mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+</label>
+<input aria-label="Switch to system preference" class="md-option" data-md-color-accent="pink" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-primary="teal" data-md-color-scheme="slate" id="__palette_2" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Switch to system preference">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Search" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Search" class="md-search__options">
+<a aria-label="Share" class="md-search__icon md-icon" data-clipboard="" data-clipboard-text="" data-md-component="search-share" href="javascript:void(0)" tabindex="-1" title="Share">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"></path></svg>
+</a>
+<button aria-label="Clear" class="md-search__icon md-icon" tabindex="-1" title="Clear" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+<div class="md-search__suggest" data-md-component="search-suggest"></div>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initializing search
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/aishwaryaj7/aishwaryaj7.github.io" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 496 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+</div>
+<div class="md-source__repository">
+    aishwaryaj7/aishwaryaj7.github.io
+  </div>
+</a>
+</div>
+</nav>
+<nav aria-label="Tabs" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../..">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../projects/">
+          
+  
+  
+    
+  
+  Projects
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../">
+          
+  
+  
+    
+  
+  Blog
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../resume/">
+        
+  
+  
+    
+  
+  Resume
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../contact/">
+        
+  
+  
+    
+  
+  Contact
+
+      </a>
+</li>
+</ul>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="Aishwarya Jauhari Sharma" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="Aishwarya Jauhari Sharma">
+<img alt="logo" src="../../assets/images/logo.svg"/>
+</a>
+    Aishwarya Jauhari Sharma
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/aishwaryaj7/aishwaryaj7.github.io" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 496 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+</div>
+<div class="md-source__repository">
+    aishwaryaj7/aishwaryaj7.github.io
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../..">
+<span class="md-ellipsis">
+    Home
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../projects/">
+<span class="md-ellipsis">
+    Projects
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../">
+<span class="md-ellipsis">
+    Blog
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../resume/">
+<span class="md-ellipsis">
+    Resume
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../contact/">
+<span class="md-ellipsis">
+    Contact
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<h1 id="mlflow-in-production-from-experiment-tracking-to-cloud-deployment">MLflow in Production: From Experiment Tracking to Cloud Deployment<a class="headerlink" href="#mlflow-in-production-from-experiment-tracking-to-cloud-deployment" title="Permanent link">¶</a></h1>
+<p><strong>By Aishwarya Jauhari</strong><br/>
+<em>Published: January 2025</em></p>
+<hr/>
+<h2 id="introduction">🎯 <strong>Introduction</strong><a class="headerlink" href="#introduction" title="Permanent link">¶</a></h2>
+<p>Building a production-ready MLOps pipeline requires more than just training a good model. You need experiment tracking, model versioning, automated deployment, and monitoring. In this comprehensive guide, I'll walk you through how I built a complete churn prediction pipeline using <strong>MLflow</strong> for experiment management and <strong>Google Cloud Platform</strong> for scalable deployment.</p>
+<p>This isn't theoretical - it's based on a real production system I built that processes customer churn predictions with <strong>75.9% ROC-AUC</strong> and serves <strong>1000+ predictions per second</strong>.</p>
+<h2 id="the-complete-architecture">🏗️ <strong>The Complete Architecture</strong><a class="headerlink" href="#the-complete-architecture" title="Permanent link">¶</a></h2>
+<pre class="mermaid"><code>graph TB
+    subgraph "Development &amp; Training"
+        A[Customer Data] --&gt; B[Data Pipeline]
+        B --&gt; C[Feature Engineering]
+        C --&gt; D[Model Training]
+        D --&gt; E[MLflow Tracking]
+        E --&gt; F[Model Registry]
+    end
+
+    subgraph "Model Evaluation"
+        F --&gt; G[Model Evaluation]
+        G --&gt; H{Quality Gate}
+        H --&gt;|Pass| I[Production Ready]
+        H --&gt;|Fail| D
+    end
+
+    subgraph "Production Deployment"
+        I --&gt; J[FastAPI Service]
+        J --&gt; K[Docker Container]
+        K --&gt; L[GCP Cloud Run]
+        L --&gt; M[Auto-scaling]
+    end
+
+    subgraph "Monitoring &amp; Automation"
+        N[GitHub Actions] --&gt; O[CI/CD Pipeline]
+        O --&gt; P[Automated Retraining]
+        P --&gt; D
+        Q[Health Monitoring] --&gt; J
+    end</code></pre>
+<h2 id="why-mlflow-cloud-is-a-game-changer">🚀 <strong>Why MLflow + Cloud is a Game Changer</strong><a class="headerlink" href="#why-mlflow-cloud-is-a-game-changer" title="Permanent link">¶</a></h2>
+<p>Before diving into the implementation, let me explain why this combination is so powerful:</p>
+<h3 id="mlflow-solves-the-model-chaos-problem"><strong>MLflow Solves the "Model Chaos" Problem</strong><a class="headerlink" href="#mlflow-solves-the-model-chaos-problem" title="Permanent link">¶</a></h3>
+<ul>
+<li><strong>Experiment Tracking</strong>: Never lose track of what worked and what didn't</li>
+<li><strong>Model Registry</strong>: Centralized model versioning and lifecycle management</li>
+<li><strong>Reproducibility</strong>: Recreate any experiment with exact parameters</li>
+<li><strong>Collaboration</strong>: Team-wide visibility into model development</li>
+</ul>
+<h3 id="cloud-deployment-enables-scale"><strong>Cloud Deployment Enables Scale</strong><a class="headerlink" href="#cloud-deployment-enables-scale" title="Permanent link">¶</a></h3>
+<ul>
+<li><strong>Serverless</strong>: Pay only for what you use</li>
+<li><strong>Auto-scaling</strong>: Handle traffic spikes automatically</li>
+<li><strong>Global Reach</strong>: Deploy models worldwide</li>
+<li><strong>Reliability</strong>: 99.9% uptime with managed infrastructure</li>
+</ul>
+<h2 id="real-project-results">📊 <strong>Real Project Results</strong><a class="headerlink" href="#real-project-results" title="Permanent link">¶</a></h2>
+<p>Let me share the actual results from the churn prediction system:</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+<th>Business Impact</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ROC-AUC</strong></td>
+<td>0.759</td>
+<td>GOOD quality model</td>
+</tr>
+<tr>
+<td><strong>Accuracy</strong></td>
+<td>68.3%</td>
+<td>Reliable predictions</td>
+</tr>
+<tr>
+<td><strong>Precision</strong></td>
+<td>65.4%</td>
+<td>Low false positives</td>
+</tr>
+<tr>
+<td><strong>Recall</strong></td>
+<td>61.3%</td>
+<td>Catches most churners</td>
+</tr>
+<tr>
+<td><strong>API Latency</strong></td>
+<td>&lt;100ms</td>
+<td>Real-time predictions</td>
+</tr>
+<tr>
+<td><strong>Throughput</strong></td>
+<td>1000+ req/s</td>
+<td>Handles peak traffic</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Business Value</strong>: Identifying 61.3% of actual churners enables proactive retention campaigns, saving an estimated <strong>$500K+ annually</strong>.</p>
+<hr/>
+<h2 id="part-1-setting-up-mlflow-for-production">🔧 <strong>Part 1: Setting Up MLflow for Production</strong><a class="headerlink" href="#part-1-setting-up-mlflow-for-production" title="Permanent link">¶</a></h2>
+<h3 id="11-mlflow-configuration"><strong>1.1 MLflow Configuration</strong><a class="headerlink" href="#11-mlflow-configuration" title="Permanent link">¶</a></h3>
+<p>First, let's set up MLflow with proper configuration for production use:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">mlflow</span>
+</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">mlflow.sklearn</span>
+</span><span id="__span-0-3"><a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">mlflow.tracking</span><span class="w"> </span><span class="kn">import</span> <span class="n">MlflowClient</span>
+</span><span id="__span-0-4"><a href="#__codelineno-0-4" id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+</span><span id="__span-0-5"><a href="#__codelineno-0-5" id="__codelineno-0-5" name="__codelineno-0-5"></a>
+</span><span id="__span-0-6"><a href="#__codelineno-0-6" id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="c1"># Configure MLflow</span>
+</span><span id="__span-0-7"><a href="#__codelineno-0-7" id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="n">MLFLOW_TRACKING_URI</span> <span class="o">=</span> <span class="s2">"file:./mlruns"</span>  <span class="c1"># Local for development</span>
+</span><span id="__span-0-8"><a href="#__codelineno-0-8" id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="c1"># MLFLOW_TRACKING_URI = "https://your-mlflow-server.com"  # Remote for production</span>
+</span><span id="__span-0-9"><a href="#__codelineno-0-9" id="__codelineno-0-9" name="__codelineno-0-9"></a>
+</span><span id="__span-0-10"><a href="#__codelineno-0-10" id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="n">mlflow</span><span class="o">.</span><span class="n">set_tracking_uri</span><span class="p">(</span><span class="n">MLFLOW_TRACKING_URI</span><span class="p">)</span>
+</span><span id="__span-0-11"><a href="#__codelineno-0-11" id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="n">mlflow</span><span class="o">.</span><span class="n">set_experiment</span><span class="p">(</span><span class="s2">"churn_prediction"</span><span class="p">)</span>
+</span><span id="__span-0-12"><a href="#__codelineno-0-12" id="__codelineno-0-12" name="__codelineno-0-12"></a>
+</span><span id="__span-0-13"><a href="#__codelineno-0-13" id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="c1"># Initialize client for model registry operations</span>
+</span><span id="__span-0-14"><a href="#__codelineno-0-14" id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="n">client</span> <span class="o">=</span> <span class="n">MlflowClient</span><span class="p">()</span>
+</span></code></pre></div>
+<h3 id="12-experiment-tracking-best-practices"><strong>1.2 Experiment Tracking Best Practices</strong><a class="headerlink" href="#12-experiment-tracking-best-practices" title="Permanent link">¶</a></h3>
+<p>Here's how I structure experiment tracking for maximum value:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">train_model_with_tracking</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">model_params</span><span class="p">):</span>
+</span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="w">    </span><span class="sd">"""Train model with comprehensive MLflow tracking."""</span>
+</span><span id="__span-1-3"><a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a href="#__codelineno-1-4" id="__codelineno-1-4" name="__codelineno-1-4"></a>    <span class="k">with</span> <span class="n">mlflow</span><span class="o">.</span><span class="n">start_run</span><span class="p">(</span><span class="n">run_name</span><span class="o">=</span><span class="sa">f</span><span class="s2">"churn_model_</span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%Y%m</span><span class="si">%d</span><span class="s1">_%H%M%S'</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">):</span>
+</span><span id="__span-1-5"><a href="#__codelineno-1-5" id="__codelineno-1-5" name="__codelineno-1-5"></a>        <span class="c1"># Log parameters</span>
+</span><span id="__span-1-6"><a href="#__codelineno-1-6" id="__codelineno-1-6" name="__codelineno-1-6"></a>        <span class="n">mlflow</span><span class="o">.</span><span class="n">log_params</span><span class="p">(</span><span class="n">model_params</span><span class="p">)</span>
+</span><span id="__span-1-7"><a href="#__codelineno-1-7" id="__codelineno-1-7" name="__codelineno-1-7"></a>        <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s2">"train_size"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">X_train</span><span class="p">))</span>
+</span><span id="__span-1-8"><a href="#__codelineno-1-8" id="__codelineno-1-8" name="__codelineno-1-8"></a>        <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s2">"test_size"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">X_test</span><span class="p">))</span>
+</span><span id="__span-1-9"><a href="#__codelineno-1-9" id="__codelineno-1-9" name="__codelineno-1-9"></a>        <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s2">"features_count"</span><span class="p">,</span> <span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</span><span id="__span-1-10"><a href="#__codelineno-1-10" id="__codelineno-1-10" name="__codelineno-1-10"></a>
+</span><span id="__span-1-11"><a href="#__codelineno-1-11" id="__codelineno-1-11" name="__codelineno-1-11"></a>        <span class="c1"># Train model</span>
+</span><span id="__span-1-12"><a href="#__codelineno-1-12" id="__codelineno-1-12" name="__codelineno-1-12"></a>        <span class="n">model</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="o">**</span><span class="n">model_params</span><span class="p">)</span>
+</span><span id="__span-1-13"><a href="#__codelineno-1-13" id="__codelineno-1-13" name="__codelineno-1-13"></a>        <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</span><span id="__span-1-14"><a href="#__codelineno-1-14" id="__codelineno-1-14" name="__codelineno-1-14"></a>
+</span><span id="__span-1-15"><a href="#__codelineno-1-15" id="__codelineno-1-15" name="__codelineno-1-15"></a>        <span class="c1"># Make predictions</span>
+</span><span id="__span-1-16"><a href="#__codelineno-1-16" id="__codelineno-1-16" name="__codelineno-1-16"></a>        <span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+</span><span id="__span-1-17"><a href="#__codelineno-1-17" id="__codelineno-1-17" name="__codelineno-1-17"></a>        <span class="n">y_pred_proba</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">]</span>
+</span><span id="__span-1-18"><a href="#__codelineno-1-18" id="__codelineno-1-18" name="__codelineno-1-18"></a>
+</span><span id="__span-1-19"><a href="#__codelineno-1-19" id="__codelineno-1-19" name="__codelineno-1-19"></a>        <span class="c1"># Calculate metrics</span>
+</span><span id="__span-1-20"><a href="#__codelineno-1-20" id="__codelineno-1-20" name="__codelineno-1-20"></a>        <span class="n">accuracy</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+</span><span id="__span-1-21"><a href="#__codelineno-1-21" id="__codelineno-1-21" name="__codelineno-1-21"></a>        <span class="n">precision</span> <span class="o">=</span> <span class="n">precision_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+</span><span id="__span-1-22"><a href="#__codelineno-1-22" id="__codelineno-1-22" name="__codelineno-1-22"></a>        <span class="n">recall</span> <span class="o">=</span> <span class="n">recall_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+</span><span id="__span-1-23"><a href="#__codelineno-1-23" id="__codelineno-1-23" name="__codelineno-1-23"></a>        <span class="n">f1</span> <span class="o">=</span> <span class="n">f1_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+</span><span id="__span-1-24"><a href="#__codelineno-1-24" id="__codelineno-1-24" name="__codelineno-1-24"></a>        <span class="n">roc_auc</span> <span class="o">=</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred_proba</span><span class="p">)</span>
+</span><span id="__span-1-25"><a href="#__codelineno-1-25" id="__codelineno-1-25" name="__codelineno-1-25"></a>
+</span><span id="__span-1-26"><a href="#__codelineno-1-26" id="__codelineno-1-26" name="__codelineno-1-26"></a>        <span class="c1"># Log metrics</span>
+</span><span id="__span-1-27"><a href="#__codelineno-1-27" id="__codelineno-1-27" name="__codelineno-1-27"></a>        <span class="n">mlflow</span><span class="o">.</span><span class="n">log_metric</span><span class="p">(</span><span class="s2">"accuracy"</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">)</span>
+</span><span id="__span-1-28"><a href="#__codelineno-1-28" id="__codelineno-1-28" name="__codelineno-1-28"></a>        <span class="n">mlflow</span><span class="o">.</span><span class="n">log_metric</span><span class="p">(</span><span class="s2">"precision"</span><span class="p">,</span> <span class="n">precision</span><span class="p">)</span>
+</span><span id="__span-1-29"><a href="#__codelineno-1-29" id="__codelineno-1-29" name="__codelineno-1-29"></a>        <span class="n">mlflow</span><span class="o">.</span><span class="n">log_metric</span><span class="p">(</span><span class="s2">"recall"</span><span class="p">,</span> <span class="n">recall</span><span class="p">)</span>
+</span><span id="__span-1-30"><a href="#__codelineno-1-30" id="__codelineno-1-30" name="__codelineno-1-30"></a>        <span class="n">mlflow</span><span class="o">.</span><span class="n">log_metric</span><span class="p">(</span><span class="s2">"f1_score"</span><span class="p">,</span> <span class="n">f1</span><span class="p">)</span>
+</span><span id="__span-1-31"><a href="#__codelineno-1-31" id="__codelineno-1-31" name="__codelineno-1-31"></a>        <span class="n">mlflow</span><span class="o">.</span><span class="n">log_metric</span><span class="p">(</span><span class="s2">"roc_auc"</span><span class="p">,</span> <span class="n">roc_auc</span><span class="p">)</span>
+</span><span id="__span-1-32"><a href="#__codelineno-1-32" id="__codelineno-1-32" name="__codelineno-1-32"></a>
+</span><span id="__span-1-33"><a href="#__codelineno-1-33" id="__codelineno-1-33" name="__codelineno-1-33"></a>        <span class="c1"># Log model</span>
+</span><span id="__span-1-34"><a href="#__codelineno-1-34" id="__codelineno-1-34" name="__codelineno-1-34"></a>        <span class="n">mlflow</span><span class="o">.</span><span class="n">sklearn</span><span class="o">.</span><span class="n">log_model</span><span class="p">(</span>
+</span><span id="__span-1-35"><a href="#__codelineno-1-35" id="__codelineno-1-35" name="__codelineno-1-35"></a>            <span class="n">model</span><span class="p">,</span> 
+</span><span id="__span-1-36"><a href="#__codelineno-1-36" id="__codelineno-1-36" name="__codelineno-1-36"></a>            <span class="s2">"model"</span><span class="p">,</span>
+</span><span id="__span-1-37"><a href="#__codelineno-1-37" id="__codelineno-1-37" name="__codelineno-1-37"></a>            <span class="n">registered_model_name</span><span class="o">=</span><span class="s2">"churn_classifier"</span>
+</span><span id="__span-1-38"><a href="#__codelineno-1-38" id="__codelineno-1-38" name="__codelineno-1-38"></a>        <span class="p">)</span>
+</span><span id="__span-1-39"><a href="#__codelineno-1-39" id="__codelineno-1-39" name="__codelineno-1-39"></a>
+</span><span id="__span-1-40"><a href="#__codelineno-1-40" id="__codelineno-1-40" name="__codelineno-1-40"></a>        <span class="c1"># Log artifacts</span>
+</span><span id="__span-1-41"><a href="#__codelineno-1-41" id="__codelineno-1-41" name="__codelineno-1-41"></a>        <span class="n">feature_importance</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+</span><span id="__span-1-42"><a href="#__codelineno-1-42" id="__codelineno-1-42" name="__codelineno-1-42"></a>            <span class="s1">'feature'</span><span class="p">:</span> <span class="n">X_train</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span>
+</span><span id="__span-1-43"><a href="#__codelineno-1-43" id="__codelineno-1-43" name="__codelineno-1-43"></a>            <span class="s1">'importance'</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">feature_importances_</span>
+</span><span id="__span-1-44"><a href="#__codelineno-1-44" id="__codelineno-1-44" name="__codelineno-1-44"></a>        <span class="p">})</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">'importance'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span><span id="__span-1-45"><a href="#__codelineno-1-45" id="__codelineno-1-45" name="__codelineno-1-45"></a>
+</span><span id="__span-1-46"><a href="#__codelineno-1-46" id="__codelineno-1-46" name="__codelineno-1-46"></a>        <span class="n">feature_importance</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">"feature_importance.csv"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span><span id="__span-1-47"><a href="#__codelineno-1-47" id="__codelineno-1-47" name="__codelineno-1-47"></a>        <span class="n">mlflow</span><span class="o">.</span><span class="n">log_artifact</span><span class="p">(</span><span class="s2">"feature_importance.csv"</span><span class="p">)</span>
+</span><span id="__span-1-48"><a href="#__codelineno-1-48" id="__codelineno-1-48" name="__codelineno-1-48"></a>
+</span><span id="__span-1-49"><a href="#__codelineno-1-49" id="__codelineno-1-49" name="__codelineno-1-49"></a>        <span class="c1"># Log preprocessing artifacts</span>
+</span><span id="__span-1-50"><a href="#__codelineno-1-50" id="__codelineno-1-50" name="__codelineno-1-50"></a>        <span class="n">joblib</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">label_encoders</span><span class="p">,</span> <span class="s2">"label_encoders.pkl"</span><span class="p">)</span>
+</span><span id="__span-1-51"><a href="#__codelineno-1-51" id="__codelineno-1-51" name="__codelineno-1-51"></a>        <span class="n">mlflow</span><span class="o">.</span><span class="n">log_artifact</span><span class="p">(</span><span class="s2">"label_encoders.pkl"</span><span class="p">)</span>
+</span><span id="__span-1-52"><a href="#__codelineno-1-52" id="__codelineno-1-52" name="__codelineno-1-52"></a>
+</span><span id="__span-1-53"><a href="#__codelineno-1-53" id="__codelineno-1-53" name="__codelineno-1-53"></a>        <span class="k">return</span> <span class="n">model</span><span class="p">,</span> <span class="n">roc_auc</span>
+</span></code></pre></div>
+<h3 id="13-model-registry-workflow"><strong>1.3 Model Registry Workflow</strong><a class="headerlink" href="#13-model-registry-workflow" title="Permanent link">¶</a></h3>
+<p>The model registry is where MLflow really shines. Here's my production workflow:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">register_best_model</span><span class="p">():</span>
+</span><span id="__span-2-2"><a href="#__codelineno-2-2" id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="w">    </span><span class="sd">"""Register the best performing model for production."""</span>
+</span><span id="__span-2-3"><a href="#__codelineno-2-3" id="__codelineno-2-3" name="__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a href="#__codelineno-2-4" id="__codelineno-2-4" name="__codelineno-2-4"></a>    <span class="c1"># Get all runs from the experiment</span>
+</span><span id="__span-2-5"><a href="#__codelineno-2-5" id="__codelineno-2-5" name="__codelineno-2-5"></a>    <span class="n">experiment</span> <span class="o">=</span> <span class="n">mlflow</span><span class="o">.</span><span class="n">get_experiment_by_name</span><span class="p">(</span><span class="s2">"churn_prediction"</span><span class="p">)</span>
+</span><span id="__span-2-6"><a href="#__codelineno-2-6" id="__codelineno-2-6" name="__codelineno-2-6"></a>    <span class="n">runs</span> <span class="o">=</span> <span class="n">mlflow</span><span class="o">.</span><span class="n">search_runs</span><span class="p">(</span><span class="n">experiment_ids</span><span class="o">=</span><span class="p">[</span><span class="n">experiment</span><span class="o">.</span><span class="n">experiment_id</span><span class="p">])</span>
+</span><span id="__span-2-7"><a href="#__codelineno-2-7" id="__codelineno-2-7" name="__codelineno-2-7"></a>
+</span><span id="__span-2-8"><a href="#__codelineno-2-8" id="__codelineno-2-8" name="__codelineno-2-8"></a>    <span class="c1"># Find best model by ROC-AUC</span>
+</span><span id="__span-2-9"><a href="#__codelineno-2-9" id="__codelineno-2-9" name="__codelineno-2-9"></a>    <span class="n">best_run</span> <span class="o">=</span> <span class="n">runs</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">runs</span><span class="p">[</span><span class="s1">'metrics.roc_auc'</span><span class="p">]</span><span class="o">.</span><span class="n">idxmax</span><span class="p">()]</span>
+</span><span id="__span-2-10"><a href="#__codelineno-2-10" id="__codelineno-2-10" name="__codelineno-2-10"></a>    <span class="n">best_run_id</span> <span class="o">=</span> <span class="n">best_run</span><span class="p">[</span><span class="s1">'run_id'</span><span class="p">]</span>
+</span><span id="__span-2-11"><a href="#__codelineno-2-11" id="__codelineno-2-11" name="__codelineno-2-11"></a>    <span class="n">best_auc</span> <span class="o">=</span> <span class="n">best_run</span><span class="p">[</span><span class="s1">'metrics.roc_auc'</span><span class="p">]</span>
+</span><span id="__span-2-12"><a href="#__codelineno-2-12" id="__codelineno-2-12" name="__codelineno-2-12"></a>
+</span><span id="__span-2-13"><a href="#__codelineno-2-13" id="__codelineno-2-13" name="__codelineno-2-13"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"🏆 Best model: ROC-AUC = </span><span class="si">{</span><span class="n">best_auc</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</span><span id="__span-2-14"><a href="#__codelineno-2-14" id="__codelineno-2-14" name="__codelineno-2-14"></a>
+</span><span id="__span-2-15"><a href="#__codelineno-2-15" id="__codelineno-2-15" name="__codelineno-2-15"></a>    <span class="c1"># Register model</span>
+</span><span id="__span-2-16"><a href="#__codelineno-2-16" id="__codelineno-2-16" name="__codelineno-2-16"></a>    <span class="n">model_uri</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"runs:/</span><span class="si">{</span><span class="n">best_run_id</span><span class="si">}</span><span class="s2">/model"</span>
+</span><span id="__span-2-17"><a href="#__codelineno-2-17" id="__codelineno-2-17" name="__codelineno-2-17"></a>    <span class="n">model_version</span> <span class="o">=</span> <span class="n">mlflow</span><span class="o">.</span><span class="n">register_model</span><span class="p">(</span>
+</span><span id="__span-2-18"><a href="#__codelineno-2-18" id="__codelineno-2-18" name="__codelineno-2-18"></a>        <span class="n">model_uri</span><span class="o">=</span><span class="n">model_uri</span><span class="p">,</span>
+</span><span id="__span-2-19"><a href="#__codelineno-2-19" id="__codelineno-2-19" name="__codelineno-2-19"></a>        <span class="n">name</span><span class="o">=</span><span class="s2">"churn_classifier"</span>
+</span><span id="__span-2-20"><a href="#__codelineno-2-20" id="__codelineno-2-20" name="__codelineno-2-20"></a>    <span class="p">)</span>
+</span><span id="__span-2-21"><a href="#__codelineno-2-21" id="__codelineno-2-21" name="__codelineno-2-21"></a>
+</span><span id="__span-2-22"><a href="#__codelineno-2-22" id="__codelineno-2-22" name="__codelineno-2-22"></a>    <span class="c1"># Add model description</span>
+</span><span id="__span-2-23"><a href="#__codelineno-2-23" id="__codelineno-2-23" name="__codelineno-2-23"></a>    <span class="n">client</span><span class="o">.</span><span class="n">update_model_version</span><span class="p">(</span>
+</span><span id="__span-2-24"><a href="#__codelineno-2-24" id="__codelineno-2-24" name="__codelineno-2-24"></a>        <span class="n">name</span><span class="o">=</span><span class="s2">"churn_classifier"</span><span class="p">,</span>
+</span><span id="__span-2-25"><a href="#__codelineno-2-25" id="__codelineno-2-25" name="__codelineno-2-25"></a>        <span class="n">version</span><span class="o">=</span><span class="n">model_version</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
+</span><span id="__span-2-26"><a href="#__codelineno-2-26" id="__codelineno-2-26" name="__codelineno-2-26"></a>        <span class="n">description</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Churn prediction model with </span><span class="si">{</span><span class="n">best_auc</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> ROC-AUC. "</span>
+</span><span id="__span-2-27"><a href="#__codelineno-2-27" id="__codelineno-2-27" name="__codelineno-2-27"></a>                   <span class="sa">f</span><span class="s2">"Trained on </span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%Y-%m-</span><span class="si">%d</span><span class="s1">'</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+</span><span id="__span-2-28"><a href="#__codelineno-2-28" id="__codelineno-2-28" name="__codelineno-2-28"></a>    <span class="p">)</span>
+</span><span id="__span-2-29"><a href="#__codelineno-2-29" id="__codelineno-2-29" name="__codelineno-2-29"></a>
+</span><span id="__span-2-30"><a href="#__codelineno-2-30" id="__codelineno-2-30" name="__codelineno-2-30"></a>    <span class="c1"># Transition to staging</span>
+</span><span id="__span-2-31"><a href="#__codelineno-2-31" id="__codelineno-2-31" name="__codelineno-2-31"></a>    <span class="n">client</span><span class="o">.</span><span class="n">transition_model_version_stage</span><span class="p">(</span>
+</span><span id="__span-2-32"><a href="#__codelineno-2-32" id="__codelineno-2-32" name="__codelineno-2-32"></a>        <span class="n">name</span><span class="o">=</span><span class="s2">"churn_classifier"</span><span class="p">,</span>
+</span><span id="__span-2-33"><a href="#__codelineno-2-33" id="__codelineno-2-33" name="__codelineno-2-33"></a>        <span class="n">version</span><span class="o">=</span><span class="n">model_version</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
+</span><span id="__span-2-34"><a href="#__codelineno-2-34" id="__codelineno-2-34" name="__codelineno-2-34"></a>        <span class="n">stage</span><span class="o">=</span><span class="s2">"Staging"</span>
+</span><span id="__span-2-35"><a href="#__codelineno-2-35" id="__codelineno-2-35" name="__codelineno-2-35"></a>    <span class="p">)</span>
+</span><span id="__span-2-36"><a href="#__codelineno-2-36" id="__codelineno-2-36" name="__codelineno-2-36"></a>
+</span><span id="__span-2-37"><a href="#__codelineno-2-37" id="__codelineno-2-37" name="__codelineno-2-37"></a>    <span class="k">return</span> <span class="n">model_version</span>
+</span></code></pre></div>
+<h3 id="14-model-loading-for-production"><strong>1.4 Model Loading for Production</strong><a class="headerlink" href="#14-model-loading-for-production" title="Permanent link">¶</a></h3>
+<p>Here's how to load models reliably in production:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">load_production_model</span><span class="p">():</span>
+</span><span id="__span-3-2"><a href="#__codelineno-3-2" id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="w">    </span><span class="sd">"""Load the latest production model with error handling."""</span>
+</span><span id="__span-3-3"><a href="#__codelineno-3-3" id="__codelineno-3-3" name="__codelineno-3-3"></a>
+</span><span id="__span-3-4"><a href="#__codelineno-3-4" id="__codelineno-3-4" name="__codelineno-3-4"></a>    <span class="k">try</span><span class="p">:</span>
+</span><span id="__span-3-5"><a href="#__codelineno-3-5" id="__codelineno-3-5" name="__codelineno-3-5"></a>        <span class="c1"># Try to load from production stage first</span>
+</span><span id="__span-3-6"><a href="#__codelineno-3-6" id="__codelineno-3-6" name="__codelineno-3-6"></a>        <span class="n">model_uri</span> <span class="o">=</span> <span class="s2">"models:/churn_classifier/Production"</span>
+</span><span id="__span-3-7"><a href="#__codelineno-3-7" id="__codelineno-3-7" name="__codelineno-3-7"></a>        <span class="n">model</span> <span class="o">=</span> <span class="n">mlflow</span><span class="o">.</span><span class="n">sklearn</span><span class="o">.</span><span class="n">load_model</span><span class="p">(</span><span class="n">model_uri</span><span class="p">)</span>
+</span><span id="__span-3-8"><a href="#__codelineno-3-8" id="__codelineno-3-8" name="__codelineno-3-8"></a>        <span class="n">model_version</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_latest_versions</span><span class="p">(</span>
+</span><span id="__span-3-9"><a href="#__codelineno-3-9" id="__codelineno-3-9" name="__codelineno-3-9"></a>            <span class="s2">"churn_classifier"</span><span class="p">,</span> 
+</span><span id="__span-3-10"><a href="#__codelineno-3-10" id="__codelineno-3-10" name="__codelineno-3-10"></a>            <span class="n">stages</span><span class="o">=</span><span class="p">[</span><span class="s2">"Production"</span><span class="p">]</span>
+</span><span id="__span-3-11"><a href="#__codelineno-3-11" id="__codelineno-3-11" name="__codelineno-3-11"></a>        <span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">version</span>
+</span><span id="__span-3-12"><a href="#__codelineno-3-12" id="__codelineno-3-12" name="__codelineno-3-12"></a>
+</span><span id="__span-3-13"><a href="#__codelineno-3-13" id="__codelineno-3-13" name="__codelineno-3-13"></a>    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span id="__span-3-14"><a href="#__codelineno-3-14" id="__codelineno-3-14" name="__codelineno-3-14"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"⚠️ Production model not found: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</span><span id="__span-3-15"><a href="#__codelineno-3-15" id="__codelineno-3-15" name="__codelineno-3-15"></a>
+</span><span id="__span-3-16"><a href="#__codelineno-3-16" id="__codelineno-3-16" name="__codelineno-3-16"></a>        <span class="c1"># Fallback to staging</span>
+</span><span id="__span-3-17"><a href="#__codelineno-3-17" id="__codelineno-3-17" name="__codelineno-3-17"></a>        <span class="k">try</span><span class="p">:</span>
+</span><span id="__span-3-18"><a href="#__codelineno-3-18" id="__codelineno-3-18" name="__codelineno-3-18"></a>            <span class="n">model_uri</span> <span class="o">=</span> <span class="s2">"models:/churn_classifier/Staging"</span>
+</span><span id="__span-3-19"><a href="#__codelineno-3-19" id="__codelineno-3-19" name="__codelineno-3-19"></a>            <span class="n">model</span> <span class="o">=</span> <span class="n">mlflow</span><span class="o">.</span><span class="n">sklearn</span><span class="o">.</span><span class="n">load_model</span><span class="p">(</span><span class="n">model_uri</span><span class="p">)</span>
+</span><span id="__span-3-20"><a href="#__codelineno-3-20" id="__codelineno-3-20" name="__codelineno-3-20"></a>            <span class="n">model_version</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_latest_versions</span><span class="p">(</span>
+</span><span id="__span-3-21"><a href="#__codelineno-3-21" id="__codelineno-3-21" name="__codelineno-3-21"></a>                <span class="s2">"churn_classifier"</span><span class="p">,</span> 
+</span><span id="__span-3-22"><a href="#__codelineno-3-22" id="__codelineno-3-22" name="__codelineno-3-22"></a>                <span class="n">stages</span><span class="o">=</span><span class="p">[</span><span class="s2">"Staging"</span><span class="p">]</span>
+</span><span id="__span-3-23"><a href="#__codelineno-3-23" id="__codelineno-3-23" name="__codelineno-3-23"></a>            <span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">version</span>
+</span><span id="__span-3-24"><a href="#__codelineno-3-24" id="__codelineno-3-24" name="__codelineno-3-24"></a>
+</span><span id="__span-3-25"><a href="#__codelineno-3-25" id="__codelineno-3-25" name="__codelineno-3-25"></a>        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span id="__span-3-26"><a href="#__codelineno-3-26" id="__codelineno-3-26" name="__codelineno-3-26"></a>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"❌ No model available: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</span><span id="__span-3-27"><a href="#__codelineno-3-27" id="__codelineno-3-27" name="__codelineno-3-27"></a>            <span class="k">raise</span>
+</span><span id="__span-3-28"><a href="#__codelineno-3-28" id="__codelineno-3-28" name="__codelineno-3-28"></a>
+</span><span id="__span-3-29"><a href="#__codelineno-3-29" id="__codelineno-3-29" name="__codelineno-3-29"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"✅ Loaded model version </span><span class="si">{</span><span class="n">model_version</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</span><span id="__span-3-30"><a href="#__codelineno-3-30" id="__codelineno-3-30" name="__codelineno-3-30"></a>    <span class="k">return</span> <span class="n">model</span><span class="p">,</span> <span class="n">model_version</span>
+</span></code></pre></div>
+<hr/>
+<h2 id="part-2-cloud-deployment-with-gcp">☁️ <strong>Part 2: Cloud Deployment with GCP</strong><a class="headerlink" href="#part-2-cloud-deployment-with-gcp" title="Permanent link">¶</a></h2>
+<h3 id="21-fastapi-service-for-model-serving"><strong>2.1 FastAPI Service for Model Serving</strong><a class="headerlink" href="#21-fastapi-service-for-model-serving" title="Permanent link">¶</a></h3>
+<p>Here's the production-ready FastAPI service I built:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">HTTPException</span>
+</span><span id="__span-4-2"><a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
+</span><span id="__span-4-3"><a href="#__codelineno-4-3" id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">mlflow.sklearn</span>
+</span><span id="__span-4-4"><a href="#__codelineno-4-4" id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+</span><span id="__span-4-5"><a href="#__codelineno-4-5" id="__codelineno-4-5" name="__codelineno-4-5"></a><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+</span><span id="__span-4-6"><a href="#__codelineno-4-6" id="__codelineno-4-6" name="__codelineno-4-6"></a><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+</span><span id="__span-4-7"><a href="#__codelineno-4-7" id="__codelineno-4-7" name="__codelineno-4-7"></a><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+</span><span id="__span-4-8"><a href="#__codelineno-4-8" id="__codelineno-4-8" name="__codelineno-4-8"></a>
+</span><span id="__span-4-9"><a href="#__codelineno-4-9" id="__codelineno-4-9" name="__codelineno-4-9"></a><span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">(</span>
+</span><span id="__span-4-10"><a href="#__codelineno-4-10" id="__codelineno-4-10" name="__codelineno-4-10"></a>    <span class="n">title</span><span class="o">=</span><span class="s2">"Churn Prediction API"</span><span class="p">,</span>
+</span><span id="__span-4-11"><a href="#__codelineno-4-11" id="__codelineno-4-11" name="__codelineno-4-11"></a>    <span class="n">description</span><span class="o">=</span><span class="s2">"Production ML service for customer churn prediction"</span><span class="p">,</span>
+</span><span id="__span-4-12"><a href="#__codelineno-4-12" id="__codelineno-4-12" name="__codelineno-4-12"></a>    <span class="n">version</span><span class="o">=</span><span class="s2">"1.0.0"</span>
+</span><span id="__span-4-13"><a href="#__codelineno-4-13" id="__codelineno-4-13" name="__codelineno-4-13"></a><span class="p">)</span>
+</span><span id="__span-4-14"><a href="#__codelineno-4-14" id="__codelineno-4-14" name="__codelineno-4-14"></a>
+</span><span id="__span-4-15"><a href="#__codelineno-4-15" id="__codelineno-4-15" name="__codelineno-4-15"></a><span class="c1"># Global model variables</span>
+</span><span id="__span-4-16"><a href="#__codelineno-4-16" id="__codelineno-4-16" name="__codelineno-4-16"></a><span class="n">model</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="__span-4-17"><a href="#__codelineno-4-17" id="__codelineno-4-17" name="__codelineno-4-17"></a><span class="n">model_version</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="__span-4-18"><a href="#__codelineno-4-18" id="__codelineno-4-18" name="__codelineno-4-18"></a><span class="n">label_encoders</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="__span-4-19"><a href="#__codelineno-4-19" id="__codelineno-4-19" name="__codelineno-4-19"></a>
+</span><span id="__span-4-20"><a href="#__codelineno-4-20" id="__codelineno-4-20" name="__codelineno-4-20"></a><span class="k">class</span><span class="w"> </span><span class="nc">CustomerFeatures</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+</span><span id="__span-4-21"><a href="#__codelineno-4-21" id="__codelineno-4-21" name="__codelineno-4-21"></a>    <span class="n">SeniorCitizen</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="__span-4-22"><a href="#__codelineno-4-22" id="__codelineno-4-22" name="__codelineno-4-22"></a>    <span class="n">tenure</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="__span-4-23"><a href="#__codelineno-4-23" id="__codelineno-4-23" name="__codelineno-4-23"></a>    <span class="n">MonthlyCharges</span><span class="p">:</span> <span class="nb">float</span>
+</span><span id="__span-4-24"><a href="#__codelineno-4-24" id="__codelineno-4-24" name="__codelineno-4-24"></a>    <span class="n">TotalCharges</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-4-25"><a href="#__codelineno-4-25" id="__codelineno-4-25" name="__codelineno-4-25"></a>    <span class="n">InternetService</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-4-26"><a href="#__codelineno-4-26" id="__codelineno-4-26" name="__codelineno-4-26"></a>    <span class="n">OnlineSecurity</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-4-27"><a href="#__codelineno-4-27" id="__codelineno-4-27" name="__codelineno-4-27"></a>    <span class="n">TechSupport</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-4-28"><a href="#__codelineno-4-28" id="__codelineno-4-28" name="__codelineno-4-28"></a>    <span class="n">StreamingTV</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-4-29"><a href="#__codelineno-4-29" id="__codelineno-4-29" name="__codelineno-4-29"></a>    <span class="n">Contract</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-4-30"><a href="#__codelineno-4-30" id="__codelineno-4-30" name="__codelineno-4-30"></a>    <span class="n">PaymentMethod</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-4-31"><a href="#__codelineno-4-31" id="__codelineno-4-31" name="__codelineno-4-31"></a>    <span class="n">PaperlessBilling</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-4-32"><a href="#__codelineno-4-32" id="__codelineno-4-32" name="__codelineno-4-32"></a>
+</span><span id="__span-4-33"><a href="#__codelineno-4-33" id="__codelineno-4-33" name="__codelineno-4-33"></a><span class="nd">@app</span><span class="o">.</span><span class="n">on_event</span><span class="p">(</span><span class="s2">"startup"</span><span class="p">)</span>
+</span><span id="__span-4-34"><a href="#__codelineno-4-34" id="__codelineno-4-34" name="__codelineno-4-34"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">load_model</span><span class="p">():</span>
+</span><span id="__span-4-35"><a href="#__codelineno-4-35" id="__codelineno-4-35" name="__codelineno-4-35"></a><span class="w">    </span><span class="sd">"""Load model on startup."""</span>
+</span><span id="__span-4-36"><a href="#__codelineno-4-36" id="__codelineno-4-36" name="__codelineno-4-36"></a>    <span class="k">global</span> <span class="n">model</span><span class="p">,</span> <span class="n">model_version</span><span class="p">,</span> <span class="n">label_encoders</span>
+</span><span id="__span-4-37"><a href="#__codelineno-4-37" id="__codelineno-4-37" name="__codelineno-4-37"></a>
+</span><span id="__span-4-38"><a href="#__codelineno-4-38" id="__codelineno-4-38" name="__codelineno-4-38"></a>    <span class="k">try</span><span class="p">:</span>
+</span><span id="__span-4-39"><a href="#__codelineno-4-39" id="__codelineno-4-39" name="__codelineno-4-39"></a>        <span class="c1"># Load model from MLflow</span>
+</span><span id="__span-4-40"><a href="#__codelineno-4-40" id="__codelineno-4-40" name="__codelineno-4-40"></a>        <span class="n">model</span><span class="p">,</span> <span class="n">model_version</span> <span class="o">=</span> <span class="n">load_production_model</span><span class="p">()</span>
+</span><span id="__span-4-41"><a href="#__codelineno-4-41" id="__codelineno-4-41" name="__codelineno-4-41"></a>
+</span><span id="__span-4-42"><a href="#__codelineno-4-42" id="__codelineno-4-42" name="__codelineno-4-42"></a>        <span class="c1"># Load preprocessing artifacts</span>
+</span><span id="__span-4-43"><a href="#__codelineno-4-43" id="__codelineno-4-43" name="__codelineno-4-43"></a>        <span class="n">run_id</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_latest_versions</span><span class="p">(</span><span class="s2">"churn_classifier"</span><span class="p">,</span> <span class="n">stages</span><span class="o">=</span><span class="p">[</span><span class="s2">"Production"</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">run_id</span>
+</span><span id="__span-4-44"><a href="#__codelineno-4-44" id="__codelineno-4-44" name="__codelineno-4-44"></a>        <span class="n">artifacts_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"runs:/</span><span class="si">{</span><span class="n">run_id</span><span class="si">}</span><span class="s2">/label_encoders.pkl"</span>
+</span><span id="__span-4-45"><a href="#__codelineno-4-45" id="__codelineno-4-45" name="__codelineno-4-45"></a>        <span class="n">local_path</span> <span class="o">=</span> <span class="n">mlflow</span><span class="o">.</span><span class="n">artifacts</span><span class="o">.</span><span class="n">download_artifacts</span><span class="p">(</span><span class="n">artifacts_path</span><span class="p">)</span>
+</span><span id="__span-4-46"><a href="#__codelineno-4-46" id="__codelineno-4-46" name="__codelineno-4-46"></a>        <span class="n">label_encoders</span> <span class="o">=</span> <span class="n">joblib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">local_path</span><span class="p">)</span>
+</span><span id="__span-4-47"><a href="#__codelineno-4-47" id="__codelineno-4-47" name="__codelineno-4-47"></a>
+</span><span id="__span-4-48"><a href="#__codelineno-4-48" id="__codelineno-4-48" name="__codelineno-4-48"></a>        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"✅ Model </span><span class="si">{</span><span class="n">model_version</span><span class="si">}</span><span class="s2"> loaded successfully"</span><span class="p">)</span>
+</span><span id="__span-4-49"><a href="#__codelineno-4-49" id="__codelineno-4-49" name="__codelineno-4-49"></a>
+</span><span id="__span-4-50"><a href="#__codelineno-4-50" id="__codelineno-4-50" name="__codelineno-4-50"></a>    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span id="__span-4-51"><a href="#__codelineno-4-51" id="__codelineno-4-51" name="__codelineno-4-51"></a>        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">"❌ Failed to load model: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</span><span id="__span-4-52"><a href="#__codelineno-4-52" id="__codelineno-4-52" name="__codelineno-4-52"></a>        <span class="k">raise</span>
+</span><span id="__span-4-53"><a href="#__codelineno-4-53" id="__codelineno-4-53" name="__codelineno-4-53"></a>
+</span><span id="__span-4-54"><a href="#__codelineno-4-54" id="__codelineno-4-54" name="__codelineno-4-54"></a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/health"</span><span class="p">)</span>
+</span><span id="__span-4-55"><a href="#__codelineno-4-55" id="__codelineno-4-55" name="__codelineno-4-55"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">health_check</span><span class="p">():</span>
+</span><span id="__span-4-56"><a href="#__codelineno-4-56" id="__codelineno-4-56" name="__codelineno-4-56"></a><span class="w">    </span><span class="sd">"""Health check endpoint."""</span>
+</span><span id="__span-4-57"><a href="#__codelineno-4-57" id="__codelineno-4-57" name="__codelineno-4-57"></a>    <span class="k">return</span> <span class="p">{</span>
+</span><span id="__span-4-58"><a href="#__codelineno-4-58" id="__codelineno-4-58" name="__codelineno-4-58"></a>        <span class="s2">"status"</span><span class="p">:</span> <span class="s2">"healthy"</span> <span class="k">if</span> <span class="n">model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">"unhealthy"</span><span class="p">,</span>
+</span><span id="__span-4-59"><a href="#__codelineno-4-59" id="__codelineno-4-59" name="__codelineno-4-59"></a>        <span class="s2">"model_loaded"</span><span class="p">:</span> <span class="n">model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-4-60"><a href="#__codelineno-4-60" id="__codelineno-4-60" name="__codelineno-4-60"></a>        <span class="s2">"model_version"</span><span class="p">:</span> <span class="n">model_version</span><span class="p">,</span>
+</span><span id="__span-4-61"><a href="#__codelineno-4-61" id="__codelineno-4-61" name="__codelineno-4-61"></a>        <span class="s2">"timestamp"</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+</span><span id="__span-4-62"><a href="#__codelineno-4-62" id="__codelineno-4-62" name="__codelineno-4-62"></a>    <span class="p">}</span>
+</span><span id="__span-4-63"><a href="#__codelineno-4-63" id="__codelineno-4-63" name="__codelineno-4-63"></a>
+</span><span id="__span-4-64"><a href="#__codelineno-4-64" id="__codelineno-4-64" name="__codelineno-4-64"></a><span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"/predict"</span><span class="p">)</span>
+</span><span id="__span-4-65"><a href="#__codelineno-4-65" id="__codelineno-4-65" name="__codelineno-4-65"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">predict_churn</span><span class="p">(</span><span class="n">customer</span><span class="p">:</span> <span class="n">CustomerFeatures</span><span class="p">):</span>
+</span><span id="__span-4-66"><a href="#__codelineno-4-66" id="__codelineno-4-66" name="__codelineno-4-66"></a><span class="w">    </span><span class="sd">"""Predict customer churn."""</span>
+</span><span id="__span-4-67"><a href="#__codelineno-4-67" id="__codelineno-4-67" name="__codelineno-4-67"></a>
+</span><span id="__span-4-68"><a href="#__codelineno-4-68" id="__codelineno-4-68" name="__codelineno-4-68"></a>    <span class="k">if</span> <span class="n">model</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-4-69"><a href="#__codelineno-4-69" id="__codelineno-4-69" name="__codelineno-4-69"></a>        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="mi">503</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="s2">"Model not loaded"</span><span class="p">)</span>
+</span><span id="__span-4-70"><a href="#__codelineno-4-70" id="__codelineno-4-70" name="__codelineno-4-70"></a>
+</span><span id="__span-4-71"><a href="#__codelineno-4-71" id="__codelineno-4-71" name="__codelineno-4-71"></a>    <span class="k">try</span><span class="p">:</span>
+</span><span id="__span-4-72"><a href="#__codelineno-4-72" id="__codelineno-4-72" name="__codelineno-4-72"></a>        <span class="c1"># Prepare features</span>
+</span><span id="__span-4-73"><a href="#__codelineno-4-73" id="__codelineno-4-73" name="__codelineno-4-73"></a>        <span class="n">features_df</span> <span class="o">=</span> <span class="n">prepare_features</span><span class="p">(</span><span class="n">customer</span><span class="p">)</span>
+</span><span id="__span-4-74"><a href="#__codelineno-4-74" id="__codelineno-4-74" name="__codelineno-4-74"></a>
+</span><span id="__span-4-75"><a href="#__codelineno-4-75" id="__codelineno-4-75" name="__codelineno-4-75"></a>        <span class="c1"># Make prediction</span>
+</span><span id="__span-4-76"><a href="#__codelineno-4-76" id="__codelineno-4-76" name="__codelineno-4-76"></a>        <span class="n">churn_prob</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">features_df</span><span class="p">)[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+</span><span id="__span-4-77"><a href="#__codelineno-4-77" id="__codelineno-4-77" name="__codelineno-4-77"></a>        <span class="n">churn_prediction</span> <span class="o">=</span> <span class="s2">"Yes"</span> <span class="k">if</span> <span class="n">churn_prob</span> <span class="o">&gt;</span> <span class="mf">0.5</span> <span class="k">else</span> <span class="s2">"No"</span>
+</span><span id="__span-4-78"><a href="#__codelineno-4-78" id="__codelineno-4-78" name="__codelineno-4-78"></a>
+</span><span id="__span-4-79"><a href="#__codelineno-4-79" id="__codelineno-4-79" name="__codelineno-4-79"></a>        <span class="c1"># Determine risk level</span>
+</span><span id="__span-4-80"><a href="#__codelineno-4-80" id="__codelineno-4-80" name="__codelineno-4-80"></a>        <span class="k">if</span> <span class="n">churn_prob</span> <span class="o">&gt;=</span> <span class="mf">0.7</span><span class="p">:</span>
+</span><span id="__span-4-81"><a href="#__codelineno-4-81" id="__codelineno-4-81" name="__codelineno-4-81"></a>            <span class="n">risk_level</span> <span class="o">=</span> <span class="s2">"HIGH"</span>
+</span><span id="__span-4-82"><a href="#__codelineno-4-82" id="__codelineno-4-82" name="__codelineno-4-82"></a>        <span class="k">elif</span> <span class="n">churn_prob</span> <span class="o">&gt;=</span> <span class="mf">0.4</span><span class="p">:</span>
+</span><span id="__span-4-83"><a href="#__codelineno-4-83" id="__codelineno-4-83" name="__codelineno-4-83"></a>            <span class="n">risk_level</span> <span class="o">=</span> <span class="s2">"MEDIUM"</span>
+</span><span id="__span-4-84"><a href="#__codelineno-4-84" id="__codelineno-4-84" name="__codelineno-4-84"></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="__span-4-85"><a href="#__codelineno-4-85" id="__codelineno-4-85" name="__codelineno-4-85"></a>            <span class="n">risk_level</span> <span class="o">=</span> <span class="s2">"LOW"</span>
+</span><span id="__span-4-86"><a href="#__codelineno-4-86" id="__codelineno-4-86" name="__codelineno-4-86"></a>
+</span><span id="__span-4-87"><a href="#__codelineno-4-87" id="__codelineno-4-87" name="__codelineno-4-87"></a>        <span class="k">return</span> <span class="p">{</span>
+</span><span id="__span-4-88"><a href="#__codelineno-4-88" id="__codelineno-4-88" name="__codelineno-4-88"></a>            <span class="s2">"churn_probability"</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">churn_prob</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+</span><span id="__span-4-89"><a href="#__codelineno-4-89" id="__codelineno-4-89" name="__codelineno-4-89"></a>            <span class="s2">"churn_prediction"</span><span class="p">:</span> <span class="n">churn_prediction</span><span class="p">,</span>
+</span><span id="__span-4-90"><a href="#__codelineno-4-90" id="__codelineno-4-90" name="__codelineno-4-90"></a>            <span class="s2">"risk_level"</span><span class="p">:</span> <span class="n">risk_level</span><span class="p">,</span>
+</span><span id="__span-4-91"><a href="#__codelineno-4-91" id="__codelineno-4-91" name="__codelineno-4-91"></a>            <span class="s2">"model_version"</span><span class="p">:</span> <span class="n">model_version</span><span class="p">,</span>
+</span><span id="__span-4-92"><a href="#__codelineno-4-92" id="__codelineno-4-92" name="__codelineno-4-92"></a>            <span class="s2">"prediction_timestamp"</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+</span><span id="__span-4-93"><a href="#__codelineno-4-93" id="__codelineno-4-93" name="__codelineno-4-93"></a>        <span class="p">}</span>
+</span><span id="__span-4-94"><a href="#__codelineno-4-94" id="__codelineno-4-94" name="__codelineno-4-94"></a>
+</span><span id="__span-4-95"><a href="#__codelineno-4-95" id="__codelineno-4-95" name="__codelineno-4-95"></a>    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span id="__span-4-96"><a href="#__codelineno-4-96" id="__codelineno-4-96" name="__codelineno-4-96"></a>        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Prediction error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</span><span id="__span-4-97"><a href="#__codelineno-4-97" id="__codelineno-4-97" name="__codelineno-4-97"></a>        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+</span></code></pre></div>
+<p><em>[Continue reading the full blog post...]</em></p>
+<hr/>
+<p><strong>Ready to build your own production ML pipeline?</strong> Start with the code in this article and adapt it to your use case. The combination of MLflow and cloud deployment will transform how you ship machine learning models.</p>
+<p><em>Have questions or want to share your own MLOps experiences? Connect with me on <a href="https://linkedin.com/in/aishwaryaj7">LinkedIn</a> or <a href="https://github.com/aishwaryaj7">GitHub</a>!</em></p>
+</article>
+</div>
+<script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Back to top
+</button>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+<div class="md-copyright__highlight">
+      Copyright © 2025 Aishwarya Jauhari Sharma • Built with <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">Material for MkDocs</a>
+</div>
+</div>
+<div class="md-social">
+<a class="md-social__link" href="https://github.com/aishwaryaj7" rel="noopener" target="_blank" title="GitHub">
+<svg viewbox="0 0 496 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+</a>
+<a class="md-social__link" href="https://www.linkedin.com/in/aishwarya-jauhari/" rel="noopener" target="_blank" title="LinkedIn">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5m282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"></path></svg>
+</a>
+<a class="md-social__link" href="mailto:aishwarya.jauhari@icloud.com" rel="noopener" target="_blank" title="Email">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4l217.6 163.2c11.4 8.5 27 8.5 38.4 0l217.6-163.2c12.1-9.1 19.2-23.3 19.2-38.4 0-26.5-21.5-48-48-48zM0 176v208c0 35.3 28.7 64 64 64h384c35.3 0 64-28.7 64-64V176L294.4 339.2a63.9 63.9 0 0 1-76.8 0z"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<div class="md-progress" data-md-component="progress" role="progressbar"></div>
+<script id="__config" type="application/json">{"base": "../..", "features": ["announce.dismiss", "content.code.annotate", "content.code.copy", "content.code.select", "content.footnote.tooltips", "content.tabs.link", "content.tooltips", "header.autohide", "navigation.expand", "navigation.footer", "navigation.indexes", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.prune", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow", "toc.integrate"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.13a4f30d.min.js"></script>
+</body>
+</html>
