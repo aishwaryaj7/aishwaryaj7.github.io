@@ -228,6 +228,5 @@ ai-portfolio/projects/energy_price_forecasting/energy_forecasting.log
 ai-portfolio/projects/energy_price_forecasting/mlflow.db
 ai-portfolio/projects/energy_price_forecasting/lifecycle.json
 
-# MkDocs portfolio files (don't push yet)
-docs/
-mkdocs.yml
+# MkDocs build output (generated files)
+site/
