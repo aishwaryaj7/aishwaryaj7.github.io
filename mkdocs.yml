@@ -11,7 +11,7 @@ edit_uri: "edit/main/docs/"
 # Configuration
 theme:
   name: material
-  custom_dir: overrides
+#  custom_dir: overrides
   palette:
     # Palette toggle for automatic mode
     - media: "(prefers-color-scheme)"
@@ -98,10 +98,10 @@ markdown_extensions:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
 
-# Custom CSS and JavaScript
-extra_css:
-  - stylesheets/extra.css
-  - https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css
+## Custom CSS and JavaScript
+#extra_css:
+#  - stylesheets/extra.css
+#  - https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css
 
 # Plugins
 plugins:
