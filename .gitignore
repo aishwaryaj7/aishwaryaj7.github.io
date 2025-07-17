@@ -230,3 +230,10 @@ ai-portfolio/projects/energy_price_forecasting/lifecycle.json
 
 # MkDocs build output (generated files)
 site/
+temp/
+
+# Local documentation files (not for public repo)
+REVERT_DESIGN.md
+DEPLOYMENT_INSTRUCTIONS.md
+mkdocs.yml.backup
+docs/

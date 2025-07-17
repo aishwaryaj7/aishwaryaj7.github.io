@@ -124,6 +124,8 @@ nav:
     - Speech2Text - Audio Transcription: projects/speech2text/index.md
   - Blog:
     - Latest Posts: blog/index.md
+    - AI Architecture & Integration:
+        - "Understanding Model Context Protocol (MCP): The Future of AI Tool Integration": blog/mcp-deep-dive.md
     - MLOps Series:
       - "Building an End-to-End MLOps Pipeline: Predicting Electricity Prices": blog/energy-price-forecasting-mlops.md
     - AI & Document Processing:
