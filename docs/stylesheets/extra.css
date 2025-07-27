@@ -1,15 +1,15 @@
-/* Custom CSS for Aishwarya's Portfolio - Teal & Pink Theme */
+/* Custom CSS for Aishwarya's Portfolio - Muted Teal & Peach Theme */
 
 :root {
-  /* Custom color palette */
-  --md-primary-fg-color: #009688;
-  --md-primary-fg-color--light: #4db6ac;
-  --md-primary-fg-color--dark: #00695c;
-  --md-accent-fg-color: #e91e63;
-  --md-accent-fg-color--transparent: rgba(233, 30, 99, 0.1);
+  /* Custom color palette - Muted Teal & Peach */
+  --md-primary-fg-color: #5f7a7a;
+  --md-primary-fg-color--light: #7a9999;
+  --md-primary-fg-color--dark: #4a6161;
+  --md-accent-fg-color: #ffb894;
+  --md-accent-fg-color--transparent: rgba(255, 184, 148, 0.1);
 
   /* Custom gradients */
-  --hero-gradient: linear-gradient(135deg, #009688 0%, #4db6ac 50%, #e91e63 100%);
+  --hero-gradient: linear-gradient(135deg, #5f7a7a 0%, #7a9999 50%, #ffb894 100%);
   --card-gradient: linear-gradient(145deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
 
   /* Shadows */
@@ -121,7 +121,7 @@
   gap: 0.5rem;
   padding: 0.75rem 2rem;
   background: rgba(255, 255, 255, 0.9);
-  color: #00695c !important;
+  color: #5f7a7a !important;
   text-decoration: none;
   border-radius: var(--border-radius);
   font-weight: 600;
@@ -134,7 +134,7 @@
   background: rgba(255, 255, 255, 1);
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-  color: #00695c !important;
+  color: #5f7a7a !important;
   text-decoration: none;
 }
 
@@ -145,8 +145,8 @@
 }
 
 .hero-btn.primary:hover {
-  background: #c2185b;
-  border-color: #c2185b;
+  background: #ff9f7a;
+  border-color: #ff9f7a;
   color: white !important;
 }
 
@@ -225,13 +225,13 @@
 }
 
 .tech-tag {
-  background: var(--md-accent-fg-color--transparent);
-  color: var(--md-accent-fg-color);
+  background: rgba(95, 122, 122, 0.1);
+  color: #5f7a7a;
   padding: 0.25rem 0.75rem;
   border-radius: 20px;
   font-size: 0.85rem;
   font-weight: 500;
-  border: 1px solid var(--md-accent-fg-color);
+  border: 1px solid rgba(95, 122, 122, 0.3);
 }
 
 .project-links {
@@ -435,20 +435,21 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: var(--md-accent-fg-color);
-  color: white;
+  background: rgba(95, 122, 122, 0.1);
+  color: var(--md-primary-fg-color);
   padding: 0.75rem 1.5rem;
   border-radius: var(--border-radius);
   text-decoration: none;
   font-weight: 500;
   transition: all 0.3s ease;
   margin: 1rem 0;
+  border: 1px solid rgba(95, 122, 122, 0.3);
 }
 
 .resume-download:hover {
-  background: #c2185b;
+  background: var(--md-primary-fg-color);
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(233, 30, 99, 0.3);
+  box-shadow: 0 4px 15px rgba(95, 122, 122, 0.3);
   color: white;
   text-decoration: none;
 }
@@ -682,4 +683,33 @@ html {
 /* Compact cards */
 .md-typeset .grid.cards > * {
     margin-bottom: 1rem;
+}
+
+/* Override Material theme header text color */
+.md-header__title {
+  color: white !important;
+}
+
+.md-header__title .md-header__ellipsis {
+  color: white !important;
+}
+
+/* Navigation sidebar headings */
+.md-nav__title {
+  color: var(--md-primary-fg-color) !important;
+}
+
+/* Navigation section links */
+.md-nav__link {
+  color: var(--md-default-fg-color) !important;
+}
+
+/* Active/current navigation item */
+.md-nav__link--active {
+  color: var(--md-primary-fg-color) !important;
+}
+
+/* Navigation item hover state */
+.md-nav__link:hover {
+  color: var(--md-primary-fg-color) !important;
 }

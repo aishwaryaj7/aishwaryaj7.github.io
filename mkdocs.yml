@@ -11,7 +11,6 @@ edit_uri: "edit/main/docs/"
 # Configuration
 theme:
   name: material
-#  custom_dir: overrides
   palette:
     # Palette toggle for automatic mode
     - media: "(prefers-color-scheme)"
@@ -21,16 +20,16 @@ theme:
     # Palette toggle for light mode
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: teal
-      accent: pink
+      primary: blue grey
+      accent: orange
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
     # Palette toggle for dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: teal
-      accent: pink
+      primary: blue grey
+      accent: orange
       toggle:
         icon: material/brightness-4
         name: Switch to system preference
@@ -38,7 +37,6 @@ theme:
     text: Inter
     code: JetBrains Mono
   favicon: assets/images/favicon.svg
-  logo: assets/images/logo.svg
   features:
     - announce.dismiss
     - content.code.annotate
@@ -69,7 +67,6 @@ theme:
     repo: fontawesome/brands/github
     edit: material/pencil
     view: material/eye
-    logo: material/account-circle
 
 # Extensions
 markdown_extensions:
