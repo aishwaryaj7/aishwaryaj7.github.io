@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO -->
+  <title>Aishwarya Jauhari Sharma — AI/ML Engineer & MLOps Specialist</title>
+  <meta name="description" content="Portfolio of Aishwarya Jauhari Sharma — AI/ML Engineer specializing in MLOps, GenAI, and production-grade machine learning systems.">
+  <meta name="author" content="Aishwarya Jauhari Sharma">
+  <meta name="keywords" content="AI Engineer, ML Engineer, MLOps, GenAI, Machine Learning, Portfolio, Data Science">
+  <link rel="canonical" href="https://aishwaryaj7.github.io/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Aishwarya Jauhari Sharma — AI/ML Engineer">
+  <meta property="og:description" content="Production-grade AI/ML projects showcasing MLOps, GenAI, and modern development practices.">
+  <meta property="og:url" content="https://aishwaryaj7.github.io/">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Aishwarya Jauhari Sharma — AI/ML Engineer">
+  <meta name="twitter:description" content="Production-grade AI/ML projects showcasing MLOps, GenAI, and modern development practices.">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+</head>
+<body>
+
+  <!-- ============================================================
+       NAVIGATION
+       ============================================================ -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="#" class="nav-logo">
+        <span class="logo-accent">Aishwarya</span>
+      </a>
+
+      <div class="nav-links" id="nav-links">
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#blog">Blog</a>
+        <a href="resume.html">Resume</a>
+        <a href="#contact">Contact</a>
+        <a href="https://github.com/aishwaryaj7" target="_blank" rel="noopener" class="nav-cta">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle; margin-right: 4px;">
+            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+          </svg>
+          GitHub
+        </a>
+      </div>
+
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Overlay -->
+  <div class="nav-overlay" id="nav-overlay"></div>
+
+  <!-- ============================================================
+       HERO SECTION
+       ============================================================ -->
+  <section class="hero" id="hero">
+    <div class="hero-bg">
+      <canvas id="hero-canvas"></canvas>
+      <div class="hero-gradient-orb"></div>
+      <div class="hero-gradient-orb"></div>
+      <div class="hero-gradient-orb"></div>
+    </div>
+
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="pulse"></span>
+          Open to new opportunities
+        </div>
+
+        <h1 class="hero-name">
+          Hi, I'm<br>
+          <span class="gradient-text">Aishwarya</span>
+        </h1>
+
+        <p class="hero-tagline">
+          <span id="typed-text"></span><span class="typed-cursor">|</span>
+        </p>
+
+        <p class="hero-description">
+          I craft solutions that move smoothly from <strong>notebook insight to deployable service</strong>.
+          My work spans <strong>automated ML pipelines, GenAI prototypes, and data-driven analytics</strong>,
+          always with an eye on maintainability and impact.
+        </p>
+
+        <div class="hero-buttons">
+          <a href="#projects" class="btn btn-primary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+            View Projects
+          </a>
+          <a href="resume.html" class="btn btn-outline">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            Resume
+          </a>
+          <a href="#contact" class="btn btn-outline">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            Contact
+          </a>
+        </div>
+
+        <div class="hero-socials">
+          <a href="https://github.com/aishwaryaj7" target="_blank" rel="noopener" class="social-link" aria-label="GitHub">
+            <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/in/aishwaryajsharma/" target="_blank" rel="noopener" class="social-link" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+          <a href="mailto:aishwarya.jauhari@icloud.com" class="social-link" aria-label="Email">
+            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="hero-image-wrapper">
+          <img src="assets/hero-visual.jpg" alt="AI and Machine Learning abstract visualization" width="340" height="340" loading="eager">
+          <div class="floating-badge">🤖 GenAI</div>
+          <div class="floating-badge">📊 ML</div>
+          <div class="floating-badge">🧠 RAG</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       ABOUT SECTION
+       ============================================================ -->
+  <section class="section" id="about">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-label">About Me</span>
+        <h2 class="section-title">From Ideas to Intelligent Systems</h2>
+        <p class="section-subtitle">Bridging the gap between ML experimentation and real-world AI applications.</p>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-text reveal">
+          <p>
+            I'm an <strong>AI/ML Engineer</strong> who loves turning ideas into working intelligent systems.
+            I get excited about the entire journey — from exploring data and training models to designing
+            <strong>end-to-end pipelines</strong> that make those models actually useful.
+          </p>
+          <p>
+            What drives me is the challenge of connecting the dots — taking a messy real-world problem,
+            finding the right <strong>data and modeling approach</strong>, and then packaging it into something
+            people can actually use. Whether it's <strong>GenAI, classical ML, or time-series forecasting</strong>,
+            I'm always looking for the most elegant path from question to answer.
+          </p>
+          <p>
+            I believe the best way to learn is by <strong>building and sharing</strong>.
+            Every project here is documented with clear code, tested thoroughly, and built with
+            modern engineering practices because good ML deserves good software engineering.
+          </p>
+        </div>
+
+        <div class="tech-stack-grid stagger-children reveal">
+          <div class="tech-category glass-card">
+            <div class="tech-category-icon">🚀</div>
+            <h4>MLOps & Pipelines</h4>
+            <div class="tech-tags">
+              <span class="tech-tag">MLflow</span>
+              <span class="tech-tag">Docker</span>
+              <span class="tech-tag">Cloud Run</span>
+              <span class="tech-tag">GitHub Actions</span>
+              <span class="tech-tag">CI/CD</span>
+            </div>
+          </div>
+          <div class="tech-category glass-card">
+            <div class="tech-category-icon">🤖</div>
+            <h4>AI/ML & GenAI</h4>
+            <div class="tech-tags">
+              <span class="tech-tag">LlamaIndex</span>
+              <span class="tech-tag">RAG</span>
+              <span class="tech-tag">HuggingFace</span>
+              <span class="tech-tag">Transformers</span>
+              <span class="tech-tag">scikit-learn</span>
+              <span class="tech-tag">LightGBM</span>
+            </div>
+          </div>
+          <div class="tech-category glass-card">
+            <div class="tech-category-icon">📊</div>
+            <h4>Data & Analytics</h4>
+            <div class="tech-tags">
+              <span class="tech-tag">Pandas</span>
+              <span class="tech-tag">SQL</span>
+              <span class="tech-tag">PostgreSQL</span>
+              <span class="tech-tag">pgvector</span>
+              <span class="tech-tag">Time Series</span>
+              <span class="tech-tag">Plotly</span>
+            </div>
+          </div>
+          <div class="tech-category glass-card">
+            <div class="tech-category-icon">⚙️</div>
+            <h4>Dev Tools</h4>
+            <div class="tech-tags">
+              <span class="tech-tag">Python</span>
+              <span class="tech-tag">FastAPI</span>
+              <span class="tech-tag">Pydantic</span>
+              <span class="tech-tag">Streamlit</span>
+              <span class="tech-tag">Git</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PROJECTS SECTION
+       ============================================================ -->
+  <section class="section" id="projects">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-label">Projects</span>
+        <h2 class="section-title">What I've Built</h2>
+        <p class="section-subtitle">End-to-end AI/ML projects — from data exploration to working applications.</p>
+      </div>
+
+      <div class="projects-grid stagger-children">
+
+        <!-- Project 1: Energy Price Forecasting -->
+        <div class="project-card glass-card" data-category="mlops ml">
+          <div class="project-card-header">
+            <div class="project-icon">⚡</div>
+            <h3><a href="projects/energy-price-forecasting.html">Energy Price Forecasting</a></h3>
+          </div>
+          <p class="project-description">
+            End-to-end MLOps pipeline for electricity price forecasting across European energy markets.
+            Features multi-horizon predictions, ensemble methods, and comprehensive model comparison with MLflow integration.
+          </p>
+          <div class="project-tech-tags">
+            <span class="project-tag purple">XGBoost</span>
+            <span class="project-tag blue">FastAPI</span>
+            <span class="project-tag teal">Streamlit</span>
+            <span class="project-tag amber">Cloud Run</span>
+            <span class="project-tag purple">ENTSO-E API</span>
+            <span class="project-tag blue">Time Series</span>
+            <span class="project-tag teal">MLflow</span>
+          </div>
+          <div class="project-links">
+            <a href="projects/energy-price-forecasting.html" class="project-link highlight">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              View Details
+            </a>
+            <a href="https://youtu.be/ZK0IV5H3RXo" target="_blank" rel="noopener" class="project-link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              Demo Video
+            </a>
+            <a href="https://github.com/aishwaryaj7/aishwaryaj7.github.io/tree/main/ai-portfolio/projects/energy_price_forecasting" target="_blank" rel="noopener" class="project-link">
+              <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+              Source Code
+            </a>
+          </div>
+        </div>
+
+        <!-- Project 2: DocTract -->
+        <div class="project-card glass-card" data-category="genai ml">
+          <div class="project-card-header">
+            <div class="project-icon">🧾</div>
+            <h3><a href="projects/doctract.html">DocTract — Document RAG Assistant</a></h3>
+          </div>
+          <p class="project-description">
+            A privacy-first document processing system that transforms PDFs into conversational interfaces.
+            Built with local AI inference, vector search, and advanced RAG capabilities for intelligent document analysis.
+          </p>
+          <div class="project-tech-tags">
+            <span class="project-tag purple">LlamaIndex</span>
+            <span class="project-tag blue">HuggingFace</span>
+            <span class="project-tag teal">pgvector</span>
+            <span class="project-tag amber">PostgreSQL</span>
+            <span class="project-tag purple">RAG</span>
+            <span class="project-tag blue">Streamlit</span>
+          </div>
+          <div class="project-links">
+            <a href="projects/doctract.html" class="project-link highlight">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              View Details
+            </a>
+            <a href="https://youtu.be/9pInYAGtVZA" target="_blank" rel="noopener" class="project-link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              Demo Video
+            </a>
+            <a href="https://github.com/aishwaryaj7/aishwaryaj7.github.io/tree/main/ai-portfolio/projects/doctract" target="_blank" rel="noopener" class="project-link">
+              <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+              Source Code
+            </a>
+          </div>
+        </div>
+
+        <!-- Project 3: MLOps Auto-Retrain -->
+        <div class="project-card glass-card" data-category="mlops">
+          <div class="project-card-header">
+            <div class="project-icon">🔄</div>
+            <h3><a href="projects/mlops-auto-retrain.html">MLOps Auto-Retrain on GCP</a></h3>
+          </div>
+          <p class="project-description">
+            Automated model retraining pipeline on Google Cloud Platform. Features drift detection, CI/CD integration,
+            model versioning, and real-time monitoring dashboards for continuous ML system health.
+          </p>
+          <div class="project-tech-tags">
+            <span class="project-tag amber">Cloud Run</span>
+            <span class="project-tag blue">MLflow</span>
+            <span class="project-tag purple">scikit-learn</span>
+            <span class="project-tag teal">GitHub Actions</span>
+            <span class="project-tag amber">Docker</span>
+            <span class="project-tag blue">Streamlit</span>
+          </div>
+          <div class="project-links">
+            <a href="projects/mlops-auto-retrain.html" class="project-link highlight">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              View Details
+            </a>
+            <a href="https://github.com/aishwaryaj7/aishwaryaj7.github.io/tree/main/ai-portfolio/projects/mlops-auto-retrain-gcp" target="_blank" rel="noopener" class="project-link">
+              <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+              Source Code
+            </a>
+          </div>
+        </div>
+
+        <!-- Project 4: Speech-to-Text -->
+        <div class="project-card glass-card" data-category="ml genai">
+          <div class="project-card-header">
+            <div class="project-icon">🎙️</div>
+            <h3><a href="projects/speech2text.html">Speech-to-Text App</a></h3>
+          </div>
+          <p class="project-description">
+            Production speech recognition application built with HuggingFace Transformers and the Hubert model.
+            Features real-time audio transcription with a clean, user-friendly Streamlit interface.
+          </p>
+          <div class="project-tech-tags">
+            <span class="project-tag purple">HuggingFace</span>
+            <span class="project-tag blue">Transformers</span>
+            <span class="project-tag teal">Streamlit</span>
+            <span class="project-tag amber">Hubert</span>
+            <span class="project-tag purple">Python</span>
+          </div>
+          <div class="project-links">
+            <a href="projects/speech2text.html" class="project-link highlight">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              View Details
+            </a>
+            <a href="https://youtu.be/eSG_FsoUtRo" target="_blank" rel="noopener" class="project-link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              Demo Video
+            </a>
+            <a href="https://github.com/aishwaryaj7/aishwaryaj7.github.io/tree/main/ai-portfolio/projects/speech2text" target="_blank" rel="noopener" class="project-link">
+              <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+              Source Code
+            </a>
+          </div>
+        </div>
+
+        <!-- Project 5: Doc Parser -->
+        <div class="project-card glass-card" data-category="ml">
+          <div class="project-card-header">
+            <div class="project-icon">📄</div>
+            <h3><a href="projects/doc-parser.html">Intelligent Doc Parser</a></h3>
+          </div>
+          <p class="project-description">
+            Smart document parsing system with advanced image and text extraction capabilities.
+            Supports multi-format PDFs with table question-answering for structured data retrieval.
+          </p>
+          <div class="project-tech-tags">
+            <span class="project-tag purple">PyMuPDF</span>
+            <span class="project-tag blue">OpenAI</span>
+            <span class="project-tag teal">Streamlit</span>
+            <span class="project-tag amber">Python</span>
+          </div>
+          <div class="project-links">
+            <a href="projects/doc-parser.html" class="project-link highlight">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              View Details
+            </a>
+            <a href="https://youtu.be/XFfAS7NJs3k" target="_blank" rel="noopener" class="project-link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              Demo Video
+            </a>
+            <a href="https://github.com/aishwaryaj7/aishwaryaj7.github.io/tree/main/ai-portfolio/projects/doc-parser" target="_blank" rel="noopener" class="project-link">
+              <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+              Source Code
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       BLOG SECTION
+       ============================================================ -->
+  <section class="section" id="blog">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-label">Blog</span>
+        <h2 class="section-title">Technical Writing</h2>
+        <p class="section-subtitle">Practical insights from building AI systems, exploring new tools, and learning in public.</p>
+      </div>
+
+      <div class="blog-grid stagger-children">
+
+        <!-- Blog Post 1 -->
+        <a href="blog/mcp-deep-dive.html" class="blog-card glass-card reveal">
+          <div class="blog-card-meta">
+            <span class="blog-date">July 2025</span>
+            <span class="blog-read-time">15 min read</span>
+          </div>
+          <h3>Understanding Model Context Protocol (MCP): The Future of AI Tool Integration</h3>
+          <p>
+            Exploring MCP, the open standard that's revolutionizing how AI assistants connect with external tools
+            and data sources. A deep dive into architecture, capabilities, and real-world applications.
+          </p>
+          <div class="blog-topics">
+            <span class="blog-topic">MCP</span>
+            <span class="blog-topic">AI Integration</span>
+            <span class="blog-topic">Tool Connectivity</span>
+            <span class="blog-topic">Anthropic</span>
+          </div>
+        </a>
+
+        <!-- Blog Post 2 -->
+        <a href="blog/speech2text-journey.html" class="blog-card glass-card reveal">
+          <div class="blog-card-meta">
+            <span class="blog-date">January 2025</span>
+            <span class="blog-read-time">11 min read</span>
+          </div>
+          <h3>Speech Recognition Made Simple: My HuggingFace Journey</h3>
+          <p>
+            Building a production speech-to-text application using HuggingFace transformers and the Hubert model.
+            Lessons learned, performance benchmarks, and practical tips for audio ML projects.
+          </p>
+          <div class="blog-topics">
+            <span class="blog-topic">HuggingFace</span>
+            <span class="blog-topic">Speech Recognition</span>
+            <span class="blog-topic">Transformers</span>
+            <span class="blog-topic">Audio ML</span>
+          </div>
+        </a>
+        <!-- Blog Post 3 -->
+        <a href="blog/doctract-rag-journey.html" class="blog-card glass-card reveal">
+          <div class="blog-card-meta">
+            <span class="blog-date">June 2025</span>
+            <span class="blog-read-time">10 min read</span>
+          </div>
+          <h3>Building DocTract: My Journey into RAG and Local AI</h3>
+          <p>
+            How I built a privacy-first document assistant that turns PDFs into conversational partners.
+            Exploring chunking strategies, embedding models, and the magic of retrieval-augmented generation.
+          </p>
+          <div class="blog-topics">
+            <span class="blog-topic">RAG</span>
+            <span class="blog-topic">LlamaIndex</span>
+            <span class="blog-topic">pgvector</span>
+            <span class="blog-topic">Local AI</span>
+          </div>
+        </a>
+
+        <!-- Blog Post 4 -->
+        <a href="blog/energy-price-forecasting-mlops.html" class="blog-card glass-card reveal">
+          <div class="blog-card-meta">
+            <span class="blog-date">June 2025</span>
+            <span class="blog-read-time">12 min read</span>
+          </div>
+          <h3>Building an End-to-End MLOps Pipeline: Predicting Electricity Prices</h3>
+          <p>
+            From raw ENTSO-E data to real-time predictions — how I built a complete MLOps system
+            for European electricity price forecasting with FastAPI, MLflow, and Cloud Run.
+          </p>
+          <div class="blog-topics">
+            <span class="blog-topic">MLOps</span>
+            <span class="blog-topic">Time Series</span>
+            <span class="blog-topic">FastAPI</span>
+            <span class="blog-topic">Cloud Run</span>
+          </div>
+        </a>
+
+        <!-- Blog Post 5 -->
+        <a href="blog/mlflow-cloud-production.html" class="blog-card glass-card reveal">
+          <div class="blog-card-meta">
+            <span class="blog-date">January 2025</span>
+            <span class="blog-read-time">14 min read</span>
+          </div>
+          <h3>MLflow in Production: From Experiment Tracking to Cloud Deployment</h3>
+          <p>
+            A comprehensive guide to building a production churn-prediction pipeline with MLflow
+            for experiment management — covering model versioning, automated deployment, and monitoring.
+          </p>
+          <div class="blog-topics">
+            <span class="blog-topic">MLflow</span>
+            <span class="blog-topic">Experiment Tracking</span>
+            <span class="blog-topic">Model Registry</span>
+            <span class="blog-topic">CI/CD</span>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CONTACT SECTION
+       ============================================================ -->
+  <section class="section" id="contact">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-label">Contact</span>
+        <h2 class="section-title">Let's Connect</h2>
+        <p class="section-subtitle">Have a project in mind or want to collaborate? I'd love to hear from you.</p>
+      </div>
+
+      <div class="contact-content">
+        <div class="contact-info reveal">
+          <h3>Get in Touch</h3>
+          <p>
+            Whether you're looking for an AI/ML engineer for your team, want to discuss a project idea,
+            or just want to say hello — my inbox is always open.
+          </p>
+
+          <div class="contact-methods">
+            <a href="mailto:aishwarya.jauhari@icloud.com" class="contact-method glass-card">
+              <div class="contact-method-icon">
+                <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+              </div>
+              <div class="contact-method-text">
+                <h4>Email</h4>
+                <p>aishwarya.jauhari@icloud.com</p>
+              </div>
+            </a>
+
+            <a href="https://www.linkedin.com/in/aishwaryajsharma/" target="_blank" rel="noopener" class="contact-method glass-card">
+              <div class="contact-method-icon">
+                <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+              </div>
+              <div class="contact-method-text">
+                <h4>LinkedIn</h4>
+                <p>Connect professionally</p>
+              </div>
+            </a>
+
+            <a href="https://github.com/aishwaryaj7" target="_blank" rel="noopener" class="contact-method glass-card">
+              <div class="contact-method-icon">
+                <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+              </div>
+              <div class="contact-method-text">
+                <h4>GitHub</h4>
+                <p>Check out my code</p>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="contact-visual reveal">
+          <div class="contact-cta-card glass-card">
+            <div class="emoji-large">🚀</div>
+            <h3>Ready to Build Something?</h3>
+            <p>I'm always excited to work on challenging ML problems and build production-grade AI systems.</p>
+            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center; margin-top: 1rem;">
+              <a href="mailto:aishwarya.jauhari@icloud.com" class="btn btn-primary">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                Say Hello
+              </a>
+              <a href="assets/Aishwarya-Jauhari-Sharma-CV-Applied-AI-Engineer.pdf" target="_blank" rel="noopener" class="btn btn-outline">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                Resume PDF
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer class="footer">
+    <div class="container">
+      <p class="footer-text">
+        Built with <span class="heart">♥</span> by Aishwarya Jauhari Sharma · © 2025
+      </p>
+      <div class="footer-links">
+        <a href="https://github.com/aishwaryaj7" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/aishwaryajsharma/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="resume.html">Resume</a>
+        <a href="#hero">Back to Top ↑</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="script.js"></script>
+</body>
+</html>

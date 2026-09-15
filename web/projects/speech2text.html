@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Speech2Text — Audio Transcription — Aishwarya Jauhari Sharma</title>
+  <meta name="description" content="Advanced speech-to-text transcriber using HuggingFace transformers and Facebook's Hubert model.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+  <!-- Prism.js syntax highlighting theme -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body class="detail-body">
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="../index.html" class="nav-logo">
+        <span class="logo-accent">Aishwarya</span>
+      </a>
+      <div class="nav-links" id="nav-links">
+        <a href="../index.html#about">About</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../index.html#blog">Blog</a>
+        <a href="../resume.html">Resume</a>
+        <a href="../index.html#contact">Contact</a>
+      </div>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="nav-overlay" id="nav-overlay"></div>
+
+  <main class="detail-page">
+    <div class="container">
+      <a href="../index.html#projects" class="back-link">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+        Back to Projects
+      </a>
+
+      <article class="detail-content article-container">
+        <div class="detail-tags"><span class="detail-tag">🎙️ Speech Recognition</span><span class="detail-tag">🤗 HuggingFace</span><span class="detail-tag">⚡ Hubert Model</span><span class="detail-tag">🎵 Torchaudio</span><span class="detail-tag">🎈 Streamlit</span></div>
+        <div class="action-buttons"><a href="https://youtu.be/eSG_FsoUtRo" target="_blank" rel="noopener" class="action-btn primary"><svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px;margin-right:6px;"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>Watch Demo Video</a><a href="https://github.com/aishwaryaj7/speech2text" target="_blank" rel="noopener" class="action-btn secondary"><svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px;margin-right:6px;"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>GitHub Repository</a></div>
+        <h1>Speech2Text - Audio Transcription</h1>
+<p>Advanced speech-to-text transcriber using HuggingFace transformers and Facebook's Hubert model for accurate audio transcription.</p>
+<hr />
+<h2>🎯 <strong>What This Project Does</strong></h2>
+<ul>
+<li>🎙️ <strong>Multi-Format Support</strong> - Process MP3, MP4, WAV audio and video files</li>
+<li>🧠 <strong>AI-Powered Transcription</strong> - Uses Facebook's Hubert model for accurate speech recognition</li>
+<li>📝 <strong>Downloadable Transcripts</strong> - Get clean, formatted text output</li>
+<li>⏱️ <strong>Timestamped Segments</strong> - View transcription with time markers</li>
+</ul>
+<hr />
+<h2>🌐 <strong>Live Demo</strong></h2>
+<p><strong>📺 Demo Video</strong>: <a href="https://youtu.be/eSG_FsoUtRo">Watch the walkthrough</a></p>
+<hr />
+<h2>🚀 <strong>How to Use</strong></h2>
+<h3><strong>Using the App</strong></h3>
+<ol>
+<li><strong>Upload Audio/Video</strong> - Support for .mp3, .mp4, .wav formats</li>
+<li><strong>Watch Processing</strong> - Real-time transcription progress</li>
+<li><strong>View Results</strong> - Timestamped segments and full transcript</li>
+<li><strong>Download Text</strong> - Export transcript in clean text format</li>
+</ol>
+<h3><strong>Local Development</strong></h3>
+<div class="code-wrapper">
+  <div class="code-header">
+    <span class="code-lang">BASH</span>
+    <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">
+      <svg class="copy-icon" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+      <span class="copy-text">Copy</span>
+    </button>
+  </div>
+  <pre class="highlight"><code class="language-bash"># Clone and setup
+git clone https://github.com/aishwaryaj7/speech2text.git
+cd speech2text
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run the app
+streamlit run src/app.py</code></pre>
+</div>
+<hr />
+<h2>🔧 <strong>Key Features</strong></h2>
+<ul>
+<li><strong>Multi-Format Support</strong>: MP3, MP4, WAV audio and video files</li>
+<li><strong>AI-Powered Transcription</strong>: Facebook's Hubert model for accurate speech recognition</li>
+<li><strong>Timestamped Segments</strong>: Precise time markers for each phrase</li>
+<li><strong>Real-time Processing</strong>: Live transcription with progress indicators</li>
+<li><strong>Download Options</strong>: Export transcripts in multiple formats</li>
+<li><strong>User-Friendly Interface</strong>: Intuitive Streamlit interface</li>
+</ul>
+<hr />
+<h2>🛠️ <strong>Tech Stack</strong></h2>
+<p><strong>AI/ML</strong>: HuggingFace Transformers, Hubert Model, Wav2Vec2
+<strong>Audio</strong>: Torchaudio, Librosa, Pydub
+<strong>Frontend</strong>: Streamlit
+<strong>Deployment</strong>: Streamlit Cloud</p>
+<hr />
+<h2>🤝 <strong>Skills Demonstrated</strong></h2>
+<ul>
+<li>Speech Recognition &amp; Audio Processing</li>
+<li>HuggingFace Transformers &amp; Model Deployment</li>
+<li>Streamlit Development &amp; Cloud Deployment</li>
+<li>Signal Processing &amp; Feature Extraction</li>
+<li>User Experience Design</li>
+</ul>
+<hr />
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2025 Aishwarya Jauhari Sharma. Built with modern web craft.</p>
+    </div>
+  </footer>
+
+  <!-- Mermaid.js for architecture & flowchart diagrams -->
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'dark',
+      themeVariables: {
+        darkMode: true,
+        background: '#0f172a',
+        primaryColor: '#8b5cf6',
+        primaryTextColor: '#f8fafc',
+        primaryBorderColor: '#7c3aed',
+        lineColor: '#38bdf8',
+        secondaryColor: '#1e293b',
+        tertiaryColor: '#111827'
+      }
+    });
+  </script>
+
+  <!-- PrismJS syntax highlighting -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+  <!-- Copy Code Script -->
+  <script>
+    function copyCode(btn) {
+      const wrapper = btn.closest('.code-wrapper');
+      const code = wrapper.querySelector('code');
+      if (!code) return;
+      
+      navigator.clipboard.writeText(code.innerText).then(() => {
+        const textSpan = btn.querySelector('.copy-text');
+        const origText = textSpan.innerText;
+        textSpan.innerText = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          textSpan.innerText = origText;
+          btn.classList.remove('copied');
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy', err);
+      });
+    }
+  </script>
+  <script src="../script.js"></script>
+</body>
+</html>

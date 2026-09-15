@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Building DocTract: My Journey into RAG and Local AI — Aishwarya Jauhari Sharma</title>
+  <meta name="description" content="Creating a privacy-first document processing system with local AI inference, vector search, and RAG.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+  <!-- Prism.js syntax highlighting theme -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body class="detail-body">
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="../index.html" class="nav-logo">
+        <span class="logo-accent">Aishwarya</span>
+      </a>
+      <div class="nav-links" id="nav-links">
+        <a href="../index.html#about">About</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../index.html#blog">Blog</a>
+        <a href="../resume.html">Resume</a>
+        <a href="../index.html#contact">Contact</a>
+      </div>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="nav-overlay" id="nav-overlay"></div>
+
+  <main class="detail-page">
+    <div class="container">
+      <a href="../index.html#blog" class="back-link">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+        Back to Blog
+      </a>
+
+      <article class="detail-content article-container">
+        <div class="detail-tags"><span class="detail-tag">📅 June 2025</span><span class="detail-tag">⏱️ 10 min read</span><span class="detail-tag">RAG Systems</span><span class="detail-tag">Vector Databases</span><span class="detail-tag">Local AI</span><span class="detail-tag">PGVector</span></div>
+        
+        <h1>Building DocTract: My Journey into RAG and Local AI</h1>
+<p><strong>By Aishwarya Jauhari Sharma</strong><br />
+<em>Published: June 2025</em></p>
+<hr />
+<h2>🎯 <strong>Why I Built DocTract</strong></h2>
+<p>A few months ago, I found myself drowning in research papers. As someone working in AI/ML, I constantly need to reference academic papers, technical documentation, and industry reports. The problem? I'd spend more time searching through documents than actually learning from them.</p>
+<p>That's when I decided to build something that could change how I interact with documents. Not just another PDF reader, but an intelligent assistant that could understand my documents and have conversations about them. The result was DocTract - a local-first document processing system that turns any PDF into a conversational partner.</p>
+<h2>🤔 <strong>The Challenge That Excited Me</strong></h2>
+<p>The idea seemed simple: upload a PDF, ask questions, get answers. But as I dug deeper, I realized this involved some fascinating technical challenges:</p>
+<ul>
+<li>How do you break down a document so an AI can understand it?</li>
+<li>How do you find the most relevant parts when someone asks a question?</li>
+<li>How do you keep everything private and running locally?</li>
+<li>How do you make the responses actually useful, not just generic?</li>
+</ul>
+<p>These questions led me down the rabbit hole of RAG (Retrieval-Augmented Generation) - a technique that combines information retrieval with language generation.</p>
+<h2>🧠 <strong>Understanding RAG: The Heart of DocTract</strong></h2>
+<p>RAG was a game-changer for me. Instead of trying to stuff entire documents into an AI model (which doesn't work well), RAG breaks the problem into two parts:</p>
+<ol>
+<li><strong>Retrieval</strong>: Find the most relevant pieces of information</li>
+<li><strong>Generation</strong>: Use those pieces to generate a helpful response</li>
+</ol>
+<p>Think of it like having a really smart research assistant. When you ask a question, they first go through all your documents to find the relevant sections, then use that information to give you a comprehensive answer.</p>
+<p>Here's how I implemented the core RAG pipeline in DocTract:</p>
+<div class="code-wrapper">
+  <div class="code-header">
+    <span class="code-lang">PYTHON</span>
+    <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">
+      <svg class="copy-icon" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+      <span class="copy-text">Copy</span>
+    </button>
+  </div>
+  <pre class="highlight"><code class="language-python">def process_document_for_rag(pdf_path, chunk_size=1024):
+    # Step 1: Extract text from PDF
+    documents = load_pdf_document_from_data_dir(pdf_path)
+
+    # Step 2: Split into manageable chunks
+    text_chunks, doc_indices = split_document_into_text_chunks(
+        documents=documents, 
+        chunk_size=chunk_size
+    )
+
+    # Step 3: Create searchable nodes with metadata
+    nodes = create_text_nodes_with_metadata(
+        text_chunks=text_chunks,
+        source_document_indices=doc_indices,
+        original_documents=documents
+    )
+
+    return nodes</code></pre>
+</div>
+<p>The magic happens in how you chunk the text. Too small, and you lose context. Too large, and the AI gets confused. I settled on 1024 characters as a sweet spot, but made it configurable so users can experiment.</p>
+<h2>🔍 <strong>The Vector Search Revolution</strong></h2>
+<p>One of the coolest things I learned was how vector search works. Traditional search looks for exact word matches. Vector search understands meaning.</p>
+<p>When you ask "What are the main findings?", it doesn't just look for documents containing those exact words. Instead, it converts your question into a mathematical representation (a vector) and finds document chunks with similar meanings.</p>
+<p>I used PostgreSQL with the PGVector extension for this. Here's the retrieval logic:</p>
+<div class="code-wrapper">
+  <div class="code-header">
+    <span class="code-lang">PYTHON</span>
+    <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">
+      <svg class="copy-icon" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+      <span class="copy-text">Copy</span>
+    </button>
+  </div>
+  <pre class="highlight"><code class="language-python">class VectorDatabaseRetriever(BaseRetriever):
+    def _retrieve(self, query_bundle: QueryBundle) -&gt; List[NodeWithScore]:
+        # Convert query to vector representation
+        query_embedding = self._embedding_model.get_query_embedding(
+            query_bundle.query_str
+        )
+
+        # Search for similar vectors in the database
+        vector_store_query = VectorStoreQuery(
+            query_embedding=query_embedding,
+            similarity_top_k=self._top_k_similar_results,
+            mode=self._similarity_search_mode,
+        )
+
+        # Return the most relevant chunks
+        query_result = self._vector_store.query(vector_store_query)
+        return query_result.nodes</code></pre>
+</div>
+<p>What blew my mind was how well this works. Ask about "performance metrics" and it finds sections about "evaluation results" or "benchmark scores" - concepts that are related but use different words.</p>
+<h2>🏠 <strong>Going Local: Privacy and Performance</strong></h2>
+<p>One decision I'm really proud of is making DocTract completely local. Your documents never leave your machine. This wasn't just about privacy (though that's important) - it was about performance and cost too.</p>
+<p>I used Mistral 7B Instruct through llama.cpp, which lets you run powerful language models locally. The key was using quantized models - they're smaller and faster while maintaining good quality:</p>
+<div class="code-wrapper">
+  <div class="code-header">
+    <span class="code-lang">PYTHON</span>
+    <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">
+      <svg class="copy-icon" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+      <span class="copy-text">Copy</span>
+    </button>
+  </div>
+  <pre class="highlight"><code class="language-python">def load_llama_cpp_language_model():
+    llm_model = LlamaCPP(
+        model_url="https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-GGUF/resolve/main/mistral-7b-instruct-v0.2.Q4_K_M.gguf",
+        temperature=0.1,  # Low temperature for factual responses
+        max_new_tokens=256,
+        context_window=3900,
+        model_kwargs={"n_gpu_layers": 1},  # Use GPU if available
+        verbose=True,
+    )
+    return llm_model</code></pre>
+</div>
+<p>The Q4_K_M quantization reduces the model size significantly while keeping response quality high. On my laptop, I get responses in 2-10 seconds, which feels snappy for the complexity of what's happening.</p>
+<h2>📚 <strong>Document Processing: The Unsung Hero</strong></h2>
+<p>Before any AI magic can happen, you need to extract text from PDFs properly. This sounds simple but is surprisingly tricky. PDFs can have complex layouts, images, tables, and weird formatting.</p>
+<p>I chose PyMuPDF because it handles these edge cases well:</p>
+<div class="code-wrapper">
+  <div class="code-header">
+    <span class="code-lang">PYTHON</span>
+    <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">
+      <svg class="copy-icon" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+      <span class="copy-text">Copy</span>
+    </button>
+  </div>
+  <pre class="highlight"><code class="language-python">def load_pdf_document_from_data_dir(file_path: Path) -&gt; List:
+    pdf_loader = PyMuPDFReader()
+    parsed_documents = pdf_loader.load(file_path=file_path)
+    return parsed_documents</code></pre>
+</div>
+<p>The real challenge was chunking. You want chunks that are:</p>
+<ul>
+<li>Large enough to contain complete thoughts</li>
+<li>Small enough for the AI to process effectively  </li>
+<li>Semantically coherent (don't break in the middle of sentences)</li>
+</ul>
+<p>I used LlamaIndex's SentenceSplitter, which respects sentence boundaries:</p>
+<div class="code-wrapper">
+  <div class="code-header">
+    <span class="code-lang">PYTHON</span>
+    <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">
+      <svg class="copy-icon" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+      <span class="copy-text">Copy</span>
+    </button>
+  </div>
+  <pre class="highlight"><code class="language-python">def split_document_into_text_chunks(documents: List, chunk_size: int = 1024):
+    sentence_splitter = SentenceSplitter(chunk_size=chunk_size)
+    chunked_texts = []
+    document_indices = []
+
+    for doc_idx, document in enumerate(documents):
+        chunks = sentence_splitter.split_text(document.text)
+        chunked_texts.extend(chunks)
+        document_indices.extend([doc_idx] * len(chunks))
+
+    return chunked_texts, document_indices</code></pre>
+</div>
+<h2>🎛️ <strong>Making It User-Friendly</strong></h2>
+<p>Technical capabilities mean nothing if people can't use them easily. I built the interface with Streamlit because it lets you create interactive web apps with just Python.</p>
+<p>The key insight was making the RAG parameters configurable. Different documents work better with different settings:</p>
+<ul>
+<li>Research papers might need larger chunks to preserve context</li>
+<li>Legal documents might need more retrieved results for comprehensive answers</li>
+<li>Technical manuals might benefit from different search strategies</li>
+</ul>
+<p>Users can adjust chunk size, number of results, and search mode in real-time and see how it affects their results.</p>
+<h2>🚀 <strong>What I Learned About RAG Systems</strong></h2>
+<p>Building DocTract taught me that RAG isn't just about the technology - it's about understanding how people actually want to interact with information.</p>
+<p><strong>Key insights:</strong></p>
+<ol>
+<li><strong>Context is everything</strong>: The quality of your chunks determines the quality of your answers</li>
+<li><strong>Retrieval is as important as generation</strong>: If you can't find the right information, even the best LLM can't help</li>
+<li><strong>User control matters</strong>: Different documents and use cases need different approaches</li>
+<li><strong>Local deployment is viable</strong>: You don't need cloud APIs for powerful AI applications</li>
+</ol>
+<h2>🔮 <strong>What's Next</strong></h2>
+<p>DocTract opened my eyes to the potential of RAG systems. I'm already thinking about improvements:</p>
+<ul>
+<li>Support for more document types (Word, PowerPoint, web pages)</li>
+<li>Better handling of tables and images</li>
+<li>Multi-document conversations</li>
+<li>Integration with note-taking systems</li>
+</ul>
+<p>The most exciting part? This is just the beginning. As local AI models get better and more efficient, tools like DocTract will become even more powerful while staying completely private.</p>
+<h2>💭 <strong>Final Thoughts</strong></h2>
+<p>Building DocTract was one of those projects where I learned something new every day. RAG systems, vector databases, local AI deployment - each piece was a puzzle that taught me something about how modern AI applications really work.</p>
+<p>The best part is seeing it in action. When you upload a complex research paper and ask "What's the main contribution?" and get a clear, accurate answer in seconds - that's when you realize we're living in the future.</p>
+<p>If you're interested in document AI or RAG systems, I'd encourage you to try building something similar. The tools are more accessible than ever, and the learning experience is incredible.</p>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2025 Aishwarya Jauhari Sharma. Built with modern web craft.</p>
+    </div>
+  </footer>
+
+  <!-- Mermaid.js for architecture & flowchart diagrams -->
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'dark',
+      themeVariables: {
+        darkMode: true,
+        background: '#0f172a',
+        primaryColor: '#8b5cf6',
+        primaryTextColor: '#f8fafc',
+        primaryBorderColor: '#7c3aed',
+        lineColor: '#38bdf8',
+        secondaryColor: '#1e293b',
+        tertiaryColor: '#111827'
+      }
+    });
+  </script>
+
+  <!-- PrismJS syntax highlighting -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+  <!-- Copy Code Script -->
+  <script>
+    function copyCode(btn) {
+      const wrapper = btn.closest('.code-wrapper');
+      const code = wrapper.querySelector('code');
+      if (!code) return;
+      
+      navigator.clipboard.writeText(code.innerText).then(() => {
+        const textSpan = btn.querySelector('.copy-text');
+        const origText = textSpan.innerText;
+        textSpan.innerText = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          textSpan.innerText = origText;
+          btn.classList.remove('copied');
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy', err);
+      });
+    }
+  </script>
+  <script src="../script.js"></script>
+</body>
+</html>

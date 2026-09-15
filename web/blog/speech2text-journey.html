@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Speech Recognition Made Simple: My HuggingFace Journey — Aishwarya Jauhari Sharma</title>
+  <meta name="description" content="Building an accurate speech-to-text application using HuggingFace transformers, Hubert, and PyTorch.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+  <!-- Prism.js syntax highlighting theme -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body class="detail-body">
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="../index.html" class="nav-logo">
+        <span class="logo-accent">Aishwarya</span>
+      </a>
+      <div class="nav-links" id="nav-links">
+        <a href="../index.html#about">About</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../index.html#blog">Blog</a>
+        <a href="../resume.html">Resume</a>
+        <a href="../index.html#contact">Contact</a>
+      </div>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="nav-overlay" id="nav-overlay"></div>
+
+  <main class="detail-page">
+    <div class="container">
+      <a href="../index.html#blog" class="back-link">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+        Back to Blog
+      </a>
+
+      <article class="detail-content article-container">
+        <div class="detail-tags"><span class="detail-tag">📅 January 2025</span><span class="detail-tag">⏱️ 11 min read</span><span class="detail-tag">HuggingFace</span><span class="detail-tag">Transformers</span><span class="detail-tag">Hubert</span><span class="detail-tag">Torchaudio</span></div>
+        
+        <h1>Speech Recognition Made Simple: My HuggingFace Journey</h1>
+<p><em>Published: January 2025 • 11 min read</em></p>
+<hr />
+<p>"Can you transcribe this meeting recording?" - a simple request that led me down a fascinating rabbit hole of speech recognition, transformer models, and the incredible world of HuggingFace. What started as a practical need became a deep dive into how modern AI understands human speech.</p>
+<h2>The Spark: A Real Problem</h2>
+<p>We've all been there - sitting through a long meeting, trying to take notes while actually participating in the conversation. Or having a brilliant podcast idea but dreading the transcription work afterward. I wanted to build something that could handle this automatically, accurately, and easily.</p>
+<p>The goal was straightforward: upload an audio file, get back a clean transcript. But as I discovered, the journey to "simple" is often quite complex.</p>
+<h2>Why Speech Recognition Matters Now</h2>
+<p>Speech is our most natural form of communication, but most of our digital tools still expect text input. The gap between speaking and typing creates friction in:</p>
+<ul>
+<li><strong>Content creation</strong>: Podcasters, YouTubers, and writers</li>
+<li><strong>Business meetings</strong>: Converting discussions to actionable notes  </li>
+<li><strong>Accessibility</strong>: Making audio content available to hearing-impaired users</li>
+<li><strong>Language learning</strong>: Providing text support for audio lessons</li>
+</ul>
+<p>I wanted to build a bridge that anyone could use, regardless of technical background.</p>
+<h2>Discovering the HuggingFace Ecosystem</h2>
+<h3>Why HuggingFace?</h3>
+<p>When I started researching speech recognition options, I quickly discovered that HuggingFace had revolutionized the field. Instead of training models from scratch or using expensive APIs, I could leverage state-of-the-art pre-trained models:</p>
+<div class="code-wrapper">
+  <div class="code-header">
+    <span class="code-lang">PYTHON</span>
+    <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">
+      <svg class="copy-icon" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+      <span class="copy-text">Copy</span>
+    </button>
+  </div>
+  <pre class="highlight"><code class="language-python">from transformers import Wav2Vec2Processor, HubertForCTC
+
+# Load a pre-trained model in just two lines
+processor = Wav2Vec2Processor.from_pretrained("facebook/hubert-large-ls960-ft")
+model = HubertForCTC.from_pretrained("facebook/hubert-large-ls960-ft")</code></pre>
+</div>
+<p>The beauty of HuggingFace is democratization - cutting-edge AI models that would have required PhD-level expertise and massive computing resources are now accessible to any developer.</p>
+<h3>Choosing the Right Model</h3>
+<p>HuggingFace offers dozens of speech recognition models. After testing several, I chose Facebook's Hubert model for several reasons:</p>
+<ol>
+<li><strong>Self-supervised learning</strong>: Trained on massive amounts of unlabeled audio</li>
+<li><strong>Robust performance</strong>: Handles various accents and speaking styles</li>
+<li><strong>Good balance</strong>: Accuracy vs. speed vs. model size</li>
+<li><strong>Active development</strong>: Regular updates and improvements</li>
+</ol>
+<h2>The Technical Deep Dive</h2>
+<h3>Understanding Audio Processing</h3>
+<p>Before jumping into AI models, I had to understand how computers "hear" audio:</p>
+<div class="code-wrapper">
+  <div class="code-header">
+    <span class="code-lang">PYTHON</span>
+    <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">
+      <svg class="copy-icon" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+      <span class="copy-text">Copy</span>
+    </button>
+  </div>
+  <pre class="highlight"><code class="language-python">import torchaudio
+
+# Load audio file
+waveform, sample_rate = torchaudio.load("audio.wav")
+
+# Audio is just numbers - amplitude values over time
+print(f"Audio shape: {waveform.shape}")  # [channels, samples]
+print(f"Duration: {waveform.shape[1] / sample_rate:.2f} seconds")</code></pre>
+</div>
+<p>Key insights I learned:</p>
+<ul>
+<li><strong>Sample rate matters</strong>: Most speech models expect 16kHz</li>
+<li><strong>Mono vs. stereo</strong>: Speech recognition typically uses single-channel audio</li>
+<li><strong>Normalization is crucial</strong>: Audio levels need to be consistent</li>
+</ul>
+<h3>The Preprocessing Pipeline</h3>
+<p>Getting audio ready for the AI model requires several steps:</p>
+<div class="code-wrapper">
+  <div class="code-header">
+    <span class="code-lang">PYTHON</span>
+    <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">
+      <svg class="copy-icon" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+      <span class="copy-text">Copy</span>
+    </button>
+  </div>
+  <pre class="highlight"><code class="language-python">def preprocess_audio(audio_path):
+    # 1. Load audio
+    waveform, original_sr = torchaudio.load(audio_path)
+
+    # 2. Convert to mono if stereo
+    if waveform.shape[0] &gt; 1:
+        waveform = torch.mean(waveform, dim=0, keepdim=True)
+
+    # 3. Resample to 16kHz (model requirement)
+    if original_sr != 16000:
+        resampler = torchaudio.transforms.Resample(original_sr, 16000)
+        waveform = resampler(waveform)
+
+    # 4. Normalize audio levels
+    waveform = waveform / torch.max(torch.abs(waveform))
+
+    return waveform</code></pre>
+</div>
+<p>Each step is crucial - skip normalization and you get poor results, use the wrong sample rate and the model fails completely.</p>
+<h3>The Magic of Transformers for Speech</h3>
+<p>The Hubert model uses a transformer architecture, similar to ChatGPT but designed for audio. Here's how it works:</p>
+<div class="code-wrapper">
+  <div class="code-header">
+    <span class="code-lang">PYTHON</span>
+    <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">
+      <svg class="copy-icon" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+      <span class="copy-text">Copy</span>
+    </button>
+  </div>
+  <pre class="highlight"><code class="language-python">def transcribe_audio(audio_file):
+    # 1. Preprocess audio into model inputs
+    inputs = processor(
+        audio_file, 
+        sampling_rate=16000, 
+        return_tensors="pt"
+    )
+
+    # 2. Run through the transformer model
+    with torch.no_grad():
+        logits = model(inputs.input_values).logits
+
+    # 3. Convert model outputs to text
+    predicted_ids = torch.argmax(logits, dim=-1)
+    transcription = processor.decode(predicted_ids[0])
+
+    return transcription</code></pre>
+</div>
+<p>The model processes audio in chunks, identifying phonemes (speech sounds) and then converting those to words. It's like having an AI that learned to "hear" by listening to thousands of hours of speech.</p>
+<h2>Building the User Experience</h2>
+<h3>Streamlit: Perfect for Prototyping</h3>
+<p>For the interface, I chose Streamlit because it lets you build web apps with pure Python:</p>
+<div class="code-wrapper">
+  <div class="code-header">
+    <span class="code-lang">PYTHON</span>
+    <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">
+      <svg class="copy-icon" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+      <span class="copy-text">Copy</span>
+    </button>
+  </div>
+  <pre class="highlight"><code class="language-python">import streamlit as st
+
+st.title("🎤 Speech-to-Text Transcriber")
+
+# File upload with multiple format support
+uploaded_file = st.file_uploader(
+    "Upload your audio/video file",
+    type=['mp3', 'wav', 'mp4'],
+    help="Supports MP3, WAV, and MP4 formats"
+)
+
+if uploaded_file:
+    # Show audio player
+    st.audio(uploaded_file)
+
+    # Process with progress bar
+    with st.spinner("Transcribing your audio..."):
+        transcript = transcribe_audio(uploaded_file)
+
+    # Display results
+    st.success("Transcription complete!")
+    st.text_area("Transcript:", transcript, height=200)
+
+    # Download button
+    st.download_button(
+        "Download Transcript",
+        transcript,
+        file_name="transcript.txt"
+    )</code></pre>
+</div>
+<h3>Making It User-Friendly</h3>
+<p>The biggest challenge was making advanced AI accessible to non-technical users. I focused on:</p>
+<ol>
+<li><strong>Clear instructions</strong>: Built-in demo video showing how to use the app</li>
+<li><strong>Multiple file formats</strong>: Support for common audio and video types</li>
+<li><strong>Real-time feedback</strong>: Progress bars and status messages</li>
+<li><strong>Error handling</strong>: Helpful messages when things go wrong</li>
+</ol>
+<h2>Key Challenges and Solutions</h2>
+<h3>Challenge 1: File Format Support</h3>
+<p>Users upload files in various formats, but the model expects specific audio formats:</p>
+<div class="code-wrapper">
+  <div class="code-header">
+    <span class="code-lang">PYTHON</span>
+    <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">
+      <svg class="copy-icon" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+      <span class="copy-text">Copy</span>
+    </button>
+  </div>
+  <pre class="highlight"><code class="language-python">def convert_to_wav(input_file):
+    """Convert any audio/video file to WAV format"""
+    try:
+        # Use pydub for format conversion
+        if input_file.name.endswith('.mp4'):
+            audio = AudioSegment.from_file(input_file, format="mp4")
+        elif input_file.name.endswith('.mp3'):
+            audio = AudioSegment.from_file(input_file, format="mp3")
+        else:
+            audio = AudioSegment.from_file(input_file)
+
+        # Export as WAV
+        wav_buffer = io.BytesIO()
+        audio.export(wav_buffer, format="wav")
+        return wav_buffer.getvalue()
+
+    except Exception as e:
+        st.error(f"Could not process file: {e}")
+        return None</code></pre>
+</div>
+<h3>Challenge 2: Memory Management</h3>
+<p>Large audio files can crash the app. I implemented chunked processing:</p>
+<div class="code-wrapper">
+  <div class="code-header">
+    <span class="code-lang">PYTHON</span>
+    <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">
+      <svg class="copy-icon" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+      <span class="copy-text">Copy</span>
+    </button>
+  </div>
+  <pre class="highlight"><code class="language-python">def transcribe_long_audio(audio_file, chunk_duration=30):
+    """Process long audio files in chunks"""
+    audio = AudioSegment.from_file(audio_file)
+    chunks = []
+
+    # Split into 30-second chunks
+    for i in range(0, len(audio), chunk_duration * 1000):
+        chunk = audio[i:i + chunk_duration * 1000]
+        transcript = transcribe_chunk(chunk)
+        chunks.append(transcript)
+
+    return " ".join(chunks)</code></pre>
+</div>
+<h3>Challenge 3: Model Loading Time</h3>
+<p>The first time someone uses the app, downloading the model takes time:</p>
+<div class="code-wrapper">
+  <div class="code-header">
+    <span class="code-lang">PYTHON</span>
+    <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">
+      <svg class="copy-icon" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+      <span class="copy-text">Copy</span>
+    </button>
+  </div>
+  <pre class="highlight"><code class="language-python">@st.cache_resource
+def load_model():
+    """Cache the model to avoid reloading"""
+    processor = Wav2Vec2Processor.from_pretrained(
+        "facebook/hubert-large-ls960-ft"
+    )
+    model = HubertForCTC.from_pretrained(
+        "facebook/hubert-large-ls960-ft"
+    )
+    return processor, model
+
+# Load once, use many times
+processor, model = load_model()</code></pre>
+</div>
+<p>Streamlit's caching ensures the model loads only once per session.</p>
+<h2>Understanding Model Performance</h2>
+<h3>What Makes Hubert Special</h3>
+<p>The Hubert model uses self-supervised learning, which means it learned speech patterns from unlabeled audio data. This approach has several advantages:</p>
+<ol>
+<li><strong>Robustness</strong>: Works well with different accents and speaking styles</li>
+<li><strong>Efficiency</strong>: Doesn't need manually transcribed training data</li>
+<li><strong>Generalization</strong>: Performs well on audio it hasn't seen before</li>
+</ol>
+<h3>Real-World Performance</h3>
+<p>In my testing, the model performs well on:</p>
+<ul>
+<li><strong>Clear speech</strong>: 95%+ accuracy</li>
+<li><strong>Podcasts</strong>: 90%+ accuracy  </li>
+<li><strong>Meeting recordings</strong>: 85%+ accuracy (depending on audio quality)</li>
+<li><strong>Phone calls</strong>: 80%+ accuracy</li>
+</ul>
+<p>Performance drops with:</p>
+<ul>
+<li>Background noise</li>
+<li>Multiple speakers talking simultaneously</li>
+<li>Very fast speech</li>
+<li>Strong accents or dialects</li>
+</ul>
+<h2>Lessons Learned</h2>
+<h3>1. Audio Quality is Everything</h3>
+<p>The best AI model can't fix bad audio. I learned to:</p>
+<ul>
+<li>Recommend good recording practices to users</li>
+<li>Add audio preprocessing to improve quality</li>
+<li>Set clear expectations about what works best</li>
+</ul>
+<h3>2. User Experience Trumps Technical Perfection</h3>
+<p>Users care more about ease of use than perfect accuracy. A 90% accurate system that's easy to use beats a 95% accurate system that's confusing.</p>
+<h3>3. The HuggingFace Ecosystem is Incredible</h3>
+<p>The combination of pre-trained models, easy-to-use APIs, and excellent documentation makes building AI applications accessible to any developer.</p>
+<h3>4. Iterative Development Works</h3>
+<p>I started with basic transcription, then added:</p>
+<ul>
+<li>Multiple file format support</li>
+<li>Chunked processing for long files</li>
+<li>Better error handling</li>
+<li>Timestamped output</li>
+</ul>
+<p>Each iteration made the app more useful.</p>
+<h2>Technical Insights for Developers</h2>
+<h3>1. Model Selection Matters</h3>
+<p>Different models excel at different tasks:</p>
+<ul>
+<li><strong>Wav2Vec2</strong>: Great for English, fast processing</li>
+<li><strong>Hubert</strong>: More robust across speakers and recording conditions; the checkpoint used here, <code>facebook/hubert-large-ls960-ft</code>, is English-only</li>
+<li><strong>Whisper</strong>: Excellent accuracy but larger model size</li>
+</ul>
+<h3>2. Preprocessing is Critical</h3>
+<div class="code-wrapper">
+  <div class="code-header">
+    <span class="code-lang">PYTHON</span>
+    <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">
+      <svg class="copy-icon" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+      <span class="copy-text">Copy</span>
+    </button>
+  </div>
+  <pre class="highlight"><code class="language-python"># Good preprocessing can improve accuracy by 10-20%
+def enhance_audio(waveform):
+    # Noise reduction
+    waveform = apply_noise_gate(waveform)
+
+    # Normalize volume
+    waveform = normalize_audio(waveform)
+
+    # Remove silence
+    waveform = trim_silence(waveform)
+
+    return waveform</code></pre>
+</div>
+<h3>3. Error Handling is Essential</h3>
+<div class="code-wrapper">
+  <div class="code-header">
+    <span class="code-lang">PYTHON</span>
+    <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">
+      <svg class="copy-icon" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+      <span class="copy-text">Copy</span>
+    </button>
+  </div>
+  <pre class="highlight"><code class="language-python">def safe_transcribe(audio_file):
+    try:
+        return transcribe_audio(audio_file)
+    except torch.cuda.OutOfMemoryError:
+        return "Audio file too large. Please try a shorter file."
+    except Exception as e:
+        return f"Transcription failed: {str(e)}"</code></pre>
+</div>
+<h2>Key Takeaways</h2>
+<h3>For Developers</h3>
+<ul>
+<li><strong>HuggingFace makes AI accessible</strong>: You don't need a PhD to use cutting-edge models</li>
+<li><strong>User experience matters</strong>: Focus on making complex technology simple to use</li>
+<li><strong>Audio preprocessing is crucial</strong>: Good input leads to good output</li>
+<li><strong>Iterative development works</strong>: Start simple, add complexity gradually</li>
+</ul>
+<h3>For Users</h3>
+<ul>
+<li><strong>AI speech recognition is ready for real use</strong>: It's not perfect, but it's good enough for most applications</li>
+<li><strong>Audio quality matters</strong>: Good microphones and quiet environments make a huge difference</li>
+<li><strong>Multiple tools exist</strong>: Choose the right tool for your specific use case</li>
+</ul>
+<h2>The Bigger Picture</h2>
+<p>This project reinforced my belief that the most impactful AI applications are those that solve real, everyday problems. Speech recognition isn't just about technology - it's about making information more accessible, reducing manual work, and enabling new forms of creativity.</p>
+<p>The combination of powerful pre-trained models and simple deployment tools means that any developer can now build applications that would have required a research team just a few years ago.</p>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2025 Aishwarya Jauhari Sharma. Built with modern web craft.</p>
+    </div>
+  </footer>
+
+  <!-- Mermaid.js for architecture & flowchart diagrams -->
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'dark',
+      themeVariables: {
+        darkMode: true,
+        background: '#0f172a',
+        primaryColor: '#8b5cf6',
+        primaryTextColor: '#f8fafc',
+        primaryBorderColor: '#7c3aed',
+        lineColor: '#38bdf8',
+        secondaryColor: '#1e293b',
+        tertiaryColor: '#111827'
+      }
+    });
+  </script>
+
+  <!-- PrismJS syntax highlighting -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+  <!-- Copy Code Script -->
+  <script>
+    function copyCode(btn) {
+      const wrapper = btn.closest('.code-wrapper');
+      const code = wrapper.querySelector('code');
+      if (!code) return;
+      
+      navigator.clipboard.writeText(code.innerText).then(() => {
+        const textSpan = btn.querySelector('.copy-text');
+        const origText = textSpan.innerText;
+        textSpan.innerText = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          textSpan.innerText = origText;
+          btn.classList.remove('copied');
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy', err);
+      });
+    }
+  </script>
+  <script src="../script.js"></script>
+</body>
+</html>
