@@ -236,3 +236,15 @@ temp/
 REVERT_DESIGN.md
 DEPLOYMENT_INSTRUCTIONS.md
 mkdocs.yml.backup
+
+# Source directories named data/ or models/ hold code, not artifacts.
+# Without these, the unanchored data/ and models/ rules above silently exclude
+# every project's src/data and src/models package from the repository.
+!**/src/data/
+!**/src/data/**
+!**/src/models/
+!**/src/models/**
+
+# ...but bytecode is still never source.
+**/__pycache__/
+*.py[cod]
