@@ -4,7 +4,6 @@ FastAPI application for Energy Price Forecasting service.
 from fastapi import FastAPI, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
-import numpy as np
 from datetime import datetime, timedelta
 from typing import List, Dict, Optional
 import logging
@@ -20,7 +19,7 @@ from src.utils.config import config
 from src.utils.helpers import setup_logging
 from .schemas import (
     ForecastRequest, ForecastResponse, HealthResponse,
-    ModelInfo, PredictionPoint, ModelPerformance
+    ModelInfo, PredictionPoint
 )
 
 logger = setup_logging()
@@ -137,13 +136,13 @@ async def predict_prices(request: ForecastRequest):
         
         model = models[request.model_name]
         
-        # Load recent data for feature engineering
-        end_date = request.start_datetime or datetime.now()
-        start_date = end_date - timedelta(days=7)  # Get last week of data for features
-        
-        # For demo purposes, create synthetic recent data
-        # In production, this would load actual recent data
-        recent_data = create_synthetic_recent_data(start_date, end_date, request.country)
+        # Load the most recent processed data produced by the training pipeline.
+        recent_data = data_loader.load_latest_processed_data(processing_stage="final")
+        if recent_data is None or len(recent_data) == 0:
+            raise HTTPException(
+                status_code=503,
+                detail="No processed data available. Run the data pipeline before requesting a forecast."
+            )
         
         # Generate features for prediction
         feature_data = prepare_prediction_features(
@@ -153,11 +152,12 @@ async def predict_prices(request: ForecastRequest):
         )
         
         # Generate predictions
-        if hasattr(model, 'predict'):
-            predictions = model.predict(feature_data)
-        else:
-            # Fallback for baseline models
-            predictions = np.random.normal(50, 10, request.forecast_horizon)  # Demo predictions
+        if not hasattr(model, "predict"):
+            raise HTTPException(
+                status_code=500,
+                detail=f"Model '{request.model_name}' exposes no predict method."
+            )
+        predictions = model.predict(feature_data)
         
         # Create prediction points
         prediction_points = []
@@ -189,43 +189,6 @@ async def predict_prices(request: ForecastRequest):
     except Exception as e:
         logger.error(f"Prediction failed: {e}")
         raise HTTPException(status_code=500, detail=f"Prediction failed: {str(e)}")
-
-@app.get("/models/{model_name}/performance", response_model=ModelPerformance)
-async def get_model_performance(model_name: str):
-    """
-    Get performance metrics for a specific model.
-    
-    Args:
-        model_name: Name of the model
-        
-    Returns:
-        Model performance metrics
-    """
-    if not model_artifacts:
-        raise HTTPException(status_code=503, detail="No models loaded")
-    
-    models = model_artifacts.get('models', {})
-    
-    if model_name not in models:
-        available_models = list(models.keys())
-        raise HTTPException(
-            status_code=404, 
-            detail=f"Model '{model_name}' not found. Available models: {available_models}"
-        )
-    
-    # For demo purposes, return synthetic performance metrics
-    # In production, these would be loaded from evaluation results
-    performance = ModelPerformance(
-        model_name=model_name,
-        mae=np.random.uniform(5, 15),
-        rmse=np.random.uniform(8, 20),
-        mape=np.random.uniform(10, 25),
-        r2=np.random.uniform(0.7, 0.95),
-        directional_accuracy=np.random.uniform(60, 85),
-        last_evaluated=datetime.now() - timedelta(days=1)
-    )
-    
-    return performance
 
 @app.post("/retrain")
 async def trigger_retraining(background_tasks: BackgroundTasks):
@@ -264,38 +227,6 @@ async def retrain_models():
     except Exception as e:
         logger.error(f"Background retraining failed: {e}")
 
-def create_synthetic_recent_data(start_date: datetime, end_date: datetime, country: str) -> pd.DataFrame:
-    """
-    Create synthetic recent data for demo purposes.
-    In production, this would load actual recent data.
-    """
-    date_range = pd.date_range(start=start_date, end=end_date, freq='H')
-    
-    # Create synthetic price data with realistic patterns
-    hours = np.array([dt.hour for dt in date_range])
-    days = np.array([dt.dayofweek for dt in date_range])
-    
-    # Base price with hourly and daily patterns
-    base_price = 50
-    hourly_pattern = 10 * np.sin(2 * np.pi * hours / 24)
-    daily_pattern = 5 * np.sin(2 * np.pi * days / 7)
-    noise = np.random.normal(0, 5, len(date_range))
-    
-    prices = base_price + hourly_pattern + daily_pattern + noise
-    
-    # Create DataFrame
-    data = pd.DataFrame({
-        'datetime': date_range,
-        'price': prices,
-        'country': country,
-        'load': np.random.normal(30000, 5000, len(date_range)),
-        'renewable_generation': np.random.normal(10000, 3000, len(date_range)),
-        'temperature': np.random.normal(15, 8, len(date_range)),
-        'wind_speed': np.random.normal(8, 4, len(date_range))
-    })
-    
-    return data
-
 def prepare_prediction_features(data: pd.DataFrame, forecast_horizon: int, 
                               feature_columns: List[str]) -> pd.DataFrame:
     """
@@ -309,18 +240,22 @@ def prepare_prediction_features(data: pd.DataFrame, forecast_horizon: int,
     Returns:
         DataFrame with features for prediction
     """
-    # For demo purposes, create a simple feature matrix
-    # In production, this would use the same feature engineering as training
-    
-    n_features = len(feature_columns) if feature_columns else 10
-    
-    # Create synthetic feature matrix
-    feature_data = pd.DataFrame(
-        np.random.randn(forecast_horizon, n_features),
-        columns=feature_columns[:n_features] if feature_columns else [f'feature_{i}' for i in range(n_features)]
-    )
-    
-    return feature_data
+    missing = [c for c in feature_columns if c not in data.columns]
+    if missing:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Processed data is missing feature columns the model needs: {missing}"
+        )
+
+    # Use the most recent rows as the basis for the forecast horizon.
+    features = data[feature_columns].tail(forecast_horizon)
+    if len(features) < forecast_horizon:
+        raise HTTPException(
+            status_code=503,
+            detail=f"Only {len(features)} rows of processed data available, "
+                   f"need {forecast_horizon} for this horizon."
+        )
+    return features.reset_index(drop=True)
 
 if __name__ == "__main__":
     import uvicorn
