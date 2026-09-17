@@ -1276,6 +1276,12 @@ a.blog-card:hover {
   border-color: var(--accent-teal);
 }
 
+/* The top entry is what she is doing now, so its dot is filled. */
+.timeline-item.current::before {
+  background: var(--accent-violet);
+  box-shadow: 0 0 0 4px rgba(167, 139, 250, 0.14);
+}
+
 .timeline-date {
   display: block;
   font-family: var(--font-mono);
