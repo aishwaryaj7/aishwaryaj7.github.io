@@ -1215,6 +1215,90 @@ a.blog-card:hover {
    ============================================================ */
 
 /* Tablet */
+/* --- About: career timeline (replaces the old tech-stack grid) --- */
+.about-timeline {
+  padding-top: var(--space-xs);
+}
+
+.timeline-heading {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: var(--space-lg);
+}
+
+.career-timeline {
+  position: relative;
+  padding-left: 1.75rem;
+}
+
+/* Connector runs between consecutive dots only, so the rail does not
+   trail off below the last entry. */
+.timeline-item::after {
+  content: '';
+  position: absolute;
+  left: calc(-1.75rem + 5px);
+  top: 1.2rem;
+  bottom: -0.2rem;
+  width: 2px;
+  border-radius: 1px;
+  background: rgba(124, 58, 237, 0.3);
+}
+
+.timeline-item:last-child::after {
+  display: none;
+}
+
+.timeline-item {
+  position: relative;
+  padding-bottom: var(--space-lg);
+}
+
+.timeline-item:last-child {
+  padding-bottom: 0;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -1.75rem;
+  top: 0.3rem;
+  width: 12px;
+  height: 12px;
+  border-radius: var(--radius-full);
+  background: var(--bg-primary);
+  border: 2px solid var(--accent-violet);
+}
+
+.timeline-item.study::before {
+  border-color: var(--accent-teal);
+}
+
+.timeline-date {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+.timeline-role {
+  font-size: 0.97rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0.15rem 0 0.1rem;
+  line-height: 1.35;
+}
+
+.timeline-org {
+  display: block;
+  font-size: 0.84rem;
+  color: var(--text-accent);
+}
+
+
 @media (max-width: 1024px) {
   .hero .container {
     flex-direction: column-reverse;
