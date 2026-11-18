@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Why I Built My AI Agent as a Graph: LangGraph in Plain Words — Aishwarya Jauhari Sharma</title>
+  <meta name="description" content="What LangGraph gives an AI agent over a simple loop: state, nodes and edges, routing in code, pausing for a person with interrupt(), and surviving restarts with checkpointers.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+  <!-- Prism.js syntax highlighting theme -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+  <style>
+    .mermaid-container .mermaid svg { max-width: 600px !important; }
+  </style>
+</head>
+<body class="detail-body">
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="../index.html" class="nav-logo">
+        <span class="logo-accent">Aishwarya</span>
+      </a>
+      <div class="nav-links" id="nav-links">
+        <a href="../index.html#about">About</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../index.html#blog">Blog</a>
+        <a href="../resume.html">Resume</a>
+        <a href="../index.html#contact">Contact</a>
+      </div>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="nav-overlay" id="nav-overlay"></div>
+
+  <main class="detail-page">
+    <div class="container">
+      <a href="../index.html#blog" class="back-link">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+        Back to Blog
+      </a>
+
+      <article class="detail-content article-container">
+        <div class="detail-tags"><span class="detail-tag">📅 November 2026</span><span class="detail-tag">⏱️ 8 min read</span><span class="detail-tag">LangGraph</span><span class="detail-tag">AI Agents</span><span class="detail-tag">Human in the Loop</span><span class="detail-tag">Python</span></div>
+
+        <h1>Why I Built My AI Agent as a Graph: LangGraph in Plain Words</h1>
+<p><strong>By Aishwarya Jauhari Sharma</strong><br />
+<em>Published: November 2026 • 8 min read</em></p>
+<hr />
+<h2><strong>The question I had to answer first</strong></h2>
+<p>When I started my latest project, an agent that checks online shop listings against EU consumer rules, the first design question wasn't about models or prompts. It was much simpler: who decides what happens next, the model or my code?</p>
+<p>Most agent tutorials pick the model. You give a language model a task and a list of tools, and it decides which tool to call, looks at the result, and decides again. It's a loop, and for a lot of problems it's the right one.</p>
+<p>For mine it wasn't. A compliance check has steps that must happen every time, in a fixed order. Some decisions belong to a person, not to a model. And an audit sometimes has to wait for that person, maybe until the next morning. That's what pushed me to LangGraph, and this post is what I wish someone had told me before I started: what a graph gives you over a loop, the few ideas you actually need, and when you don't need any of it.</p>
+<h2><strong>The loop every agent starts as</strong></h2>
+<p>Here's the classic agent loop, stripped down:</p>
+<div class="code-wrapper">
+  <div class="code-header">
+    <span class="code-lang">PYTHON</span>
+    <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">
+      <svg class="copy-icon" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+      <span class="copy-text">Copy</span>
+    </button>
+  </div>
+  <pre class="highlight"><code class="language-python">messages = [task]
+while True:
+    reply = model.invoke(messages)     # the model decides what to do next
+    if not reply.tool_calls:           # no tools asked for: it thinks it's done
+        break
+    messages += [reply, *run_tools(reply.tool_calls)]</code></pre>
+</div>
+<p>This pattern is often called ReAct (reason, then act). Its strength is flexibility. A research assistant or a coding helper can't know its steps in advance, so the model has to plan as it goes.</p>
+<p>But that flexibility cuts both ways. The model can skip a step, call the same tool five times, or stop early because it feels confident. Nothing in this loop makes it run the price check before it writes about prices. That's acceptable in a chatbot. It's not acceptable in something that flags a seller's listing as a possible breach of the law.</p>
+<p>The loop also has nowhere to stop. If a person has to approve something halfway through, there's no clean place to wait: the loop is just a function running in memory. And if the server restarts, everything it did is gone.</p>
+<h2><strong>What a graph actually is</strong></h2>
+<p>LangGraph describes your agent as a graph, a word that sounds more mathematical than it is. There are three parts:</p>
+<ul>
+<li><strong>State</strong>: a shared notebook that every step can read and write. In my agent, that's the listing, the problems found and the draft report.</li>
+<li><strong>Nodes</strong>: the steps. Each one is an ordinary Python function that takes the state and returns the parts it wants to change.</li>
+<li><strong>Edges</strong>: the arrows between steps, which say what comes next.</li>
+</ul>
+<p>If a loop is a chef improvising, a graph is the recipe card. The chef still does the cooking, but the order of the steps is written down.</p>
+<div class="code-wrapper">
+  <div class="code-header">
+    <span class="code-lang">PYTHON</span>
+    <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">
+      <svg class="copy-icon" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+      <span class="copy-text">Copy</span>
+    </button>
+  </div>
+  <pre class="highlight"><code class="language-python">from typing import TypedDict
+from langgraph.graph import StateGraph, START, END
+
+class Audit(TypedDict, total=False):
+    offer_id: str
+    listing: dict
+    problems: list[str]
+    report: str
+
+def read_listing(state: Audit) -&gt; dict:
+    return {"listing": load_listing(state["offer_id"])}
+
+def run_checks(state: Audit) -&gt; dict:
+    return {"problems": run_all_checks(state["listing"])}
+
+def write_report(state: Audit) -&gt; dict:
+    return {"report": ask_model_to_write(state["problems"])}
+
+graph = StateGraph(Audit)
+graph.add_node(read_listing)
+graph.add_node(run_checks)
+graph.add_node(write_report)
+graph.add_edge(START, "read_listing")
+graph.add_edge("read_listing", "run_checks")
+graph.add_edge("run_checks", "write_report")
+graph.add_edge("write_report", END)
+
+agent = graph.compile()
+agent.invoke({"offer_id": "P0171"})</code></pre>
+</div>
+<p>A few things worth noticing. The nodes don't know about each other; they only read and update the state. Each node returns just the keys it changes, and LangGraph merges them in. And only one of these three steps needs a language model. That's deliberate: anything code can do reliably, code should do.</p>
+<h2><strong>Letting the model decide, but only where it should</strong></h2>
+<p>A graph doesn't have to be a straight line. A conditional edge is a small function that looks at the state and picks the next step:</p>
+<div class="code-wrapper">
+  <div class="code-header">
+    <span class="code-lang">PYTHON</span>
+    <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">
+      <svg class="copy-icon" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+      <span class="copy-text">Copy</span>
+    </button>
+  </div>
+  <pre class="highlight"><code class="language-python">def after_checks(state: Audit) -&gt; str:
+    return "look_up_law" if state["problems"] else "write_report"
+
+graph.add_conditional_edges("run_checks", after_checks, ["look_up_law", "write_report"])</code></pre>
+</div>
+<p>This is where the design gets interesting. In my agent, code decides the route. If the checks find nothing, the listing goes straight to its report and the model is never asked about the law. The model makes the judgement calls inside the steps: what kind of product this is, which passage of the law applies, and how to word a finding so a seller understands it.</p>
+<p>Loops are still allowed, they just have limits. The step that searches the law can go round at most three times. The step that writes the report is followed by a self-check in plain code, which tests that every price and percentage in the draft came from a check. If the draft fails, an edge sends it back to the model with the feedback, and after two failed tries another edge hands it to a larger model. Each of those rules is a tiny routing function I can read and unit test, instead of a sentence in a prompt that I hope the model follows.</p>
+<div class="mermaid-container">
+<pre class="mermaid">
+flowchart TD
+    read["Read listing"] --> pick["Pick the rules"]
+    pick --> checks["Run the checks"]
+    checks -- "problems found" --> law["Look up the law"]
+    checks -- "nothing found" --> report["Build report"]
+    law -- "needs a passage" --> search["Search the rulebook"]
+    search --> law
+    law --> write["Write report"]
+    write --> selfcheck["Self-check"]
+    selfcheck -- "fails" --> write
+    selfcheck -- "passes" --> report
+    report --> review["Human review"]
+    review --> message["Draft message to seller"]
+    classDef model fill:#3b2a6b,stroke:#a78bfa,color:#f8fafc
+    classDef person fill:#4a3412,stroke:#f59e0b,color:#f8fafc
+    class pick,law,write model
+    class review person
+</pre>
+</div>
+<p>The audit agent as a graph. Purple steps ask the model, the amber step waits for a person, and everything else is plain code.</p>
+<h2><strong>The pause button: interrupt()</strong></h2>
+<p>This is the feature that sold me. Inside any node you can call <code>interrupt()</code>, and the graph stops right there. Whatever you pass to it goes to the outside world, for example a review screen. When the person answers, you resume the graph with their answer, and <code>interrupt()</code> returns it as if nothing had happened.</p>
+<div class="code-wrapper">
+  <div class="code-header">
+    <span class="code-lang">PYTHON</span>
+    <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">
+      <svg class="copy-icon" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+      <span class="copy-text">Copy</span>
+    </button>
+  </div>
+  <pre class="highlight"><code class="language-python">from langgraph.checkpoint.memory import InMemorySaver
+from langgraph.types import Command, interrupt
+
+def human_review(state: Audit) -&gt; dict:
+    decision = interrupt({"please_decide_on": state["problems"]})
+    return {"review": decision}
+
+# add human_review to the graph after write_report, then:
+agent = graph.compile(checkpointer=InMemorySaver())
+config = {"configurable": {"thread_id": "audit-42"}}
+
+agent.invoke({"offer_id": "P0171"}, config)          # runs until the pause
+agent.invoke(Command(resume={"pumped_price": "approve"}), config)</code></pre>
+</div>
+<p>Two details matter in practice.</p>
+<p>First, pausing needs a checkpointer (more on that below) and a <code>thread_id</code>, which is simply the name of this particular run. Every audit gets its own.</p>
+<p>Second, when the graph resumes, the paused node starts again from its first line, not from the <code>interrupt()</code> call. So anything that runs before <code>interrupt()</code> in that node runs twice. Keep side effects such as sending an email or charging a card out of that node, or put them after the pause.</p>
+<p>In my agent the review node also checks the answer. If a reviewer rejects a finding without giving a reason, the node calls <code>interrupt()</code> again with the error, and the screen asks again. The graph can't move on until the review is complete, and that rule lives in one place.</p>
+<h2><strong>Surviving a restart: checkpointers</strong></h2>
+<p>A checkpointer saves the state of each thread to storage. <code>InMemorySaver</code> is perfect for tests and notebooks. For anything real, you swap in a database:</p>
+<div class="code-wrapper">
+  <div class="code-header">
+    <span class="code-lang">PYTHON</span>
+    <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">
+      <svg class="copy-icon" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+      <span class="copy-text">Copy</span>
+    </button>
+  </div>
+  <pre class="highlight"><code class="language-python">from langgraph.checkpoint.postgres import PostgresSaver
+
+with PostgresSaver.from_conn_string(DATABASE_URL) as saver:
+    saver.setup()                       # creates its tables the first time
+    agent = graph.compile(checkpointer=saver)</code></pre>
+</div>
+<p>Now a paused audit is just a few rows in Postgres. I can stop the API, deploy a new version and start it again, and the same audits are still waiting for review, exactly where they paused. The reviewer never notices.</p>
+<p>You can also choose how often it saves. By default LangGraph saves after every step, so a crash in the middle of a run loses almost nothing. My audits take about 20 seconds, so I told it to save only when the graph pauses or ends (<code>durability="exit"</code>). For one audit that meant one saved checkpoint instead of nine. If the server dies mid-audit, I start that audit again. The state that really needs protecting is the paused one, because that's where a person's time is involved.</p>
+<h2><strong>When you don't need LangGraph</strong></h2>
+<p>I like LangGraph, but it adds weight: a framework, a state schema and a new way of thinking about your code. You probably don't need it if:</p>
+<ul>
+<li>your app makes one model call, or a fixed chain of calls with no branches,</li>
+<li>nothing ever has to wait for a person, and</li>
+<li>runs are short, and losing one is no big deal.</li>
+</ul>
+<p>In those cases a plain function is easier to read and easier to debug.</p>
+<p>A graph earns its place when you have branches and loops you want to control, a person in the loop, work that must survive a restart, or when you want to watch every step as it happens. LangGraph can stream each node's update as soon as it finishes, which is how my review screen shows an audit moving forward live.</p>
+<h2><strong>What I took away</strong></h2>
+<p>The biggest shift for me wasn't technical. It was learning to split the work honestly: code does what code is good at (order, maths, rules and limits), the model does what only a model can do (reading and writing language), and a person signs off on anything with consequences. LangGraph is a good way to write that split down so it doesn't drift.</p>
+<p>If you'd like to see the whole thing, the agent from this post is <a href="../projects/listingaudit.html">ListingAudit</a>, and its code is on <a href="https://github.com/aishwaryaj7/listingaudit" target="_blank" rel="noopener">GitHub</a>.</p>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2025 Aishwarya Jauhari Sharma. Built with modern web craft.</p>
+    </div>
+  </footer>
+
+  <!-- Mermaid.js for architecture & flowchart diagrams -->
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'dark',
+      themeVariables: {
+        darkMode: true,
+        background: '#0f172a',
+        primaryColor: '#8b5cf6',
+        primaryTextColor: '#f8fafc',
+        primaryBorderColor: '#7c3aed',
+        lineColor: '#38bdf8',
+        secondaryColor: '#1e293b',
+        tertiaryColor: '#111827'
+      }
+    });
+  </script>
+
+  <!-- PrismJS syntax highlighting -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+  <!-- Copy Code Script -->
+  <script>
+    function copyCode(btn) {
+      const wrapper = btn.closest('.code-wrapper');
+      const code = wrapper.querySelector('code');
+      if (!code) return;
+      
+      navigator.clipboard.writeText(code.innerText).then(() => {
+        const textSpan = btn.querySelector('.copy-text');
+        const origText = textSpan.innerText;
+        textSpan.innerText = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          textSpan.innerText = origText;
+          btn.classList.remove('copied');
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy', err);
+      });
+    }
+  </script>
+  <script src="../script.js"></script>
+</body>
+</html>
