@@ -243,3 +243,6 @@ mkdocs.yml.backup
 # ...but bytecode is still never source.
 **/__pycache__/
 *.py[cod]
+
+# The website's own source folder named lib/ (the Python rule above would hide it)
+!site/src/lib/
