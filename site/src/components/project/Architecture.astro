@@ -1,0 +1,128 @@
+---
+// Architecture diagram: groups of components, left to right, with labelled arrows between them.
+// Each component shows the logos of the tools behind it. Stacks vertically on narrow screens.
+import '../../styles/diagram.css';
+import Logo from './Logo.astro';
+
+type Kind = 'model' | 'person' | 'store' | 'soft';
+type LogoRef = string | { name: string; title: string };
+export type Group = {
+  title: string;
+  nodes: { label: string; logos?: LogoRef[]; kind?: Kind }[];
+  /** Label on the arrow to the next group */
+  next?: string;
+};
+
+interface Props {
+  groups: Group[];
+  /** Accessible description of the whole diagram (not shown) */
+  label: string;
+}
+
+const { groups, label } = Astro.props;
+---
+
+<figure class="dg arch" aria-label={label}>
+  <div class="cols">
+    {groups.map((g) => (
+      <>
+        <div class="group">
+          <p class="dg-group-title">{g.title}</p>
+          {g.nodes.map((n) => (
+            <span class:list={['dn', n.kind]}>
+              {n.label}
+              {n.logos && (
+                <span class="logos">
+                  {n.logos.map((l) => (typeof l === 'string' ? <Logo name={l} /> : <Logo name={l.name} title={l.title} />))}
+                </span>
+              )}
+            </span>
+          ))}
+        </div>
+        {g.next !== undefined && <span class="da" data-label={g.next || undefined} aria-hidden="true" />}
+      </>
+    ))}
+  </div>
+</figure>
+<style>
+  .cols {
+    display: flex;
+    align-items: stretch;
+    gap: 4px;
+  }
+
+  .group {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    min-width: 0;
+    padding: 10px;
+    border: 1px dashed var(--border-strong);
+    border-radius: 10px;
+  }
+
+  .dg-group-title {
+    margin-bottom: 2px;
+    text-align: center;
+  }
+
+  .group .dn {
+    gap: 6px;
+    padding: 8px;
+  }
+
+  .logos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px;
+  }
+
+  .cols > .da {
+    flex-basis: 38px;
+    width: 38px;
+  }
+
+  @media (max-width: 600px) {
+    .cols {
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .group {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
+
+    .dg-group-title {
+      grid-column: 1 / -1;
+      text-align: left;
+    }
+
+    .cols > .da {
+      flex-basis: 30px;
+      width: 1px;
+      height: 30px;
+      margin-left: 28px;
+      align-self: flex-start;
+    }
+
+    .cols > .da::after {
+      top: auto;
+      bottom: 0;
+      right: -3px;
+      border: 3.5px solid transparent;
+      border-top: 5px solid var(--text-faint);
+      border-bottom: 0;
+    }
+
+    .cols > .da[data-label]::before {
+      bottom: auto;
+      top: 50%;
+      left: 12px;
+      translate: 0 -50%;
+    }
+  }
+</style>

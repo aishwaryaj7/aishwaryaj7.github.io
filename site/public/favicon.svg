@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <style>
+    rect { fill: #18181b; }
+    text { fill: #fbfbfa; }
+    @media (prefers-color-scheme: dark) {
+      rect { fill: #ececee; }
+      text { fill: #0d0d0f; }
+    }
+  </style>
+  <rect width="32" height="32" rx="8"/>
+  <text x="16" y="22" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="14" font-weight="700" letter-spacing="-0.5">AJ</text>
+</svg>

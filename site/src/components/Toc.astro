@@ -1,0 +1,77 @@
+---
+import type { MarkdownHeading } from 'astro';
+
+interface Props {
+  headings: MarkdownHeading[];
+}
+const items = Astro.props.headings.filter((h) => h.depth === 2);
+---
+
+{items.length > 2 && (
+  <nav class="toc" aria-label="On this page">
+    <p class="eyebrow">On this page</p>
+    <ol>
+      {items.map((h) => (
+        <li><a href={`#${h.slug}`} data-toc-link={h.slug}>{h.text}</a></li>
+      ))}
+    </ol>
+  </nav>
+)}
+
+<script>
+  // Highlight the section being read
+  const links = new Map(
+    [...document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]')].map((a) => [a.dataset.tocLink!, a]),
+  );
+  if (links.size) {
+    const headings = [...links.keys()].map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
+    const setActive = () => {
+      const y = window.scrollY + 120;
+      let current = headings[0];
+      for (const h of headings) if (h.offsetTop <= y) current = h;
+      links.forEach((a, id) => a.toggleAttribute('aria-current', id === current?.id));
+    };
+    setActive();
+    addEventListener('scroll', setActive, { passive: true });
+  }
+</script>
+
+<style>
+  .toc {
+    position: sticky;
+    top: calc(var(--header-h) + 28px);
+    max-height: calc(100dvh - var(--header-h) - 56px);
+    overflow-y: auto;
+  }
+
+  .eyebrow {
+    margin-bottom: 12px;
+  }
+
+  ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-left: 1px solid var(--border);
+  }
+
+  a {
+    display: block;
+    margin-left: -1px;
+    padding: 5px 0 5px 14px;
+    border-left: 1px solid transparent;
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--text-faint);
+    transition: color 0.15s, border-color 0.15s;
+  }
+
+  a:hover {
+    color: var(--text);
+  }
+
+  a[aria-current] {
+    color: var(--text);
+    border-left-color: var(--text);
+  }
+</style>

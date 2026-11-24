@@ -1,0 +1,176 @@
+---
+// The ListingAudit agent as a LangGraph graph, in three stages.
+import '../../styles/diagram.css';
+
+type Step = { label: string; kind?: 'model' | 'person'; note?: string };
+const stages: { n: string; title: string; steps: Step[] }[] = [
+  {
+    n: '01',
+    title: 'Prepare',
+    steps: [{ label: 'Read listing' }, { label: 'Pick the rules', kind: 'model' }, { label: 'Run the checks' }],
+  },
+  {
+    n: '02',
+    title: 'Draft',
+    steps: [
+      { label: 'Look up the law', kind: 'model', note: '⇄ rulebook search' },
+      { label: 'Write report', kind: 'model' },
+      { label: 'Self-check', note: '↺ rewrite if it fails' },
+    ],
+  },
+  {
+    n: '03',
+    title: 'Review',
+    steps: [{ label: 'Build report' }, { label: 'Human review', kind: 'person' }, { label: 'Draft seller message' }],
+  },
+];
+const links = [
+  { main: 'problems found', side: 'nothing found: skip to 03' },
+  { main: 'self-check passes' },
+];
+---
+
+<figure class="dg flow fig" aria-label="The audit agent as a graph: prepare, draft only if problems are found, then human review">
+  {stages.map((stage, i) => (
+    <>
+      <div class="stage">
+        <p class="dg-group-title"><b>{stage.n}</b> {stage.title}</p>
+        <div class="row">
+          {stage.steps.map((s, j) => (
+            <>
+              {j > 0 && <span class="da" aria-hidden="true" />}
+              <span class:list={['dn', s.kind]}>
+                {s.label}
+                {s.note && <small>{s.note}</small>}
+              </span>
+            </>
+          ))}
+        </div>
+      </div>
+      {links[i] && (
+        <div class="link" aria-hidden="true">
+          <span class="drop" />
+          <span class="chip">{links[i].main}</span>
+          {links[i].side && <span class="side">{links[i].side}</span>}
+        </div>
+      )}
+    </>
+  ))}
+  <div class="dg-legend">
+    <span><i class="model"></i>Asks the model</span>
+    <span><i class="person"></i>Waits for a person</span>
+    <span><i></i>Plain code</span>
+  </div>
+  <figcaption class="fig-cap">The audit agent as a LangGraph graph. Only the drafting stage runs when the checks find something.</figcaption>
+</figure>
+
+<style>
+  .stage {
+    padding: 10px 12px 12px;
+    border: 1px dashed var(--border-strong);
+    border-radius: 10px;
+  }
+
+  .dg-group-title {
+    margin-bottom: 8px;
+  }
+
+  .dg-group-title b {
+    margin-right: 4px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .row {
+    display: flex;
+    align-items: stretch;
+    gap: 6px;
+  }
+
+  .row .dn {
+    flex: 1 1 0;
+  }
+
+  .link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 34px;
+    padding-left: 28px;
+  }
+
+  .drop {
+    position: relative;
+    align-self: stretch;
+    width: 1px;
+    background: var(--text-faint);
+  }
+
+  .drop::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: -3px;
+    border: 3.5px solid transparent;
+    border-top: 5px solid var(--text-faint);
+    border-bottom: 0;
+  }
+
+  .chip {
+    padding: 1px 8px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface);
+    font-family: var(--font-sans);
+    font-size: 10.5px;
+    color: var(--text-muted);
+  }
+
+  .side {
+    margin-left: auto;
+    font-family: var(--font-sans);
+    font-size: 10.5px;
+    color: var(--text-faint);
+  }
+
+  /* Phones: keep three steps per row, just tighter */
+  @media (max-width: 560px) {
+    .flow {
+      padding: 12px;
+      font-size: 12px;
+    }
+
+    .stage {
+      padding: 8px;
+    }
+
+    .row {
+      gap: 3px;
+    }
+
+    .row .dn {
+      padding: 7px 5px;
+    }
+
+    .row .dn small {
+      font-size: 9.5px;
+    }
+
+    .row .da {
+      flex-basis: 9px;
+      width: 9px;
+    }
+
+    .link {
+      flex-wrap: wrap;
+      height: auto;
+      min-height: 34px;
+      padding-left: 18px;
+      gap: 4px 8px;
+    }
+
+    .side {
+      margin-left: 0;
+    }
+  }
+</style>

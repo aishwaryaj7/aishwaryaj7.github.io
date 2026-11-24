@@ -20,9 +20,26 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: site
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      # Dev dependencies (embedding model, UMAP) only regenerate src/data/generated; the build doesn't need them
+      - name: Install dependencies
+        run: npm ci --omit=dev --no-audit --no-fund
+
+      - name: Build site
+        run: npm run build
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -30,7 +47,7 @@ jobs:
       - name: Upload static site
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./web
+          path: ./site/dist
 
       - name: Deploy to GitHub Pages
         id: deployment

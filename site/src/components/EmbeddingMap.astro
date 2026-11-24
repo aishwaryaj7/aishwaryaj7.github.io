@@ -1,0 +1,311 @@
+---
+// Hero background: every paragraph of my writing, embedded (all-MiniLM-L6-v2) and laid out with
+// UMAP by scripts/build-data.mjs. Similar ideas land near each other, so topics form clusters.
+import data from '../data/generated/embedding-map.json';
+
+const W = 1000;
+const H = 640;
+const pad = 40;
+const pts = data.points.map((p, i) => ({
+  i,
+  x: +(pad + p.x * (W - 2 * pad)).toFixed(1),
+  y: +(pad + p.y * (H - 2 * pad)).toFixed(1),
+  topic: data.docs[p.d].topic as string,
+  d: p.d,
+}));
+
+// Constellation lines: each point to its two nearest neighbours, if they are close
+const lines: [number, number, number, number][] = [];
+const seen = new Set<string>();
+for (const a of pts) {
+  const near = pts
+    .filter((b) => b !== a)
+    .map((b) => ({ b, dist: Math.hypot(a.x - b.x, a.y - b.y) }))
+    .sort((m, n) => m.dist - n.dist)
+    .slice(0, 2);
+  for (const { b, dist } of near) {
+    const key = a.i < b.i ? `${a.i}-${b.i}` : `${b.i}-${a.i}`;
+    if (dist < 55 && !seen.has(key)) {
+      seen.add(key);
+      lines.push([a.x, a.y, b.x, b.y]);
+    }
+  }
+}
+
+// Label each topic at the median position of its points
+const median = (v: number[]) => v.sort((a, b) => a - b)[Math.floor(v.length / 2)];
+// Labels in the faded left part of the map would sit behind the headline, so they are left out
+const labels = Object.entries(data.topics)
+  .map(([key, label]) => {
+    const own = pts.filter((p) => p.topic === key);
+    return { key, label, x: median(own.map((p) => p.x)), y: median(own.map((p) => p.y)) - 18 };
+  })
+  .filter((l) => l.x > W * 0.38);
+
+// Payload for the hover script, kept small
+const payload = {
+  docs: data.docs.map((d) => ({ t: d.title, h: d.href, k: d.topic })),
+  topics: data.topics,
+  p: data.points.map((p, i) => [pts[i].x, pts[i].y, p.d, p.text]),
+};
+---
+
+<div class="emap" data-emap>
+  <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <g class="lines">
+      {lines.map(([x1, y1, x2, y2]) => <line x1={x1} y1={y1} x2={x2} y2={y2} />)}
+    </g>
+    <g class="glow">
+      {pts.map((p) => <circle cx={p.x} cy={p.y} r="7" class={`t-${p.topic}`} />)}
+    </g>
+    <g class="dots">
+      {pts.map((p) => (
+        <circle cx={p.x} cy={p.y} r="2.4" class={`t-${p.topic}`} data-d={p.d} style={`--tw:${(p.i * 37) % 100}`} />
+      ))}
+    </g>
+    <g class="labels">
+      {labels.map((l) => <text x={l.x} y={l.y} text-anchor="middle" class={`t-${l.key}`}>{l.label}</text>)}
+    </g>
+    <circle class="focus" r="6" cx="-20" cy="-20" />
+  </svg>
+  <div class="tip" role="status" aria-live="polite" hidden></div>
+  <script type="application/json" data-emap-data set:html={JSON.stringify(payload)} />
+</div>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-emap]');
+  // Any device with a mouse or trackpad gets the interaction, whatever the window width
+  if (root && matchMedia('(any-hover: hover)').matches) {
+    const svg = root.querySelector('svg')!;
+    const tip = root.querySelector<HTMLElement>('.tip')!;
+    const focus = root.querySelector<SVGCircleElement>('.focus')!;
+    const dots = [...root.querySelectorAll<SVGCircleElement>('.dots circle')];
+    const data = JSON.parse(root.querySelector('[data-emap-data]')!.textContent!) as {
+      docs: { t: string; h: string; k: string }[];
+      topics: Record<string, string>;
+      p: [number, number, number, string][];
+    };
+    let current = -1;
+
+    const toLocal = (e: PointerEvent) => {
+      const pt = svg.createSVGPoint();
+      pt.x = e.clientX;
+      pt.y = e.clientY;
+      return pt.matrixTransform(svg.getScreenCTM()!.inverse());
+    };
+
+    const clear = () => {
+      current = -1;
+      tip.hidden = true;
+      root.removeAttribute('data-active');
+      focus.setAttribute('cx', '-20');
+      dots.forEach((d) => d.classList.remove('same'));
+      root.style.cursor = '';
+    };
+
+    root.addEventListener('pointermove', (e) => {
+      const { x, y } = toLocal(e);
+      let best = -1;
+      let bestDist = 18;
+      data.p.forEach(([px, py], i) => {
+        const dist = Math.hypot(px - x, py - y);
+        if (dist < bestDist) {
+          best = i;
+          bestDist = dist;
+        }
+      });
+      if (best === -1) return clear();
+      if (best !== current) {
+        current = best;
+        const [px, py, d, text] = data.p[best];
+        const doc = data.docs[d];
+        root.setAttribute('data-active', doc.k);
+        focus.setAttribute('cx', String(px));
+        focus.setAttribute('cy', String(py));
+        focus.setAttribute('class', `focus t-${doc.k}`);
+        dots.forEach((el) => el.classList.toggle('same', el.dataset.d === String(d)));
+        tip.innerHTML = '';
+        const head = document.createElement('span');
+        head.className = `tip-head t-${doc.k}`;
+        head.textContent = data.topics[doc.k];
+        const body = document.createElement('span');
+        body.className = 'tip-text';
+        body.textContent = `“${text}”`;
+        const src = document.createElement('span');
+        src.className = 'tip-src';
+        src.textContent = `${doc.t} →`;
+        tip.append(head, body, src);
+        tip.hidden = false;
+      }
+      const box = root.getBoundingClientRect();
+      const left = Math.max(8, Math.min(e.clientX - box.left + 16, box.width - 300));
+      const top = Math.min(e.clientY - box.top + 16, box.height - tip.offsetHeight - 8);
+      tip.style.transform = `translate(${left}px, ${top}px)`;
+      root.style.cursor = 'pointer';
+    });
+
+    root.addEventListener('pointerleave', clear);
+    root.addEventListener('click', () => {
+      if (current >= 0) location.href = data.docs[data.p[current][2]].h;
+    });
+  }
+</script>
+
+<style>
+  .emap {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 44%;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    /* Soft left edge so the map dissolves into the page instead of ending in a line */
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 22%);
+    mask-image: linear-gradient(90deg, transparent 0%, #000 22%);
+  }
+
+  .t-agents { --c: var(--t-agents); }
+  .t-tools { --c: var(--t-tools); }
+  .t-rag { --c: var(--t-rag); }
+  .t-mlops { --c: var(--t-mlops); }
+  .t-speech { --c: var(--t-speech); }
+
+  .lines line {
+    stroke: var(--text-faint);
+    stroke-width: 0.6;
+    opacity: 0.35;
+  }
+
+  .glow circle {
+    fill: var(--c);
+    opacity: 0.22;
+    filter: blur(6px);
+  }
+
+  .dots circle {
+    fill: var(--c);
+    opacity: 0.75;
+    transition: opacity 0.2s, r 0.2s;
+  }
+
+  .labels text {
+    fill: var(--c);
+    font-family: var(--font-sans);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.85;
+  }
+
+  .focus {
+    fill: none;
+    stroke: var(--c, var(--text));
+    stroke-width: 1.5;
+    pointer-events: none;
+  }
+
+  /* While hovering, fade everything except the paragraph's own document */
+  [data-active] .dots circle {
+    opacity: 0.2;
+  }
+
+  [data-active] .dots circle.same {
+    opacity: 1;
+    r: 3.4px;
+  }
+
+  [data-active] .lines line,
+  [data-active] .glow circle {
+    opacity: 0.08;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .dots circle {
+      animation: twinkle 6s ease-in-out infinite;
+      animation-delay: calc(var(--tw) * -0.06s);
+    }
+
+    [data-active] .dots circle {
+      animation: none;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.75; }
+      50% { opacity: 0.35; }
+    }
+  }
+
+  .tip[hidden] {
+    display: none;
+  }
+
+  .tip {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    display: grid;
+    gap: 6px;
+    width: 284px;
+    padding: 12px 14px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    background: color-mix(in oklab, var(--surface) 92%, transparent);
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow);
+    pointer-events: none;
+  }
+
+  .tip :global(.tip-head) {
+    font-family: var(--font-sans);
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--c);
+  }
+
+  .tip :global(.tip-text) {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--text);
+  }
+
+  .tip :global(.tip-src) {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+
+
+  /* Narrow windows: the map moves behind the text as a quieter backdrop */
+  @media (max-width: 760px) {
+    .emap {
+      left: 0;
+      opacity: 0.55;
+    }
+
+    svg {
+      -webkit-mask-image: linear-gradient(180deg, #000 0%, rgb(0 0 0 / 0.6) 50%, transparent 98%);
+      mask-image: linear-gradient(180deg, #000 0%, rgb(0 0 0 / 0.6) 50%, transparent 98%);
+    }
+
+    .labels {
+      display: none;
+    }
+  }
+
+  /* Touch screens: taps should scroll the page, not fight with the map */
+  @media (hover: none) {
+    .emap {
+      pointer-events: none;
+    }
+  }
+</style>

@@ -1,0 +1,115 @@
+---
+import Icon from './Icon.astro';
+import { site } from '../data/site';
+---
+
+<header class="site-header" data-header>
+  <div class="container bar">
+    <a href="/" class="brand" aria-label={`${site.name}, home`}>
+      <span class="mark" aria-hidden="true">AJ</span>
+      <span class="brand-name">{site.name}</span>
+    </a>
+
+
+    <div class="actions">
+      <button class="icon-btn" type="button" data-theme-toggle aria-label="Switch colour theme">
+        <span class="theme-icon-sun"><Icon name="sun" /></span>
+        <span class="theme-icon-moon"><Icon name="moon" /></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]')!;
+  const onScroll = () => header.toggleAttribute('data-scrolled', window.scrollY > 4);
+  onScroll();
+  addEventListener('scroll', onScroll, { passive: true });
+
+  document.querySelector('[data-theme-toggle]')!.addEventListener('click', () => {
+    const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem('theme', next); } catch {}
+    document.dispatchEvent(new CustomEvent('themechange', { detail: next }));
+  });
+
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    height: var(--header-h);
+    background: color-mix(in oklab, var(--bg) 82%, transparent);
+    backdrop-filter: saturate(1.4) blur(14px);
+    -webkit-backdrop-filter: saturate(1.4) blur(14px);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+
+  .site-header[data-scrolled] {
+    border-bottom-color: var(--border);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    height: 100%;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-right: auto;
+    font-size: 14.5px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .mark {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: var(--text);
+    color: var(--bg);
+    font-family: var(--font-sans);
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+
+  .actions {
+    display: flex;
+    gap: 4px;
+  }
+
+  .icon-btn {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+  }
+
+  .icon-btn:hover {
+    color: var(--text);
+    border-color: var(--border-strong);
+  }
+
+  .icon-btn > span {
+    display: grid;
+  }
+
+
+</style>

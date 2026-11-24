@@ -1,0 +1,65 @@
+---
+import { render } from 'astro:content';
+import Article from '../../layouts/Article.astro';
+import { getPosts, readingTime, formatMonth } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  // Newest first, so "next" points to the previous (older) post, wrapping around
+  return posts.map((post, i) => ({
+    params: { slug: post.id },
+    props: { post, next: posts[(i + 1) % posts.length] },
+  }));
+}
+
+const { post, next } = Astro.props;
+const { Content, headings } = await render(post);
+const { title, description, date, tags } = post.data;
+---
+
+<Article
+  title={title}
+  description={description}
+  headings={headings}
+  back={{ href: '/#writing', label: 'All writing' }}
+  next={next.id !== post.id ? { href: `/blog/${next.id}`, label: 'Read next', title: next.data.title } : undefined}
+>
+  <Fragment slot="header">
+    <p class="meta">
+      <time datetime={date.toISOString()}>{formatMonth(date)}</time>
+      <span aria-hidden="true">·</span>
+      <span>{readingTime(post)} min read</span>
+    </p>
+    <h1 class="serif">{title}</h1>
+    <p class="lede">{description}</p>
+    <ul class="chip-row" aria-label="Topics">
+      {tags.map((t) => <li class="chip">{t}</li>)}
+    </ul>
+  </Fragment>
+  <Content />
+</Article>
+
+<style>
+  .meta {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    font-family: var(--font-sans);
+    font-size: 12.5px;
+    color: var(--text-faint);
+  }
+
+  h1 {
+    font-size: clamp(34px, 5.4vw, 52px);
+    line-height: 1.06;
+    letter-spacing: -0.02em;
+  }
+
+  .lede {
+    margin-top: 18px;
+    margin-bottom: 20px;
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--text-muted);
+  }
+</style>

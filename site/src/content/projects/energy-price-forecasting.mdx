@@ -1,0 +1,61 @@
+---
+title: "Energy Price Forecasting"
+tagline: "Day-ahead prices for DE, FR and NL"
+summary: "An MLOps pipeline forecasting day-ahead electricity prices in Germany, France and the Netherlands from ENTSO-E data, with models tracked in MLflow and served through FastAPI on Cloud Run."
+description: "Production-ready time series forecasting for European electricity markets with FastAPI, Streamlit, and Google Cloud deployment."
+stack: ["XGBoost", "LightGBM", "MLflow", "FastAPI", "statsmodels", "Streamlit", "Docker", "Cloud Run", "GitHub Actions", "ENTSO-E API"]
+tags: ["mlops", "ml"]
+demo: "https://youtu.be/ZK0IV5H3RXo"
+code: "https://github.com/aishwaryaj7/aishwaryaj7.github.io/tree/main/ai-portfolio/projects/energy_price_forecasting"
+order: 2
+skills: ["Time-series forecasting", "Feature engineering", "Backtesting", "Experiment tracking", "API design", "Cloud deployment", "CI/CD"]
+---
+import Architecture from '../../components/project/Architecture.astro';
+import Highlights from '../../components/project/Highlights.astro';
+import PriceDay from '../../components/project/PriceDay.astro';
+
+## Overview
+
+Tomorrow's electricity prices are set in an auction every day, and they swing with demand, wind and sun. This project forecasts those day-ahead prices for Germany, France and the Netherlands, from raw market data to a deployed API.
+
+Simple baselines set the bar first; machine learning models have to beat them in honest backtests before they are served.
+
+<PriceDay />
+
+## How it works
+
+<Architecture
+  label="Energy forecasting architecture: ENTSO-E data, training with baselines and gradient boosting, MLflow tracking, FastAPI serving on Cloud Run"
+  groups={[
+    { title: 'Data', next: 'features', nodes: [
+      { label: 'Day-ahead prices', logos: ['ENTSO-E'] },
+      { label: 'Load and renewables', logos: ['ENTSO-E'] },
+      { label: 'Weather features' },
+    ] },
+    { title: 'Training', next: 'logs', nodes: [
+      { label: 'Feature pipeline', logos: ['python'] },
+      { label: 'Baselines', logos: ['statsmodels'] },
+      { label: 'Gradient boosting', logos: ['XGBoost', 'LightGBM'] },
+    ] },
+    { title: 'Tracking', next: 'serves', nodes: [
+      { label: 'Backtests', logos: ['python'] },
+      { label: 'Experiments', logos: ['mlflow'], kind: 'store' },
+    ] },
+    { title: 'Serving', nodes: [
+      { label: 'Forecast API', logos: ['fastapi'] },
+      { label: 'Dashboard', logos: ['streamlit'] },
+      { label: 'Deployment', logos: ['docker', { name: 'googlecloud', title: 'Google Cloud Run' }, 'githubactions'] },
+    ] },
+  ]}
+/>
+
+## Highlights
+
+<Highlights items={[
+  'Three markets: DE, FR, NL',
+  'Baselines first',
+  'Rolling-origin backtests',
+  'MLflow tracking',
+  '1 to 168 hour forecasts',
+  'CI/CD to Cloud Run',
+]} />

@@ -1,0 +1,60 @@
+---
+title: "Speech2Text"
+tagline: "Audio transcription with HuBERT"
+summary: "A speech recognition app built on HuggingFace Transformers and the HuBERT model, with a Streamlit interface for uploading and transcribing audio."
+description: "Speech-to-text transcriber using HuggingFace Transformers and the HuBERT model."
+stack: ["HuBERT", "HuggingFace Transformers", "PyTorch", "librosa", "pydub", "Streamlit"]
+tags: ["ml", "genai"]
+demo: "https://youtu.be/eSG_FsoUtRo"
+code: "https://github.com/aishwaryaj7/aishwaryaj7.github.io/tree/main/ai-portfolio/projects/speech2text"
+order: 4
+skills: ["Speech recognition", "Audio processing", "Model inference"]
+---
+import Architecture from '../../components/project/Architecture.astro';
+import Highlights from '../../components/project/Highlights.astro';
+import Shots from '../../components/project/Shots.astro';
+import SpeechSplit from '../../components/project/SpeechSplit.astro';
+import transcript from '../../assets/projects/speech2text/transcript.png';
+
+## Overview
+
+Upload an audio or video file and get a transcript. Long recordings are cut at natural pauses into short pieces, each piece is transcribed by HuBERT, and the text is stitched back together with timestamps.
+
+<SpeechSplit />
+
+## How it works
+
+<Architecture
+  label="Speech2Text architecture: upload, split at pauses and resample, transcribe with HuBERT, then output a timestamped transcript"
+  groups={[
+    { title: 'Input', next: 'split', nodes: [
+      { label: 'Audio or video', logos: ['streamlit'] },
+    ] },
+    { title: 'Prepare', next: 'chunks', nodes: [
+      { label: 'Pause detection', logos: ['pydub'] },
+      { label: 'Resample to 16 kHz', logos: ['librosa'] },
+    ] },
+    { title: 'Transcribe', next: 'join', nodes: [
+      { label: 'HuBERT large', logos: [{ name: 'meta', title: 'HuBERT by Meta AI' }, 'huggingface'], kind: 'model' },
+      { label: 'CTC decoding', logos: ['pytorch'] },
+    ] },
+    { title: 'Output', nodes: [
+      { label: 'Timestamped transcript' },
+      { label: 'Download as .txt', logos: ['streamlit'] },
+    ] },
+  ]}
+/>
+
+<Shots shots={[
+  { src: transcript, alt: 'Speech2Text showing the timestamped transcript of the test recording and the final text with a download button', caption: 'The test recording transcribed, with its timestamp and a download button.' },
+]} />
+
+## Highlights
+
+<Highlights items={[
+  'Cuts at natural pauses',
+  'Any recording length',
+  '16 kHz resampling',
+  'Timestamps',
+  'Audio and video files',
+]} />

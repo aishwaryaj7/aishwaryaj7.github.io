@@ -1,0 +1,59 @@
+---
+title: "Doc Parser"
+tagline: "PDF extraction and table Q&A"
+summary: "Extracts text, images and metadata from PDFs into JSON or Markdown, and answers questions about the tables it finds."
+description: "PDF extraction tool that converts documents to structured JSON or Markdown, with question answering over tables."
+stack: ["PyMuPDF", "pymupdf4llm", "OpenAI API", "Streamlit", "Python"]
+tags: ["ml"]
+demo: "https://youtu.be/XFfAS7NJs3k"
+code: "https://github.com/aishwaryaj7/aishwaryaj7.github.io/tree/main/ai-portfolio/projects/doc-parser"
+order: 5
+skills: ["Document parsing", "Data structuring", "LLM integration"]
+---
+import Architecture from '../../components/project/Architecture.astro';
+import Highlights from '../../components/project/Highlights.astro';
+import Shots from '../../components/project/Shots.astro';
+import markdown from '../../assets/projects/doc-parser/markdown.png';
+import images from '../../assets/projects/doc-parser/images.png';
+
+## Overview
+
+Turns a PDF into data you can use: text page by page, the embedded images, detected tables and the document's metadata, as JSON or Markdown. You can then ask questions about the tables in plain language.
+
+<Shots shots={[
+  { src: markdown, alt: 'A survey paper on radar target recognition converted to Markdown in the Doc Parser app', caption: 'A research paper converted to Markdown, with headings and authors kept.' },
+  { src: images, alt: 'Figures extracted from the PDF, each with a download link', caption: 'The figures from the same PDF, extracted and ready to download.' },
+]} />
+
+## How it works
+
+<Architecture
+  label="Doc Parser architecture: PyMuPDF parses the uploaded PDF into JSON or Markdown, and an OpenAI model answers questions about its tables"
+  groups={[
+    { title: 'Input', next: 'parse', nodes: [
+      { label: 'PDF upload', logos: ['streamlit'] },
+    ] },
+    { title: 'Parse', next: 'export', nodes: [
+      { label: 'Text and metadata', logos: ['PyMuPDF'] },
+      { label: 'Images' },
+      { label: 'Tables' },
+    ] },
+    { title: 'Output', next: 'ask', nodes: [
+      { label: 'JSON', logos: ['python'] },
+      { label: 'Markdown', logos: ['pymupdf4llm'] },
+    ] },
+    { title: 'Table Q&A', nodes: [
+      { label: 'gpt-3.5-turbo', logos: ['openai'], kind: 'model' },
+    ] },
+  ]}
+/>
+
+## Highlights
+
+<Highlights items={[
+  'JSON or Markdown',
+  'Image extraction',
+  'Table detection',
+  'Questions about tables',
+  'Choose what to extract',
+]} />

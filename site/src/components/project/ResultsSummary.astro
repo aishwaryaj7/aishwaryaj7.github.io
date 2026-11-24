@@ -1,0 +1,173 @@
+---
+// Visual summary under a results table: one verdict card per system, and progress meters for
+// what to improve next.
+interface Props {
+  systems: { name: string; verdict: string; stats: string[]; best?: boolean }[];
+  next: { label: string; value: number }[];
+}
+const { systems, next } = Astro.props;
+---
+
+<div class="summary">
+  <ul class="verdicts">
+    {systems.map((s) => (
+      <li class:list={{ best: s.best }}>
+        <span class="name">{s.name}{s.best && <span class="tag">This project</span>}</span>
+        <span class="verdict">{s.verdict}</span>
+        <ul class="stats">
+          {s.stats.map((x) => <li>{x}</li>)}
+        </ul>
+      </li>
+    ))}
+  </ul>
+
+  <div class="next">
+    <p class="next-title">Next to improve</p>
+    {next.map((n) => (
+      <div class="meter">
+        <span class="m-label">{n.label}</span>
+        <span class="m-bar" role="meter" aria-valuenow={n.value} aria-valuemin="0" aria-valuemax="100" aria-label={n.label}>
+          <span style={`width:${n.value}%`}></span>
+        </span>
+        <span class="m-value">{n.value}%</span>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .summary {
+    display: grid;
+    gap: 12px;
+    margin-top: 1.4em;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .verdicts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .verdicts > li {
+    display: grid;
+    align-content: start;
+    gap: 6px;
+    margin: 0;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+
+  .verdicts > li.best {
+    border-color: color-mix(in oklab, var(--accent) 55%, transparent);
+    background: color-mix(in oklab, var(--accent) 8%, var(--surface));
+  }
+
+  .name {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  .tag {
+    padding: 1px 7px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--bg);
+    font-size: 10px;
+    letter-spacing: 0.02em;
+  }
+
+  .verdict {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .stats {
+    display: grid;
+    gap: 3px;
+    margin-top: 2px;
+  }
+
+  .stats li {
+    margin: 0;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .next {
+    display: grid;
+    gap: 10px;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+
+  .next-title {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  .meter {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(80px, 1.1fr) 40px;
+    align-items: center;
+    gap: 14px;
+    font-size: 13.5px;
+  }
+
+  .m-bar {
+    height: 8px;
+    border-radius: 999px;
+    background: var(--border);
+    overflow: hidden;
+  }
+
+  .m-bar span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--t-mlops);
+  }
+
+  .m-value {
+    font-weight: 600;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (max-width: 640px) {
+    .verdicts {
+      grid-template-columns: 1fr;
+    }
+
+    .meter {
+      grid-template-columns: 1fr 40px;
+      gap: 6px 12px;
+    }
+
+    .m-bar {
+      grid-column: 1 / -1;
+      grid-row: 2;
+    }
+  }
+</style>

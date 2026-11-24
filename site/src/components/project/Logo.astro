@@ -1,0 +1,112 @@
+---
+// A tech logo for the architecture diagrams. Logos come from simple-icons (CC0) and LobeHub
+// (MIT, vendored in src/assets/logos). Tools without a published logo get a small text badge.
+import {
+  siLanggraph,
+  siStreamlit,
+  siFastapi,
+  siPostgresql,
+  siMlflow,
+  siDocker,
+  siGooglecloud,
+  siGithubactions,
+  siHuggingface,
+  siMistralai,
+  siPytorch,
+  siPython,
+  siModelcontextprotocol,
+} from 'simple-icons';
+import openai from '../../assets/logos/openai.svg?raw';
+import azure from '../../assets/logos/azure.svg?raw';
+import langfuse from '../../assets/logos/langfuse.svg?raw';
+import llamaindex from '../../assets/logos/llamaindex.svg?raw';
+import meta from '../../assets/logos/meta.svg?raw';
+
+type SimpleIcon = { title: string; hex: string; path: string };
+const simple: Record<string, SimpleIcon> = {
+  langgraph: siLanggraph,
+  streamlit: siStreamlit,
+  fastapi: siFastapi,
+  postgresql: siPostgresql,
+  mlflow: siMlflow,
+  docker: siDocker,
+  googlecloud: siGooglecloud,
+  githubactions: siGithubactions,
+  huggingface: siHuggingface,
+  mistral: siMistralai,
+  pytorch: siPytorch,
+  python: siPython,
+  mcp: siModelcontextprotocol,
+};
+const raw: Record<string, { title: string; svg: string }> = {
+  openai: { title: 'OpenAI', svg: openai },
+  azure: { title: 'Microsoft Azure', svg: azure },
+  langfuse: { title: 'Langfuse', svg: langfuse },
+  llamaindex: { title: 'LlamaIndex', svg: llamaindex },
+  meta: { title: 'Meta', svg: meta },
+};
+
+interface Props {
+  /** A logo key (see above), or any other text, which is shown as a badge */
+  name: string;
+  /** Overrides the accessible name, e.g. "CLIP (OpenAI)" */
+  title?: string;
+}
+const { name, title } = Astro.props;
+const key = name.toLowerCase();
+
+// Very dark brand colours disappear on the dark theme: use the text colour for those
+const luminance = (hex: string) => {
+  const [r, g, b] = [0, 2, 4].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255);
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+};
+
+const icon = simple[key];
+const file = raw[key];
+const label = title ?? icon?.title ?? file?.title ?? name;
+const fill = icon && luminance(icon.hex) > 0.3 ? `#${icon.hex}` : 'currentColor';
+// Strip fixed sizes from vendored SVGs so CSS controls them
+const fileSvg = file?.svg.replace(/\s(width|height)="1em"/g, '').replace(/<title>[\s\S]*?<\/title>/, '');
+---
+
+{icon ? (
+  <span class="logo" title={label} role="img" aria-label={label}>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d={icon.path} fill={fill} /></svg>
+  </span>
+) : file ? (
+  <span class="logo" title={label} role="img" aria-label={label} set:html={fileSvg} />
+) : (
+  <span class="badge" title={label}>{name}</span>
+)}
+
+<style>
+  .logo {
+    display: inline-grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    background: var(--bg-subtle);
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+
+  .logo :global(svg) {
+    width: 15px;
+    height: 15px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    height: 26px;
+    padding: 0 8px;
+    border-radius: 7px;
+    background: var(--bg-subtle);
+    border: 1px solid var(--border);
+    font-size: 10.5px;
+    font-weight: 500;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+</style>

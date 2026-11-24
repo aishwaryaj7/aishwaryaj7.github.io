@@ -1,0 +1,322 @@
+/* Long-form text: blog posts and project write-ups */
+.prose {
+  counter-reset: fig;
+  font-size: 16.5px;
+  line-height: 1.75;
+  color: var(--text);
+}
+
+.prose > * + * {
+  margin-top: 1.1em;
+}
+
+.prose p {
+  text-wrap: pretty;
+}
+
+.prose h2,
+.prose h3,
+.prose h4 {
+  scroll-margin-top: calc(var(--header-h) + 20px);
+  text-wrap: balance;
+}
+
+.prose h2 {
+  margin-top: 2.4em;
+  font-size: 23px;
+  letter-spacing: -0.02em;
+}
+
+.prose h3 {
+  margin-top: 2em;
+  font-size: 18px;
+}
+
+.prose h4 {
+  margin-top: 1.6em;
+  font-size: 16px;
+}
+
+.prose h2 + *,
+.prose h3 + *,
+.prose h4 + * {
+  margin-top: 0.6em;
+}
+
+.prose a {
+  color: var(--text);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklab, var(--accent) 55%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.15s, color 0.15s;
+}
+
+.prose a:hover {
+  color: var(--accent);
+  text-decoration-color: currentColor;
+}
+
+.prose strong {
+  font-weight: 600;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.3em;
+}
+
+.prose li + li {
+  margin-top: 0.35em;
+}
+
+.prose li::marker {
+  color: var(--text-faint);
+}
+
+.prose hr {
+  margin-block: 2.4em;
+  border: 0;
+  border-top: 1px solid var(--border);
+}
+
+.prose blockquote {
+  margin-inline: 0;
+  padding: 2px 0 2px 18px;
+  border-left: 2px solid var(--accent);
+  color: var(--text-muted);
+}
+
+/* Inline code */
+.prose :not(pre) > code {
+  padding: 0.12em 0.38em;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: var(--bg-subtle);
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+}
+
+/* Code blocks (Shiki, dual light/dark theme via CSS variables) */
+.code-block {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--code-bg);
+  overflow: hidden;
+}
+
+.prose > .code-block {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+.code-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 36px;
+  padding: 0 8px 0 14px;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  color: var(--text-faint);
+}
+
+.copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 26px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-faint);
+  font: inherit;
+  cursor: pointer;
+  transition: color 0.15s, background-color 0.15s;
+}
+
+.copy-btn:hover {
+  color: var(--text);
+  background: var(--bg);
+}
+
+.copy-btn[data-copied] {
+  color: var(--positive);
+}
+
+.prose pre.astro-code {
+  margin: 0;
+  padding: 14px 16px;
+  overflow-x: auto;
+  background: transparent !important;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.65;
+  tab-size: 4;
+}
+
+.prose pre.astro-code > code {
+  font-family: inherit;
+}
+
+.astro-code,
+.astro-code span {
+  color: var(--shiki-light);
+}
+
+[data-theme='dark'] .astro-code,
+[data-theme='dark'] .astro-code span {
+  color: var(--shiki-dark);
+}
+
+/* Tables scroll sideways on small screens instead of squashing */
+.prose table {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.prose th,
+.prose td {
+  padding: 9px 14px 9px 0;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.prose th {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.prose td:first-child {
+  color: var(--text-muted);
+}
+
+/* Diagrams */
+.diagram {
+  font-size: 13px;
+  line-height: 1.35;
+  margin-block: 1.8em;
+  padding: 20px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background:
+    radial-gradient(circle at 1px 1px, var(--border) 1px, transparent 0) 0 0 / 16px 16px,
+    var(--bg-subtle);
+  overflow-x: auto;
+  text-align: center;
+}
+
+.diagram svg {
+  display: inline-block;
+  height: auto;
+  margin-inline: auto;
+}
+
+.diagram[data-state='loading'] {
+  min-height: 240px;
+}
+
+.diagram pre {
+  display: none;
+}
+
+/* Diagram node roles, coloured from the theme so they work in light and dark */
+:root {
+  --amber: #b45309;
+}
+
+:root[data-theme='dark'] {
+  --amber: #f0b062;
+}
+
+.diagram .node.model :is(rect, path, polygon, circle, ellipse) {
+  fill: color-mix(in oklab, var(--accent) 12%, var(--surface)) !important;
+  stroke: color-mix(in oklab, var(--accent) 70%, transparent) !important;
+}
+
+.diagram .node.person :is(rect, path, polygon, circle, ellipse) {
+  fill: color-mix(in oklab, var(--amber) 12%, var(--surface)) !important;
+  stroke: color-mix(in oklab, var(--amber) 70%, transparent) !important;
+}
+
+.diagram .node.store :is(rect, path, polygon, circle, ellipse) {
+  fill: var(--bg-subtle) !important;
+}
+
+.diagram .nodeLabel small {
+  display: block;
+  margin-top: 1px;
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  color: var(--text-faint);
+}
+
+.diagram .edgeLabel,
+.diagram .edgeLabel p,
+.diagram .edgeLabel span {
+  font-size: 11.5px !important;
+  color: var(--text-faint) !important;
+}
+
+.diagram figcaption,
+.prose .diagram + p > em:only-child {
+  color: var(--text-faint);
+}
+
+.diagram .node rect,
+.diagram .cluster rect {
+  rx: 7px;
+  ry: 7px;
+}
+
+.diagram .node :is(rect, path, polygon, circle, ellipse) {
+  stroke-width: 1px !important;
+}
+
+.diagram .cluster rect {
+  stroke-dasharray: 3 3;
+}
+
+.diagram .cluster-label,
+.diagram .cluster-label span {
+  font-family: var(--font-sans);
+  font-size: 11px !important;
+  color: var(--text-faint) !important;
+}
+
+/* Numbered figures: diagrams, charts and screenshots */
+.prose .fig {
+  counter-increment: fig;
+}
+
+.fig-cap {
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-muted);
+  text-align: left;
+}
+
+
+/* Grids and tile rows inside articles are not prose lists */
+.prose ul:is(.chip-row, .features) {
+  padding-left: 0;
+}
+
+.prose :is(.chip-row, .features) > li + li {
+  margin-top: 0;
+}
+
+.prose .rules {
+  margin-top: 1em;
+}

@@ -1,0 +1,302 @@
+/* ==========================================================================
+   Design tokens
+   Light is the default; dark applies via [data-theme="dark"], which the inline
+   script in Base.astro sets from the visitor's saved choice or system setting.
+   ========================================================================== */
+:root {
+  color-scheme: light;
+
+  --bg: #fbfbfa;
+  --bg-subtle: #f4f4f2;
+  --surface: #ffffff;
+  --border: #e6e6e3;
+  --border-strong: #d4d4d0;
+  --text: #18181b;
+  --text-muted: #5c5c63;
+  --text-faint: #8b8b92;
+  --accent: #3f4fd9;
+  --accent-soft: color-mix(in oklab, var(--accent) 10%, transparent);
+  --positive: #16a34a;
+  --code-bg: #f6f6f4;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 4px 16px -8px rgb(0 0 0 / 0.08);
+
+  --w-page: 1040px;
+  --w-prose: 680px;
+  --gutter: clamp(16px, 4vw, 32px);
+  --radius: 10px;
+  --radius-sm: 6px;
+  --header-h: 60px;
+
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  /* One colour per topic, shared by the embedding map and the project covers */
+  --t-agents: #7c3aed;
+  --t-tools: #0d9488;
+  --t-rag: #2563eb;
+  --t-mlops: #d97706;
+  --t-speech: #e11d48;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  /* Deep ink with a faint blue cast */
+  --bg: #07090e;
+  --bg-subtle: #0c0f16;
+  --surface: #0f131b;
+  --border: #1a202b;
+  --border-strong: #273041;
+  --text: #e7eaf1;
+  --text-muted: #9ba3b4;
+  --text-faint: #646c7e;
+  --accent: #8ab4ff;
+  --positive: #4ade80;
+  --code-bg: #0b0e14;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 12px 32px -16px rgb(0 0 0 / 0.8);
+
+  --t-agents: #a78bfa;
+  --t-tools: #2dd4bf;
+  --t-rag: #60a5fa;
+  --t-mlops: #fbbf24;
+  --t-speech: #fb7185;
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + 16px);
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(80% 50% at 70% -10%, color-mix(in oklab, var(--accent) 7%, transparent), transparent 70%) no-repeat,
+    var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  font-feature-settings: 'ss01', 'cv11';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+p {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--text);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.container {
+  width: 100%;
+  max-width: calc(var(--w-page) + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   Shared components
+   ========================================================================== */
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.serif {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: border-color 0.15s, background-color 0.15s, transform 0.15s var(--ease);
+}
+
+.btn:hover {
+  border-color: var(--text-faint);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn-primary {
+  background: var(--text);
+  border-color: var(--text);
+  color: var(--bg);
+}
+
+.btn-primary:hover {
+  background: color-mix(in oklab, var(--text) 85%, var(--bg));
+  border-color: transparent;
+}
+
+.btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: color 0.15s;
+}
+
+.link-arrow svg {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.2s var(--ease);
+}
+
+.link-arrow:hover {
+  color: var(--text);
+}
+
+.link-arrow:hover svg {
+  transform: translate(2px, -2px);
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chip {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg-subtle);
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.section {
+  padding-block: clamp(36px, 6vw, 64px) 0;
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-head h2 {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.section-head .count {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  color: var(--text-faint);
+}
+
+/* Theme toggle shows the icon of the theme you'd switch to */
+[data-theme='dark'] .theme-icon-moon,
+[data-theme='light'] .theme-icon-sun {
+  display: none !important;
+}
+
+/* Entrance motion: one quiet fade, only for people who haven't opted out */
+@media (prefers-reduced-motion: no-preference) {
+  .rise {
+    animation: rise 0.7s var(--ease) both;
+    animation-delay: calc(var(--i, 0) * 70ms);
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

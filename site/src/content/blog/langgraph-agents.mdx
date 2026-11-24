@@ -1,0 +1,158 @@
+---
+title: "Who Decides What Happens Next? Building AI Agents with LangGraph"
+description: "What LangGraph gives an AI agent over a simple loop: state, nodes and edges, routing in code, pausing for a person with interrupt(), and surviving restarts with checkpointers."
+date: 2026-11-19
+tags: ["LangGraph", "AI Agents", "Human in the Loop", "Python"]
+---
+
+import AuditAgentFlow from '../../components/diagrams/AuditAgentFlow.astro';
+
+## The question I had to answer first
+
+When I started my latest project, an agent that checks online shop listings against EU consumer rules, the first design question wasn't about models or prompts. It was much simpler: who decides what happens next, the model or my code?
+
+Most agent tutorials pick the model. You give a language model a task and a list of tools, and it decides which tool to call, looks at the result, and decides again. It's a loop, and for a lot of problems it's the right one.
+
+For mine it wasn't. A compliance check has steps that must happen every time, in a fixed order. Some decisions belong to a person, not to a model. And an audit sometimes has to wait for that person, maybe until the next morning. That's what pushed me to LangGraph, and this post is what I wish someone had told me before I started: what a graph gives you over a loop, the few ideas you actually need, and when you don't need any of it.
+
+## The loop every agent starts as
+
+Here's the classic agent loop, stripped down:
+
+```python
+messages = [task]
+while True:
+    reply = model.invoke(messages)     # the model decides what to do next
+    if not reply.tool_calls:           # no tools asked for: it thinks it's done
+        break
+    messages += [reply, *run_tools(reply.tool_calls)]
+```
+
+This pattern is often called ReAct (reason, then act). Its strength is flexibility. A research assistant or a coding helper can't know its steps in advance, so the model has to plan as it goes.
+
+But that flexibility cuts both ways. The model can skip a step, call the same tool five times, or stop early because it feels confident. Nothing in this loop makes it run the price check before it writes about prices. That's acceptable in a chatbot. It's not acceptable in something that flags a seller's listing as a possible breach of the law.
+
+The loop also has nowhere to stop. If a person has to approve something halfway through, there's no clean place to wait: the loop is just a function running in memory. And if the server restarts, everything it did is gone.
+
+## What a graph actually is
+
+LangGraph describes your agent as a graph, a word that sounds more mathematical than it is. There are three parts:
+
+- **State**: a shared notebook that every step can read and write. In my agent, that's the listing, the problems found and the draft report.
+- **Nodes**: the steps. Each one is an ordinary Python function that takes the state and returns the parts it wants to change.
+- **Edges**: the arrows between steps, which say what comes next.
+
+If a loop is a chef improvising, a graph is the recipe card. The chef still does the cooking, but the order of the steps is written down.
+
+```python
+from typing import TypedDict
+from langgraph.graph import StateGraph, START, END
+
+class Audit(TypedDict, total=False):
+    offer_id: str
+    listing: dict
+    problems: list[str]
+    report: str
+
+def read_listing(state: Audit) -> dict:
+    return {"listing": load_listing(state["offer_id"])}
+
+def run_checks(state: Audit) -> dict:
+    return {"problems": run_all_checks(state["listing"])}
+
+def write_report(state: Audit) -> dict:
+    return {"report": ask_model_to_write(state["problems"])}
+
+graph = StateGraph(Audit)
+graph.add_node(read_listing)
+graph.add_node(run_checks)
+graph.add_node(write_report)
+graph.add_edge(START, "read_listing")
+graph.add_edge("read_listing", "run_checks")
+graph.add_edge("run_checks", "write_report")
+graph.add_edge("write_report", END)
+
+agent = graph.compile()
+agent.invoke({"offer_id": "P0171"})
+```
+
+A few things worth noticing. The nodes don't know about each other; they only read and update the state. Each node returns just the keys it changes, and LangGraph merges them in. And only one of these three steps needs a language model. That's deliberate: anything code can do reliably, code should do.
+
+## Letting the model decide, but only where it should
+
+A graph doesn't have to be a straight line. A conditional edge is a small function that looks at the state and picks the next step:
+
+```python
+def after_checks(state: Audit) -> str:
+    return "look_up_law" if state["problems"] else "write_report"
+
+graph.add_conditional_edges("run_checks", after_checks, ["look_up_law", "write_report"])
+```
+
+This is where the design gets interesting. In my agent, code decides the route. If the checks find nothing, the listing goes straight to its report and the model is never asked about the law. The model makes the judgement calls inside the steps: what kind of product this is, which passage of the law applies, and how to word a finding so a seller understands it.
+
+Loops are still allowed, they just have limits. The step that searches the law can go round at most three times. The step that writes the report is followed by a self-check in plain code, which tests that every price and percentage in the draft came from a check. If the draft fails, an edge sends it back to the model with the feedback, and after two failed tries another edge hands it to a larger model. Each of those rules is a tiny routing function I can read and unit test, instead of a sentence in a prompt that I hope the model follows.
+
+<AuditAgentFlow />
+
+## The pause button: interrupt()
+
+This is the feature that sold me. Inside any node you can call `interrupt()`, and the graph stops right there. Whatever you pass to it goes to the outside world, for example a review screen. When the person answers, you resume the graph with their answer, and `interrupt()` returns it as if nothing had happened.
+
+```python
+from langgraph.checkpoint.memory import InMemorySaver
+from langgraph.types import Command, interrupt
+
+def human_review(state: Audit) -> dict:
+    decision = interrupt({"please_decide_on": state["problems"]})
+    return {"review": decision}
+
+# add human_review to the graph after write_report, then:
+agent = graph.compile(checkpointer=InMemorySaver())
+config = {"configurable": {"thread_id": "audit-42"}}
+
+agent.invoke({"offer_id": "P0171"}, config)          # runs until the pause
+agent.invoke(Command(resume={"pumped_price": "approve"}), config)
+```
+
+Two details matter in practice.
+
+First, pausing needs a checkpointer (more on that below) and a `thread_id`, which is simply the name of this particular run. Every audit gets its own.
+
+Second, when the graph resumes, the paused node starts again from its first line, not from the `interrupt()` call. So anything that runs before `interrupt()` in that node runs twice. Keep side effects such as sending an email or charging a card out of that node, or put them after the pause.
+
+In my agent the review node also checks the answer. If a reviewer rejects a finding without giving a reason, the node calls `interrupt()` again with the error, and the screen asks again. The graph can't move on until the review is complete, and that rule lives in one place.
+
+## Surviving a restart: checkpointers
+
+A checkpointer saves the state of each thread to storage. `InMemorySaver` is perfect for tests and notebooks. For anything real, you swap in a database:
+
+```python
+from langgraph.checkpoint.postgres import PostgresSaver
+
+with PostgresSaver.from_conn_string(DATABASE_URL) as saver:
+    saver.setup()                       # creates its tables the first time
+    agent = graph.compile(checkpointer=saver)
+```
+
+Now a paused audit is just a few rows in Postgres. I can stop the API, deploy a new version and start it again, and the same audits are still waiting for review, exactly where they paused. The reviewer never notices.
+
+You can also choose how often it saves. By default LangGraph saves after every step, so a crash in the middle of a run loses almost nothing. My audits take about 20 seconds, so I told it to save only when the graph pauses or ends (`durability="exit"`). For one audit that meant one saved checkpoint instead of nine. If the server dies mid-audit, I start that audit again. The state that really needs protecting is the paused one, because that's where a person's time is involved.
+
+## When you don't need LangGraph
+
+I like LangGraph, but it adds weight: a framework, a state schema and a new way of thinking about your code. You probably don't need it if:
+
+- your app makes one model call, or a fixed chain of calls with no branches,
+- nothing ever has to wait for a person, and
+- runs are short, and losing one is no big deal.
+
+In those cases a plain function is easier to read and easier to debug.
+
+A graph earns its place when you have branches and loops you want to control, a person in the loop, work that must survive a restart, or when you want to watch every step as it happens. LangGraph can stream each node's update as soon as it finishes, which is how my review screen shows an audit moving forward live.
+
+## What I took away
+
+The biggest shift for me wasn't technical. It was learning to split the work honestly: code does what code is good at (order, maths, rules and limits), the model does what only a model can do (reading and writing language), and a person signs off on anything with consequences. LangGraph is a good way to write that split down so it doesn't drift.
+
+If you'd like to see the whole thing, the agent from this post is [ListingAudit](../projects/listingaudit.html), and its code is on [GitHub](https://github.com/aishwaryaj7/listingaudit).

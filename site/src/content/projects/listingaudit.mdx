@@ -1,0 +1,93 @@
+---
+title: "ListingAudit"
+tagline: "EU compliance agent for online shop listings"
+summary: "A multimodal agent that audits shop listings against EU consumer and product-safety law, cites the article behind each finding, and has a person approve every one. Evaluated against two simpler baselines and deployed on Azure."
+description: "A multimodal AI agent that audits online shop listings against EU consumer and product-safety rules, with LangGraph, MCP, pgvector, CLIP and human review, deployed on Azure."
+metrics:
+  - { value: "93%", label: "precision on flagged problems" }
+  - { value: "5%", label: "false alarms on clean listings" }
+  - { value: "400", label: "unseen test listings" }
+stack: ["LangGraph", "MCP", "Azure OpenAI", "pgvector", "CLIP", "multilingual-e5", "FastAPI", "Streamlit", "PostgreSQL", "DeepEval", "Langfuse", "Docker", "Azure Container Apps", "Bicep", "GitHub Actions"]
+skills: ["Agent design", "RAG over legal text", "Multimodal AI", "LLM evaluation", "Guardrails", "Human-in-the-loop APIs", "Infrastructure as code", "CI/CD"]
+tags: ["genai", "mlops"]
+demo: "https://youtu.be/PIF6hISSNfA"
+code: "https://github.com/aishwaryaj7/listingaudit"
+order: 1
+featured: true
+---
+import Architecture from '../../components/project/Architecture.astro';
+import Highlights from '../../components/project/Highlights.astro';
+import ResultsSummary from '../../components/project/ResultsSummary.astro';
+
+## Overview
+
+Shops in the EU must show honest discounts (the 30-day price rule), who made a product and who answers for it in the EU, safety warnings, unit prices, fabric content and energy labels. Marketplaces have millions of listings and few people to check them.
+
+ListingAudit does the first pass. Plain code checks everything it can, the language model only decides what code can't settle, and a reviewer approves every finding before anything reaches the seller.
+
+## How it works
+
+<Architecture
+  label="ListingAudit architecture: a review app runs the LangGraph agent, which uses an MCP toolbox and PostgreSQL"
+  groups={[
+    { title: 'Review app', next: 'runs', nodes: [
+      { label: 'Reviewer', logos: ['streamlit'], kind: 'person' },
+      { label: 'Review API', logos: ['fastapi'] },
+    ] },
+    { title: 'Agent', next: 'MCP', nodes: [
+      { label: 'Audit agent', logos: ['langgraph'], kind: 'model' },
+      { label: 'gpt-5-mini', logos: ['openai', 'azure'], kind: 'model' },
+      { label: 'Traces', logos: ['langfuse'], kind: 'soft' },
+    ] },
+    { title: 'MCP toolbox', next: 'reads', nodes: [
+      { label: 'Plain-code checks', logos: ['python'] },
+      { label: 'Photo check', logos: [{ name: 'openai', title: 'CLIP (OpenAI)' }] },
+      { label: 'Rulebook search', logos: [{ name: 'huggingface', title: 'multilingual-e5 (Hugging Face)' }, { name: 'postgresql', title: 'pgvector' }] },
+    ] },
+    { title: 'Storage', nodes: [
+      { label: 'Paused audits', logos: ['postgresql'], kind: 'store' },
+      { label: 'Listings, rulebook', logos: ['postgresql'], kind: 'store' },
+    ] },
+  ]}
+/>
+
+## Highlights
+
+<Highlights items={[
+  'Plain code first',
+  'Self-checked drafts',
+  'Prompt-injection safe',
+  'MCP toolbox',
+  '84% top-5 law retrieval',
+  'Pause and resume',
+  'Hidden answer key',
+  'LLM-as-judge evaluation',
+  'Azure, written in Bicep',
+]} />
+
+## Results
+
+The agent was compared with two simpler systems on 400 synthetic exam listings that nothing was tuned on: **rules only** (plain code, no AI) and **one big prompt** (the listing, its price history, its photo and the rules in one request to the model, no tools).
+
+| Question | Agent | Rules only | One big prompt |
+| --- | --- | --- | --- |
+| Price problems caught | **100%** | 100% | 100% |
+| Missing information and label problems caught | **92%** | 92% | 97% |
+| Swapped photos caught | **77%** | 0% | 100% |
+| Clean listings with a false alarm | **5%** | 0% | 58% |
+| Flagged problems that are real (precision) | **93%** | 97% | 51% |
+| Reports with only real numbers | **100%** | 100% | 67% |
+| Clarity / fairness, judged by a model (1 to 5) | **4.33 / 4.75** | n/a | 1.88 / 2.24 |
+| Cost per 1,000 listings | **$3.16** | $0 | $2.34 |
+
+<ResultsSummary
+  systems={[
+    { name: 'Agent', verdict: 'Precise, and every number is real', best: true, stats: ['93% precision', '5% false alarms', 'No made-up numbers'] },
+    { name: 'Rules only', verdict: 'Accurate, but blind to photos', stats: ['97% precision', '0% swapped photos caught', 'No language model'] },
+    { name: 'One big prompt', verdict: 'Catches more, half of it wrong', stats: ['51% precision', '58% false alarms', '1 in 3 reports with made-up numbers'] },
+  ]}
+  next={[
+    { label: 'Findings that quote the exact article of the law', value: 36 },
+    { label: 'Suggested fixes that pass the check', value: 67 },
+  ]}
+/>

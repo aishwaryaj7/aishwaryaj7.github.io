@@ -1,0 +1,77 @@
+---
+// The test recording's waveform with the pauses Speech2Text's silence rule detects.
+import wave from '../../data/generated/waveform.json';
+
+const W = 680;
+const H = 150;
+const m = { l: 8, r: 8, t: 14, b: 26 };
+const bw = (W - m.l - m.r) / wave.bins.length;
+const mid = m.t + (H - m.t - m.b) / 2;
+const amp = (H - m.t - m.b) / 2;
+const tx = (s: number) => m.l + (s / wave.seconds) * (W - m.l - m.r);
+const ticks = Array.from({ length: Math.floor(wave.seconds / 5) + 1 }, (_, i) => i * 5);
+---
+
+<figure class="chart t-speech">
+  <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`Waveform of a ${Math.round(wave.seconds)} second recording with ${wave.splits.length} detected pause`}>
+    <line class="axis" x1={m.l} x2={W - m.r} y1={mid} y2={mid} />
+    {wave.bins.map((v, i) => {
+      const h = Math.max(1, v * amp * 1.9);
+      return <rect x={m.l + i * bw} y={mid - h / 2} width={Math.max(1, bw - 1)} height={h} rx="0.8" />;
+    })}
+    {wave.splits.map((s) => (
+      <g class="split">
+        <line x1={tx(s)} x2={tx(s)} y1={m.t - 4} y2={H - m.b + 2} />
+        <text x={tx(s) + 6} y={m.t + 4}>pause ≥ 750 ms · {s.toFixed(1)} s</text>
+      </g>
+    ))}
+    {ticks.map((t) => (
+      <text class="ax" x={tx(t)} y={H - 8} text-anchor="middle">{t}s</text>
+    ))}
+  </svg>
+</figure>
+
+<style>
+  .chart {
+    margin: 1.6em 0;
+  }
+
+  svg {
+    width: 100%;
+    height: auto;
+    padding: 10px 8px 2px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-subtle);
+  }
+
+  .t-speech {
+    --c: var(--t-speech);
+  }
+
+  rect {
+    fill: var(--c);
+    opacity: 0.8;
+  }
+
+  .axis {
+    stroke: var(--border);
+  }
+
+  .split line {
+    stroke: var(--text);
+    stroke-width: 1.2;
+    stroke-dasharray: 3 3;
+  }
+
+  .split text,
+  .ax {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    fill: var(--text-muted);
+  }
+
+  .ax {
+    fill: var(--text-faint);
+  }
+</style>

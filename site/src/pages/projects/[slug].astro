@@ -1,0 +1,162 @@
+---
+import { render } from 'astro:content';
+import Article from '../../layouts/Article.astro';
+import Icon from '../../components/Icon.astro';
+import { getProjects } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return projects.map((project, i) => ({
+    params: { slug: project.id },
+    props: { project, next: projects[(i + 1) % projects.length] },
+  }));
+}
+
+const { project, next } = Astro.props;
+const { Content, headings } = await render(project);
+const { title, tagline, summary, description, stack, skills, demo, code, metrics } = project.data;
+---
+
+<Article
+  title={`${title}: ${tagline}`}
+  description={description}
+  headings={headings}
+  back={{ href: '/#work', label: 'All work' }}
+  next={next.id !== project.id ? { href: `/projects/${next.id}`, label: 'Next project', title: `${next.data.title}: ${next.data.tagline}` } : undefined}
+>
+  <Fragment slot="header">
+    <p class="eyebrow">Case study</p>
+    <h1 class="serif">{title}</h1>
+    <p class="tagline">{tagline}</p>
+    <p class="lede">{summary}</p>
+
+    {metrics && (
+      <dl class="metrics">
+        {metrics.map((m) => (
+          <div>
+            <dt>{m.label}</dt>
+            <dd class="serif">{m.value}</dd>
+          </div>
+        ))}
+      </dl>
+    )}
+
+    <div class="actions">
+      {demo && <a class="btn btn-primary" href={demo} target="_blank" rel="noopener"><Icon name="play" />Watch demo</a>}
+      {code && <a class="btn" href={code} target="_blank" rel="noopener"><Icon name="github" />Source code</a>}
+    </div>
+
+    <dl class="tiles">
+      <div>
+        <dt>Built with</dt>
+        <dd><ul class="chip-row">{stack.map((s) => <li class="chip">{s}</li>)}</ul></dd>
+      </div>
+      {skills.length > 0 && (
+        <div>
+          <dt>Skills</dt>
+          <dd><ul class="chip-row">{skills.map((s) => <li class="chip skill">{s}</li>)}</ul></dd>
+        </div>
+      )}
+    </dl>
+  </Fragment>
+  <Content />
+</Article>
+
+<style>
+  .eyebrow {
+    margin-bottom: 14px;
+    color: var(--accent);
+  }
+
+  h1 {
+    font-size: clamp(40px, 6vw, 60px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .tagline {
+    margin-top: 8px;
+    font-size: 18px;
+    color: var(--text-faint);
+  }
+
+  .lede {
+    margin-top: 20px;
+    font-size: 17.5px;
+    line-height: 1.6;
+    color: var(--text-muted);
+  }
+
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin: 24px 0 0;
+    padding: 16px 0;
+    border-block: 1px solid var(--border);
+  }
+
+  .metrics div {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+  }
+
+  .metrics dd {
+    margin: 0;
+    font-size: clamp(30px, 4vw, 40px);
+    line-height: 1;
+  }
+
+  .metrics dt {
+    margin-top: 6px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 24px;
+  }
+
+  .tiles {
+    display: grid;
+    gap: 12px;
+    margin: 22px 0 0;
+  }
+
+  .tiles div {
+    display: grid;
+    grid-template-columns: 84px minmax(0, 1fr);
+    gap: 12px;
+    align-items: start;
+  }
+
+  .tiles dt {
+    padding-top: 3px;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  .tiles dd {
+    margin: 0;
+  }
+
+  .skill {
+    border-color: color-mix(in oklab, var(--accent) 35%, var(--border));
+    background: color-mix(in oklab, var(--accent) 8%, transparent);
+    color: var(--text);
+  }
+
+  @media (max-width: 520px) {
+    .tiles div {
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
+  }
+</style>

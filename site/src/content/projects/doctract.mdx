@@ -1,0 +1,57 @@
+---
+title: "DocTract"
+tagline: "Private document Q&A with local models"
+summary: "A RAG pipeline for question answering over PDFs, from parsing and chunking to pgvector semantic search and answers from a local Mistral 7B."
+description: "Privacy-first document processing system with local AI inference, vector search, and conversational interfaces."
+stack: ["LlamaIndex", "Mistral 7B", "llama.cpp", "bge-small-en", "pgvector", "PostgreSQL", "PyMuPDF", "Streamlit"]
+tags: ["genai", "ml"]
+demo: "https://youtu.be/9pInYAGtVZA"
+code: "https://github.com/aishwaryaj7/aishwaryaj7.github.io/tree/main/ai-portfolio/projects/doctract"
+order: 3
+skills: ["RAG pipeline design", "Embeddings and vector search", "Local LLM inference", "Retrieval tuning"]
+---
+import Architecture from '../../components/project/Architecture.astro';
+import Highlights from '../../components/project/Highlights.astro';
+import Shots from '../../components/project/Shots.astro';
+import settings from '../../assets/projects/doctract/settings.png';
+import chat from '../../assets/projects/doctract/chat.png';
+
+## Overview
+
+Ask questions about a PDF and get answers from a model that runs on your own machine. Nothing goes to an outside API: parsing, embeddings, search and generation all happen locally, so private documents stay private.
+
+<Shots shots={[
+  { src: settings, alt: 'DocTract sidebar with chunk size, top-k and search mode settings next to the chat', caption: 'Settings: choose the chunk size and how many passages to retrieve, then index the PDF.' },
+  { src: chat, alt: 'DocTract answering questions about the Transformer paper with a local Mistral 7B', caption: 'Chat: questions about the Transformer paper, answered by a local Mistral 7B.' },
+]} />
+
+## How it works
+
+<Architecture
+  label="DocTract architecture: PDF chunks are embedded into pgvector, retrieved with LlamaIndex and answered by a local Mistral 7B"
+  groups={[
+    { title: 'Ingest', next: 'embed', nodes: [
+      { label: 'PDF reader', logos: ['PyMuPDF'] },
+      { label: 'Chunks', logos: ['llamaindex'] },
+    ] },
+    { title: 'Index', next: 'top-k', nodes: [
+      { label: 'Embeddings', logos: [{ name: 'huggingface', title: 'BAAI bge-small-en (Hugging Face)' }] },
+      { label: 'Vector store', logos: [{ name: 'postgresql', title: 'PostgreSQL + pgvector' }], kind: 'store' },
+    ] },
+    { title: 'Answer', nodes: [
+      { label: 'Retriever', logos: ['llamaindex'] },
+      { label: 'Mistral 7B', logos: ['mistral', 'llama.cpp'], kind: 'model' },
+      { label: 'Chat', logos: ['streamlit'] },
+    ] },
+  ]}
+/>
+
+## Highlights
+
+<Highlights items={[
+  'Fully local, no API keys',
+  'Tunable chunk size',
+  'Top-k and search mode',
+  'pgvector inside PostgreSQL',
+  'Swappable modules',
+]} />

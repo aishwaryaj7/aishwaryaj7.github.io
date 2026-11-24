@@ -1,0 +1,194 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Icon from './Icon.astro';
+import Cover from './Cover.astro';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  featured?: boolean;
+  /** Sits beside the featured card: show full text and stack to use the extra height */
+  full?: boolean;
+}
+
+const { project, featured = false, full = false } = Astro.props;
+const { title, tagline, summary, stack, demo, code, metrics } = project.data;
+const href = `/projects/${project.id}`;
+const maxChips = featured || full ? stack.length : 4;
+const chips = stack.slice(0, maxChips);
+const hidden = stack.length - chips.length;
+---
+
+<article class:list={['card', { featured, full }]}>
+  <div class="cover-wrap"><Cover slug={project.id} tall={featured} /></div>
+  {featured && <p class="eyebrow">Featured · Latest</p>}
+  <h3>
+    <a href={href} class="stretched">{title}</a>
+  </h3>
+  <p class="tagline">{tagline}</p>
+  <p class="summary">{summary}</p>
+
+  {featured && metrics && (
+    <dl class="metrics">
+      {metrics.map((m) => (
+        <div>
+          <dt>{m.label}</dt>
+          <dd class="serif">{m.value}</dd>
+        </div>
+      ))}
+    </dl>
+  )}
+
+  <ul class="chip-row" aria-label="Tech stack">
+    {chips.map((s) => <li class="chip">{s}</li>)}
+    {hidden > 0 && <li class="chip more" title={stack.slice(maxChips).join(', ')}>+{hidden}</li>}
+  </ul>
+  <div class="links">
+    <a href={href} class="link-arrow">Case study <Icon name="arrow-up-right" /></a>
+    {demo && <a href={demo} target="_blank" rel="noopener" class="link-arrow">Demo <Icon name="arrow-up-right" /></a>}
+    {code && <a href={code} target="_blank" rel="noopener" class="link-arrow">Code <Icon name="arrow-up-right" /></a>}
+  </div>
+</article>
+
+<style>
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .card:hover {
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow);
+  }
+
+  .cover-wrap {
+    margin: -20px -20px 16px;
+  }
+
+  .featured .cover-wrap {
+    margin: -24px -26px 18px;
+  }
+
+  .eyebrow {
+    margin-bottom: 10px;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-size: 17px;
+    letter-spacing: -0.02em;
+  }
+
+  /* Whole card is clickable; the inner links sit above the overlay */
+  .stretched::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+
+  .card:hover h3 a {
+    color: var(--accent);
+  }
+
+  .tagline {
+    margin-top: 2px;
+    font-size: 13.5px;
+    color: var(--text-faint);
+  }
+
+  .summary {
+    margin: 10px 0 16px;
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--text-muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .chip-row {
+    margin-top: auto;
+  }
+
+  .chip.more {
+    background: transparent;
+  }
+
+  .links {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+
+  .links .link-arrow {
+    font-size: 13px;
+  }
+
+  /* Featured: wider card with the headline results in a row */
+  .featured {
+    padding: 24px 26px;
+    background:
+      radial-gradient(90% 120% at 100% 0%, var(--accent-soft), transparent 60%),
+      var(--surface);
+  }
+
+  .featured h3 {
+    font-size: clamp(22px, 2.6vw, 26px);
+  }
+
+  .featured .tagline {
+    font-size: 14.5px;
+  }
+
+  .featured .summary {
+    max-width: 62ch;
+    font-size: 15px;
+    -webkit-line-clamp: 3;
+  }
+
+  .full .summary {
+    -webkit-line-clamp: unset;
+  }
+
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin: 0 0 16px;
+    padding: 12px 0;
+    border-block: 1px solid var(--border);
+  }
+
+  .metrics div {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+  }
+
+  .metrics dd {
+    margin: 0;
+    font-size: clamp(28px, 3.4vw, 36px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .metrics dt {
+    margin-top: 6px;
+    font-size: 12.5px;
+    line-height: 1.4;
+    color: var(--text-muted);
+  }
+</style>
